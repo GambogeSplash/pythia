@@ -19,9 +19,6 @@ export const metadata: Metadata = {
   title: "Pythia — Market Intelligence",
   description:
     "Predictive analytics and trading automation for prediction markets",
-  icons: {
-    icon: "/favicon.svg",
-  },
 };
 
 export default function RootLayout({

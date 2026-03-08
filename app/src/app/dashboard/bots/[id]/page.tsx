@@ -1,9 +1,10 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  ArrowLeft, Settings, Trash2, Bot,
+  ArrowLeft, Settings, Trash2, Bot, Play, Pause,
   Target, Activity, Shield, BarChart3, Zap,
 } from "lucide-react";
 import { useBots } from "@/hooks/use-user-data";
@@ -25,8 +26,41 @@ const STAT_LABELS = [
 
 export default function BotDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { bots, isLoading } = useBots();
+  const router = useRouter();
+  const { bots, isLoading, mutate } = useBots();
   const bot = bots.find((b) => b.id === id);
+  const [toggling, setToggling] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const toggleBotStatus = async () => {
+    if (!bot || toggling) return;
+    const newStatus = bot.status === "running" ? "paused" : "running";
+    setToggling(true);
+    try {
+      const res = await fetch(`/api/user/bots/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) throw new Error("Failed to update bot status");
+      mutate();
+    } catch {
+      // silently fail — data will re-fetch
+    } finally {
+      setToggling(false);
+    }
+  };
+
+  const deleteBot = async () => {
+    try {
+      const res = await fetch(`/api/user/bots/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete bot");
+      mutate();
+      router.push("/dashboard/bots");
+    } catch {
+      setConfirmDelete(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -112,10 +146,25 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
         )}
 
         <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={toggleBotStatus}
+            disabled={toggling}
+            className={`flex h-6 items-center gap-1 rounded-[4px] px-2 text-body-12 font-medium transition-colors ${
+              isRunning
+                ? "bg-signal-amber-dim text-signal-amber hover:bg-signal-amber/20"
+                : "bg-action-rise-dim text-action-rise hover:bg-action-rise/20"
+            } disabled:opacity-50`}
+            title={isRunning ? "Pause bot" : "Start bot"}
+          >
+            {isRunning ? <><Pause className="h-3 w-3" /> Pause</> : <><Play className="h-3 w-3" /> Start</>}
+          </button>
           <button className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-bg-base-2 text-text-secondary transition-colors hover:bg-bg-base-3 hover:text-text-primary">
             <Settings className="h-3.5 w-3.5" />
           </button>
-          <button className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-bg-base-2 text-text-muted transition-colors hover:bg-action-fall-dim hover:text-action-fall">
+          <button
+            onClick={() => setConfirmDelete(true)}
+            className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-bg-base-2 text-text-muted transition-colors hover:bg-action-fall-dim hover:text-action-fall"
+          >
             <Trash2 className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -271,6 +320,39 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
           </div>
         </div>
       </div>
+
+      {/* Delete confirmation modal */}
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-bg-overlay"
+          onClick={() => setConfirmDelete(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-80 rounded-[18px] bg-bg-base-1 p-5"
+            style={{ boxShadow: "0 24px 48px rgba(0,0,0,0.5), inset 0 0 0 1px var(--color-divider-heavy)" }}
+          >
+            <div className="mb-1 text-body-12 font-semibold text-text-primary">Delete Bot</div>
+            <p className="mb-4 text-[11px] text-text-secondary">
+              Are you sure you want to delete <span className="font-medium text-text-primary">{botName}</span>? This action cannot be undone.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="flex h-8 flex-1 items-center justify-center rounded-[8px] bg-bg-base-2 text-body-12 font-medium text-text-secondary transition-colors hover:bg-bg-base-3 hover:text-text-primary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={deleteBot}
+                className="flex h-8 flex-1 items-center justify-center gap-1 rounded-[8px] bg-action-fall-dim text-body-12 font-semibold text-signal-red transition-colors hover:bg-signal-red/20"
+              >
+                <Trash2 className="h-3 w-3" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -91,12 +91,14 @@ export default function LandingPage() {
             <a href="#how" className="transition-colors hover:text-white">How It Works</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
+            <a
+              href="https://github.com/GambogeSplash"
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-[8px] px-4 py-2 text-[13px] font-semibold text-[#888] transition-colors hover:text-white"
             >
-              Log In
-            </Link>
+              GitHub
+            </a>
             <Link
               href="/login"
               className="rounded-[8px] bg-[#00FF85] px-4 py-2 text-[13px] font-semibold text-[#080808] transition-colors hover:bg-[#00FF85]/90"
@@ -173,7 +175,7 @@ export default function LandingPage() {
               href="/login"
               className="group flex items-center gap-2 rounded-[10px] bg-[#00FF85] px-6 py-3 text-[14px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_32px_rgba(0,255,133,0.3)]"
             >
-              Start Trading
+              Get Started
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a
@@ -355,9 +357,9 @@ export default function LandingPage() {
             <span className="text-[12px] text-[#444]">Pythia &mdash; Market Intelligence</span>
           </div>
           <div className="flex items-center gap-6 text-[12px] text-[#444]">
-            <a href="#" className="transition-colors hover:text-white">Docs</a>
-            <a href="#" className="transition-colors hover:text-white">GitHub</a>
-            <a href="#" className="transition-colors hover:text-white">Twitter</a>
+            <a href="https://github.com/GambogeSplash" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">GitHub</a>
+            <a href="https://github.com/GambogeSplash" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Docs</a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Twitter</a>
           </div>
         </div>
       </footer>

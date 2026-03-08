@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -233,8 +234,10 @@ function Dropdown({
 /* ── Main Page ────────────────────────────────────────────────────── */
 
 export default function BotCreatePage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedBotType, setSelectedBotType] = useState("");
+  const [deploying, setDeploying] = useState(false);
 
   const [triggerActions, setTriggerActions] = useState<TriggerAction[]>([
     {
@@ -322,6 +325,40 @@ export default function BotCreatePage() {
     (currentStep === 1 && selectedBotType !== "") ||
     (currentStep === 2 && settings.botName.trim() !== "") ||
     currentStep === 3;
+
+  const handleDeploy = async (mode: "live" | "paper") => {
+    if (deploying) return;
+    setDeploying(true);
+    try {
+      const res = await fetch("/api/user/bots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: settings.botName,
+          type: selectedBotType,
+          status: mode === "paper" ? "paused" : "running",
+          mode,
+          capital: settings.capital,
+          config: {
+            maxDrawdown: settings.maxDrawdown,
+            markets: settings.markets,
+            venues: settings.venues,
+            riskLevel: settings.riskLevel,
+            triggerActions,
+          },
+        }),
+      });
+      if (res.ok) {
+        router.push("/dashboard/bots");
+      } else {
+        alert("Failed to deploy bot. Please try again.");
+      }
+    } catch {
+      alert("Failed to deploy bot. Please try again.");
+    } finally {
+      setDeploying(false);
+    }
+  };
 
   /* ── Step indicators ────────────────────────────────────────────── */
   const steps = [
@@ -1202,13 +1239,21 @@ export default function BotCreatePage() {
                 </div>
 
                 <div className="space-y-2">
-                  <button className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-signal-green text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover">
+                  <button
+                    onClick={() => handleDeploy("live")}
+                    disabled={deploying}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-signal-green text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover disabled:opacity-50"
+                  >
                     <Rocket className="h-4 w-4" />
-                    Deploy Bot
+                    {deploying ? "Deploying…" : "Deploy Bot"}
                   </button>
-                  <button className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-signal-amber/15 text-body-12 font-semibold text-signal-amber transition-colors hover:bg-signal-amber/25">
+                  <button
+                    onClick={() => handleDeploy("paper")}
+                    disabled={deploying}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-signal-amber/15 text-body-12 font-semibold text-signal-amber transition-colors hover:bg-signal-amber/25 disabled:opacity-50"
+                  >
                     <Activity className="h-4 w-4" />
-                    Start Paper Trading
+                    {deploying ? "Starting…" : "Start Paper Trading"}
                   </button>
                   <button
                     onClick={() => setCurrentStep(2)}
@@ -1261,9 +1306,13 @@ export default function BotCreatePage() {
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           ) : (
-            <button className="flex h-8 items-center gap-1.5 rounded-[6px] bg-signal-green px-6 text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover">
+            <button
+              onClick={() => handleDeploy("live")}
+              disabled={deploying}
+              className="flex h-8 items-center gap-1.5 rounded-[6px] bg-signal-green px-6 text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover disabled:opacity-50"
+            >
               <Rocket className="h-3.5 w-3.5" />
-              Deploy Bot
+              {deploying ? "Deploying…" : "Deploy Bot"}
             </button>
           )}
         </div>

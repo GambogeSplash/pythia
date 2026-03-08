@@ -40,7 +40,6 @@ export function WidgetPanel() {
   const addWidget = useAppStore((s) => s.addWidget);
   const removeWidget = useAppStore((s) => s.removeWidget);
   const setDraggingFromPanel = useAppStore((s) => s.setDraggingFromPanel);
-  const setDropPreviewIndex = useAppStore((s) => s.setDropPreviewIndex);
 
   if (!widgetPanelOpen) return null;
 
@@ -101,7 +100,6 @@ export function WidgetPanel() {
                 onDragStart={() => setDraggingFromPanel(true)}
                 onDragEnd={() => {
                   setDraggingFromPanel(false);
-                  setDropPreviewIndex(null);
                 }}
               />
             );

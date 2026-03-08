@@ -5,6 +5,8 @@ const DEFAULT_DASHBOARD_WIDGETS = [
   "mm-opportunities",
   "news-feed",
   "traders-activity",
+  "sentiment",
+  "ai-signals",
 ];
 
 export interface Notification {
@@ -40,16 +42,6 @@ interface AppState {
   setDashboardWidgets: (widgets: string[]) => void;
   addWidget: (widgetId: string, index?: number) => void;
   removeWidget: (widgetId: string) => void;
-
-  // Drop preview (panel → dashboard drag)
-  dropPreviewIndex: number | null;
-  setDropPreviewIndex: (index: number | null) => void;
-
-  // Widget sizes: col-span (1–4) + height in px (0 = auto)
-  widgetSpans: Record<string, number>;
-  widgetHeights: Record<string, number>;
-  setWidgetSpan: (widgetId: string, span: number) => void;
-  setWidgetHeight: (widgetId: string, height: number) => void;
 
   // Notifications
   notifications: Notification[];
@@ -95,17 +87,6 @@ export const useAppStore = create<AppState>((set, get) => ({
       dashboardWidgets: state.dashboardWidgets.filter((id) => id !== widgetId),
     })),
 
-  widgetSpans: {},
-  widgetHeights: {},
-  setWidgetSpan: (widgetId, span) =>
-    set((state) => ({
-      widgetSpans: { ...state.widgetSpans, [widgetId]: span },
-    })),
-  setWidgetHeight: (widgetId, height) =>
-    set((state) => ({
-      widgetHeights: { ...state.widgetHeights, [widgetId]: height },
-    })),
-
   notifications: INITIAL_NOTIFICATIONS,
   markNotificationRead: (id) =>
     set((state) => ({
@@ -118,9 +99,6 @@ export const useAppStore = create<AppState>((set, get) => ({
       notifications: state.notifications.map((n) => ({ ...n, read: true })),
     })),
   unreadCount: () => get().notifications.filter((n) => !n.read).length,
-
-  dropPreviewIndex: null,
-  setDropPreviewIndex: (index) => set({ dropPreviewIndex: index }),
 
   activeDropdown: null,
   setActiveDropdown: (id) => set({ activeDropdown: id }),

@@ -143,6 +143,25 @@ export const alertEvents = pgTable("alert_events", {
   triggeredAt: timestamp("triggered_at", { mode: "date" }).defaultNow().notNull(),
 });
 
+export const otpCodes = pgTable("otp_codes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull(),
+  code: text("code").notNull(),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+  used: boolean("used").notNull().default(false),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const botLogs = pgTable("bot_logs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  botId: uuid("bot_id").notNull().references(() => bots.id, { onDelete: "cascade" }),
+  action: text("action").notNull(), // "scan" | "trade" | "alert" | "error"
+  detail: text("detail").notNull(),
+  marketId: text("market_id"),
+  tradeId: uuid("trade_id"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
 export const venueApiKeys = pgTable("venue_api_keys", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),

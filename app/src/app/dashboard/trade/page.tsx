@@ -181,6 +181,95 @@ export default function TradePage() {
   const [orderType, setOrderType] = useState<"market" | "limit">("market");
   const [limitPrice, setLimitPrice] = useState("");
   const [marketPanelOpen, setMarketPanelOpen] = useState(false);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+
+  const [orderSubmitting, setOrderSubmitting] = useState(false);
+
+  const handlePlaceOrder = async () => {
+    if (!selectedMarket) {
+      alert("Select a market first.");
+      return;
+    }
+    const amt = Number(amount);
+    if (!amount || amt <= 0) {
+      alert("Enter an amount greater than 0.");
+      return;
+    }
+
+    const price = side === "yes" ? selectedMarket.yesPrice : selectedMarket.noPrice;
+    if (price <= 0) {
+      alert("Invalid price for selected side.");
+      return;
+    }
+
+    const orderShares = amt / price;
+    const sideUpper = side.toUpperCase(); // "YES" | "NO"
+
+    setOrderSubmitting(true);
+
+    try {
+      // 1. Create position
+      const posRes = await fetch("/api/user/positions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          marketId: selectedMarket.id,
+          marketQuestion: selectedMarket.question,
+          venue: "polymarket",
+          side: sideUpper,
+          shares: orderShares,
+          avgPrice: price,
+          currentPrice: price,
+          costBasis: amt,
+          marketValue: amt,
+          pnl: 0,
+          pnlPercent: 0,
+          category: selectedMarket.category || null,
+        }),
+      });
+
+      if (!posRes.ok) {
+        const err = await posRes.json().catch(() => ({}));
+        throw new Error(err.error || `Position creation failed (${posRes.status})`);
+      }
+
+      const posData = await posRes.json();
+      const positionId = posData.data?.id ?? null;
+
+      // 2. Create trade record
+      const tradeRes = await fetch("/api/user/trades", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          positionId,
+          marketId: selectedMarket.id,
+          marketQuestion: selectedMarket.question,
+          venue: "polymarket",
+          side: sideUpper,
+          action: "buy",
+          shares: orderShares,
+          price,
+          amount: amt,
+          fee: 0,
+        }),
+      });
+
+      if (!tradeRes.ok) {
+        const err = await tradeRes.json().catch(() => ({}));
+        throw new Error(err.error || `Trade creation failed (${tradeRes.status})`);
+      }
+
+      // Success feedback
+      setOrderPlaced(true);
+      setAmount("");
+      setTimeout(() => setOrderPlaced(false), 2000);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Order failed";
+      alert(message);
+    } finally {
+      setOrderSubmitting(false);
+    }
+  };
 
   /* ----- chart ----- */
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -357,8 +446,12 @@ export default function TradePage() {
           </div>
         </div>
         {/* Right: Place Order button */}
-        <button className="ml-auto flex h-6 items-center gap-1 rounded-[4px] bg-signal-green px-3 text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover">
-          Place Order
+        <button
+          onClick={handlePlaceOrder}
+          disabled={orderSubmitting}
+          className="ml-auto flex h-6 items-center gap-1 rounded-[4px] bg-signal-green px-3 text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover disabled:opacity-50"
+        >
+          {orderPlaced ? "Order Placed \u2713" : orderSubmitting ? "Placing..." : "Place Order"}
         </button>
       </div>
       {/* Page content */}
@@ -778,14 +871,19 @@ export default function TradePage() {
 
           {/* Submit */}
           <button
-            className={`flex h-10 w-full items-center justify-center rounded-[8px] text-body-14 font-semibold transition-colors duration-150 ${
+            onClick={handlePlaceOrder}
+            disabled={orderSubmitting}
+            className={`flex h-10 w-full items-center justify-center rounded-[8px] text-body-14 font-semibold transition-colors duration-150 disabled:opacity-50 ${
               side === "yes"
                 ? "bg-action-buy text-bg-base-0 hover:bg-action-buy-hover"
                 : "bg-action-sell text-bg-base-0 hover:bg-action-sell-hover"
             }`}
           >
-            {side === "yes" ? "Buy YES" : "Buy NO"}
-            {orderType === "limit" ? " (Limit)" : ""}
+            {orderPlaced
+              ? "Order Placed \u2713"
+              : orderSubmitting
+              ? "Placing Order..."
+              : `${side === "yes" ? "Buy YES" : "Buy NO"}${orderType === "limit" ? " (Limit)" : ""}`}
           </button>
 
           {/* P&L Summary */}

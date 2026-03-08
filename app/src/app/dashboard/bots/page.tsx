@@ -174,7 +174,7 @@ function StatusDot({ status }: { status: "running" | "paused" | "stopped" }) {
 /* ------------------------------------------------------------------ */
 
 export default function BotsPage() {
-  const { bots: apiBots, isLoading: botsLoading } = useBots();
+  const { bots: apiBots, isLoading: botsLoading, mutate } = useBots();
   const [tab, setTab] = useState<"my-bots" | "templates" | "marketplace">("my-bots");
   const [bots, setBots] = useState<LocalBot[]>([]);
   const [selectedBotId, setSelectedBotId] = useState<string | null>(null);
@@ -211,27 +211,72 @@ export default function BotsPage() {
 
   const selectedBot = bots.find((b) => b.id === selectedBotId) ?? bots[0] ?? null;
 
-  const toggleBotStatus = (id: string) => {
+  const toggleBotStatus = async (id: string) => {
+    const bot = bots.find((b) => b.id === id);
+    if (!bot) return;
+    const newStatus = bot.status === "running" ? "paused" : "running";
+    // Optimistic update
     setBots((prev) =>
       prev.map((b) =>
         b.id === id
-          ? { ...b, status: b.status === "running" ? "paused" as const : "running" as const }
+          ? { ...b, status: newStatus as "running" | "paused" }
           : b
       )
     );
+    try {
+      const res = await fetch(`/api/user/bots/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) throw new Error("Failed to update bot status");
+      mutate();
+    } catch {
+      // Revert on failure
+      setBots((prev) =>
+        prev.map((b) =>
+          b.id === id ? { ...b, status: bot.status } : b
+        )
+      );
+    }
   };
 
-  const killAllBots = () => {
+  const killAllBots = async () => {
+    const prevBots = bots;
     setBots((prev) => prev.map((b) => ({ ...b, status: "paused" as const })));
+    try {
+      await Promise.all(
+        prevBots
+          .filter((b) => b.status === "running")
+          .map((b) =>
+            fetch(`/api/user/bots/${b.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ status: "paused" }),
+            })
+          )
+      );
+      mutate();
+    } catch {
+      setBots(prevBots);
+    }
   };
 
-  const deleteBot = (id: string) => {
+  const deleteBot = async (id: string) => {
+    const prevBots = bots;
     setBots((prev) => {
       const next = prev.filter((b) => b.id !== id);
       if (selectedBotId === id && next.length > 0) setSelectedBotId(next[0].id);
       return next;
     });
     setConfirmDeleteId(null);
+    try {
+      const res = await fetch(`/api/user/bots/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete bot");
+      mutate();
+    } catch {
+      setBots(prevBots);
+    }
   };
 
   const runningBots = bots.filter((b) => b.status === "running").length;

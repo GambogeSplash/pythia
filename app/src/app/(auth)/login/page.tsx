@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wallet, ArrowRight, Mail, Loader2 } from "lucide-react";
+import { Wallet, ArrowRight, Mail, Loader2, ArrowLeft, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 function SerpentLogo({ size = 32, className = "" }: { size?: number; className?: string }) {
@@ -17,44 +17,199 @@ function SerpentLogo({ size = 32, className = "" }: { size?: number; className?:
   );
 }
 
+const OTP_LENGTH = 6;
+const RESEND_COOLDOWN = 60; // seconds
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [transitioning, setTransitioning] = useState(false);
+  const [step, setStep] = useState<"email" | "otp">("email");
+  const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [expirySeconds, setExpirySeconds] = useState(600); // 10 minutes
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
+  // Resend cooldown timer
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setInterval(() => setResendCooldown((c) => Math.max(0, c - 1)), 1000);
+    return () => clearInterval(t);
+  }, [resendCooldown]);
+
+  // OTP expiry countdown
+  useEffect(() => {
+    if (step !== "otp" || expirySeconds <= 0) return;
+    const t = setInterval(() => setExpirySeconds((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [step, expirySeconds]);
+
+  const sendOtp = useCallback(async () => {
     setLoading(true);
     setError("");
-
-    const result = await signIn("credentials", {
-      email: email.trim(),
-      password: "", // MVP: no password required
-      redirect: false,
-    });
-
-    if (result?.error) {
+    try {
+      const res = await fetch("/api/auth/otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to send code");
+      }
+      setStep("otp");
+      setOtp(Array(OTP_LENGTH).fill(""));
+      setResendCooldown(RESEND_COOLDOWN);
+      setExpirySeconds(600);
+      setTimeout(() => inputRefs.current[0]?.focus(), 100);
+    } catch (err: any) {
+      setError(err.message || "Failed to send verification code");
+    } finally {
       setLoading(false);
-      setError("Sign in failed. Please try again.");
+    }
+  }, [email]);
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    await sendOtp();
+  };
+
+  const verifyAndSignIn = useCallback(async (code: string) => {
+    setLoading(true);
+    setError("");
+    try {
+      // Verify OTP
+      const verifyRes = await fetch("/api/auth/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), code }),
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyData.valid) {
+        setError(verifyData.error || "Invalid code");
+        setLoading(false);
+        return;
+      }
+
+      // Sign in via NextAuth
+      const result = await signIn("credentials", {
+        email: email.trim(),
+        password: "",
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Sign in failed. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      setLoading(false);
+      setTransitioning(true);
+      setTimeout(() => router.push("/dashboard"), 800);
+    } catch {
+      setError("Verification failed. Please try again.");
+      setLoading(false);
+    }
+  }, [email, router]);
+
+  const handleOtpChange = (index: number, value: string) => {
+    // Handle paste of full code
+    if (value.length > 1) {
+      const digits = value.replace(/\D/g, "").slice(0, OTP_LENGTH).split("");
+      const newOtp = [...otp];
+      digits.forEach((d, i) => {
+        if (index + i < OTP_LENGTH) newOtp[index + i] = d;
+      });
+      setOtp(newOtp);
+      const nextIndex = Math.min(index + digits.length, OTP_LENGTH - 1);
+      inputRefs.current[nextIndex]?.focus();
+      // Auto-submit if all filled
+      if (newOtp.every((d) => d !== "")) {
+        verifyAndSignIn(newOtp.join(""));
+      }
       return;
     }
 
-    setLoading(false);
-    setTransitioning(true);
-    setTimeout(() => router.push("/dashboard"), 800);
+    const digit = value.replace(/\D/g, "");
+    const newOtp = [...otp];
+    newOtp[index] = digit;
+    setOtp(newOtp);
+
+    if (digit && index < OTP_LENGTH - 1) {
+      inputRefs.current[index + 1]?.focus();
+    }
+
+    // Auto-submit when all digits entered
+    if (digit && newOtp.every((d) => d !== "")) {
+      verifyAndSignIn(newOtp.join(""));
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      const newOtp = [...otp];
+      newOtp[index - 1] = "";
+      setOtp(newOtp);
+      inputRefs.current[index - 1]?.focus();
+    }
+    if (e.key === "ArrowLeft" && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+    if (e.key === "ArrowRight" && index < OTP_LENGTH - 1) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    if (!pasted) return;
+    const digits = pasted.split("");
+    const newOtp = Array(OTP_LENGTH).fill("");
+    digits.forEach((d, i) => { newOtp[i] = d; });
+    setOtp(newOtp);
+    const focusIndex = Math.min(digits.length, OTP_LENGTH - 1);
+    inputRefs.current[focusIndex]?.focus();
+    if (newOtp.every((d) => d !== "")) {
+      verifyAndSignIn(newOtp.join(""));
+    }
+  };
+
+  const handleOtpSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const code = otp.join("");
+    if (code.length !== OTP_LENGTH) return;
+    verifyAndSignIn(code);
+  };
+
+  const handleResend = async () => {
+    if (resendCooldown > 0) return;
+    await sendOtp();
+  };
+
+  const handleBack = () => {
+    setStep("email");
+    setOtp(Array(OTP_LENGTH).fill(""));
+    setError("");
   };
 
   const handleWalletConnect = () => {
-    // Wallet connect — placeholder for future Web3 auth
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       setTransitioning(true);
       setTimeout(() => router.push("/dashboard"), 800);
     }, 1500);
+  };
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m}:${sec.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -135,78 +290,181 @@ export default function LoginPage() {
               <span className="text-[17px] font-bold tracking-tight text-white">PYTHIA</span>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h1 className="mt-8 text-[22px] font-bold text-white">Welcome back</h1>
-              <p className="mt-1 text-[13px] text-[#666]">Sign in to access your trading terminal.</p>
-            </motion.div>
+            <AnimatePresence mode="wait">
+              {step === "email" ? (
+                <motion.div
+                  key="email-step"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <h1 className="mt-8 text-[22px] font-bold text-white">Welcome back</h1>
+                    <p className="mt-1 text-[13px] text-[#666]">Sign in to access your trading terminal.</p>
+                  </motion.div>
 
-            <motion.form
-              onSubmit={handleLogin}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-8 space-y-3"
-            >
-              <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#444]" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email address"
-                  className="h-11 w-full rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] pl-10 pr-4 text-[13px] text-white placeholder-[#444] outline-none transition-colors focus:border-[#00FF85]/50 focus:bg-[#0A0A0B]"
-                />
-              </div>
-              {error && (
-                <p className="text-[11px] text-red-400">{error}</p>
+                  <motion.form
+                    onSubmit={handleEmailSubmit}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    className="mt-8 space-y-3"
+                  >
+                    <div className="relative">
+                      <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#444]" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email address"
+                        className="h-11 w-full rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] pl-10 pr-4 text-[13px] text-white placeholder-[#444] outline-none transition-colors focus:border-[#00FF85]/50 focus:bg-[#0A0A0B]"
+                      />
+                    </div>
+                    {error && (
+                      <p className="text-[11px] text-red-400">{error}</p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={loading || !email.trim()}
+                      className="group flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-[13px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
+                    >
+                      {loading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          Continue
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                        </>
+                      )}
+                    </button>
+                  </motion.form>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="my-6 flex items-center gap-3">
+                      <div className="h-px flex-1 bg-[#1A1A1A]" />
+                      <span className="text-[11px] font-medium text-[#444]">OR</span>
+                      <div className="h-px flex-1 bg-[#1A1A1A]" />
+                    </div>
+
+                    <button
+                      onClick={handleWalletConnect}
+                      disabled={loading}
+                      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-[13px] font-semibold text-white transition-all hover:border-[#282A2D] hover:bg-[#121314] disabled:opacity-60"
+                    >
+                      <Wallet className="h-4 w-4 text-[#888]" />
+                      Connect Wallet
+                    </button>
+
+                    <p className="mt-6 text-center text-[11px] text-[#444]">
+                      Don&apos;t have an account?{" "}
+                      <Link href="/login" className="text-[#00FF85] transition-colors hover:text-[#00FF85]/80">
+                        Sign up
+                      </Link>
+                    </p>
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="otp-step"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="mt-8">
+                    <button
+                      onClick={handleBack}
+                      className="mb-4 flex items-center gap-1.5 text-[12px] text-[#666] transition-colors hover:text-[#999]"
+                    >
+                      <ArrowLeft className="h-3.5 w-3.5" />
+                      Back
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="h-5 w-5 text-[#00FF85]" />
+                      <h1 className="text-[22px] font-bold text-white">Verify your email</h1>
+                    </div>
+                    <p className="mt-1.5 text-[13px] text-[#666]">
+                      We sent a 6-digit code to{" "}
+                      <span className="text-[#999]">{email}</span>
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleOtpSubmit} className="mt-8">
+                    <div className="flex items-center justify-between gap-2" onPaste={handleOtpPaste}>
+                      {otp.map((digit, i) => (
+                        <input
+                          key={i}
+                          ref={(el) => { inputRefs.current[i] = el; }}
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={OTP_LENGTH}
+                          value={digit}
+                          onChange={(e) => handleOtpChange(i, e.target.value)}
+                          onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                          autoFocus={i === 0}
+                          className="h-[52px] w-[46px] rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-center font-mono text-[20px] font-bold text-white outline-none transition-all focus:border-[#00FF85]/50 focus:bg-[#0A0A0B] focus:shadow-[0_0_0_1px_rgba(0,255,133,0.15)]"
+                        />
+                      ))}
+                    </div>
+
+                    {error && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-3 text-[11px] text-red-400"
+                      >
+                        {error}
+                      </motion.p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={loading || otp.some((d) => !d)}
+                      className="group mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-[13px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
+                    >
+                      {loading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          Verify & Sign In
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+
+                  {/* Resend + Timer */}
+                  <div className="mt-5 flex items-center justify-between">
+                    <button
+                      onClick={handleResend}
+                      disabled={resendCooldown > 0 || loading}
+                      className="text-[12px] text-[#666] transition-colors hover:text-[#00FF85] disabled:cursor-not-allowed disabled:text-[#333]"
+                    >
+                      {resendCooldown > 0
+                        ? `Resend code in ${resendCooldown}s`
+                        : "Resend code"}
+                    </button>
+                    {expirySeconds > 0 ? (
+                      <span className="font-mono text-[11px] text-[#444]">
+                        Expires in {formatTime(expirySeconds)}
+                      </span>
+                    ) : (
+                      <span className="text-[11px] text-red-400/80">Code expired</span>
+                    )}
+                  </div>
+                </motion.div>
               )}
-              <button
-                type="submit"
-                disabled={loading || !email.trim()}
-                className="group flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-[13px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
-              >
-                {loading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    Continue
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </>
-                )}
-              </button>
-            </motion.form>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="my-6 flex items-center gap-3">
-                <div className="h-px flex-1 bg-[#1A1A1A]" />
-                <span className="text-[11px] font-medium text-[#444]">OR</span>
-                <div className="h-px flex-1 bg-[#1A1A1A]" />
-              </div>
-
-              <button
-                onClick={handleWalletConnect}
-                disabled={loading}
-                className="flex h-11 w-full items-center justify-center gap-2.5 rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-[13px] font-semibold text-white transition-all hover:border-[#282A2D] hover:bg-[#121314] disabled:opacity-60"
-              >
-                <Wallet className="h-4 w-4 text-[#888]" />
-                Connect Wallet
-              </button>
-
-              <p className="mt-6 text-center text-[11px] text-[#444]">
-                Don&apos;t have an account?{" "}
-                <Link href="/login" className="text-[#00FF85] transition-colors hover:text-[#00FF85]/80">
-                  Sign up
-                </Link>
-              </p>
-            </motion.div>
+            </AnimatePresence>
 
             {/* Venue tags */}
             <motion.div

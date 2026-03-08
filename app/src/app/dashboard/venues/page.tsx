@@ -485,6 +485,7 @@ function VenueCard({ venue }: { venue: Venue }) {
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            onClick={() => alert(`Disconnect from ${venue.name} — API key management coming soon.`)}
             className="flex h-6 items-center gap-1 rounded-[4px] px-2 text-[10px] font-medium text-text-secondary outline outline-1 -outline-offset-1 outline-divider-heavy transition-colors hover:bg-action-translucent-hover hover:text-text-primary"
           >
             <Unlink className="h-3 w-3" />
@@ -495,6 +496,7 @@ function VenueCard({ venue }: { venue: Venue }) {
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            onClick={() => alert(`${venue.name} API connection coming soon. You'll be able to add your API keys to trade directly.`)}
             className="flex h-6 items-center gap-1 rounded-[4px] px-2 text-[10px] font-semibold text-bg-base-0 transition-colors"
             style={{ backgroundColor: venue.accent }}
           >

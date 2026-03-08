@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useMemo } from "react";
+import { use, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { Widget } from "@/components/ui/widget";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,9 @@ import {
   Target,
   Globe,
   Scale,
+  DollarSign,
+  ShoppingCart,
+  Check,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -186,6 +189,12 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
   const [hoveredAsk, setHoveredAsk] = useState<number | null>(null);
   const [hoveredNews, setHoveredNews] = useState<number | null>(null);
 
+  // ── Quick Trade state ─────────────────────────────────────────────────
+  const [tradeSide, setTradeSide] = useState<"yes" | "no">("yes");
+  const [tradeAmount, setTradeAmount] = useState("");
+  const [tradePlacing, setTradePlacing] = useState(false);
+  const [tradePlaced, setTradePlaced] = useState(false);
+
   const timeframes = ["1hr", "6hr", "1d", "1w", "All"];
   const views = ["Probability", "Depth", "Sentiment", "Flow"];
 
@@ -254,6 +263,57 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
     ? new Date(market.endDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
     : "--";
   const timeLeft = market?.endDate ? formatTimeLeft(market.endDate) : "--";
+
+  // ── Quick Trade derived values ──────────────────────────────────────────
+  const tradePrice = market ? (tradeSide === "yes" ? market.yesPrice : market.noPrice) : 0;
+  const tradeAmountNum = parseFloat(tradeAmount) || 0;
+  const tradeShares = tradePrice > 0 ? tradeAmountNum / tradePrice : 0;
+  const tradePotentialProfit = tradePrice > 0 ? tradeAmountNum * ((1 - tradePrice) / tradePrice) : 0;
+
+  const handlePlaceOrder = useCallback(async () => {
+    if (!market || tradeAmountNum <= 0 || tradePlacing) return;
+    setTradePlacing(true);
+    try {
+      const side = tradeSide.toUpperCase();
+      const tradeBody = {
+        marketId: market.id,
+        marketQuestion: market.question,
+        venue: "polymarket",
+        side,
+        action: "buy",
+        shares: parseFloat(tradeShares.toFixed(2)),
+        price: tradePrice,
+        amount: tradeAmountNum,
+        fee: 0,
+      };
+      const positionBody = {
+        marketId: market.id,
+        marketQuestion: market.question,
+        venue: "polymarket",
+        side,
+        shares: parseFloat(tradeShares.toFixed(2)),
+        avgPrice: tradePrice,
+        currentPrice: tradePrice,
+        costBasis: tradeAmountNum,
+        marketValue: tradeAmountNum,
+        pnl: 0,
+        pnlPercent: 0,
+        category: market.category || null,
+        status: "open",
+      };
+      await Promise.all([
+        fetch("/api/user/trades", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(tradeBody) }),
+        fetch("/api/user/positions", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(positionBody) }),
+      ]);
+      setTradePlaced(true);
+      setTradeAmount("");
+      setTimeout(() => setTradePlaced(false), 2000);
+    } catch {
+      // silently handle error for now
+    } finally {
+      setTradePlacing(false);
+    }
+  }, [market, tradeAmountNum, tradePlacing, tradeSide, tradeShares, tradePrice]);
 
   // ── Loading state ──────────────────────────────────────────────────────
   if (marketLoading) {
@@ -721,6 +781,185 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
 
         {/* ── Right column 1/3 ──────────────────────────────────────────── */}
         <motion.div className="flex flex-col gap-3" variants={stagger}>
+          {/* ── Quick Trade ────────────────────────────────────────────── */}
+          <motion.div variants={scaleIn}>
+            <Widget title="Quick Trade">
+              <div className="px-3 py-3 space-y-3">
+                {/* YES / NO side selector */}
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setTradeSide("yes")}
+                    className={`flex items-center justify-center gap-1.5 rounded-[8px] py-2.5 text-body-14 font-bold transition-all duration-200 ${
+                      tradeSide === "yes"
+                        ? "bg-signal-green text-bg-base-0 shadow-[0_0_12px_rgba(0,255,133,0.3)]"
+                        : "bg-bg-base-2 text-text-secondary hover:bg-bg-base-3 hover:text-text-primary"
+                    }`}
+                    style={tradeSide !== "yes" ? { boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" } : undefined}
+                  >
+                    <TrendingUp className="h-4 w-4" />
+                    Buy YES
+                  </button>
+                  <button
+                    onClick={() => setTradeSide("no")}
+                    className={`flex items-center justify-center gap-1.5 rounded-[8px] py-2.5 text-body-14 font-bold transition-all duration-200 ${
+                      tradeSide === "no"
+                        ? "bg-signal-red text-white shadow-[0_0_12px_rgba(255,160,158,0.3)]"
+                        : "bg-bg-base-2 text-text-secondary hover:bg-bg-base-3 hover:text-text-primary"
+                    }`}
+                    style={tradeSide !== "no" ? { boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" } : undefined}
+                  >
+                    <TrendingDown className="h-4 w-4" />
+                    Buy NO
+                  </button>
+                </div>
+
+                {/* Price display */}
+                <div
+                  className="flex items-center justify-between rounded-[8px] bg-bg-base-2 px-3 py-2"
+                  style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
+                >
+                  <span className="text-numbers-10 text-text-quaternary">
+                    {tradeSide === "yes" ? "YES" : "NO"} Price
+                  </span>
+                  <span className={`font-data text-lg font-bold ${tradeSide === "yes" ? "text-signal-green" : "text-signal-red"}`}>
+                    {Math.round(tradePrice * 100)}¢
+                  </span>
+                </div>
+
+                {/* Amount input */}
+                <div>
+                  <label className="mb-1.5 block text-numbers-10 text-text-quaternary">Amount</label>
+                  <div
+                    className="flex items-center rounded-[8px] bg-bg-base-2 px-3"
+                    style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
+                  >
+                    <DollarSign className="h-4 w-4 text-text-quaternary" />
+                    <input
+                      type="number"
+                      value={tradeAmount}
+                      onChange={(e) => setTradeAmount(e.target.value)}
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      className="flex-1 bg-transparent py-2.5 pl-1 text-body-14 font-medium text-text-primary outline-none placeholder:text-text-quaternary"
+                    />
+                  </div>
+                  {/* Quick-select amounts */}
+                  <div className="mt-2 grid grid-cols-4 gap-1.5">
+                    {[10, 25, 50, 100].map((amt) => (
+                      <button
+                        key={amt}
+                        onClick={() => setTradeAmount(String(amt))}
+                        className={`rounded-[6px] py-1.5 text-numbers-12 font-medium transition-all duration-150 ${
+                          tradeAmount === String(amt)
+                            ? tradeSide === "yes"
+                              ? "bg-signal-green/15 text-signal-green"
+                              : "bg-signal-red/15 text-signal-red"
+                            : "bg-bg-base-2 text-text-secondary hover:bg-bg-base-3 hover:text-text-primary"
+                        }`}
+                        style={tradeAmount !== String(amt) ? { boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" } : undefined}
+                      >
+                        ${amt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Shares & profit breakdown */}
+                {tradeAmountNum > 0 && (
+                  <motion.div
+                    className="space-y-1.5 rounded-[8px] bg-bg-base-2 px-3 py-2.5"
+                    style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-numbers-10 text-text-quaternary">Shares</span>
+                      <span className="text-numbers-12 font-medium text-text-primary">
+                        {tradeShares.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-numbers-10 text-text-quaternary">Avg Price</span>
+                      <span className="text-numbers-12 font-medium text-text-primary">
+                        {Math.round(tradePrice * 100)}¢
+                      </span>
+                    </div>
+                    <div className="h-px bg-divider-heavy" />
+                    <div className="flex items-center justify-between">
+                      <span className="text-numbers-10 text-text-quaternary">Potential Profit</span>
+                      <span className={`text-numbers-12 font-bold ${tradeSide === "yes" ? "text-signal-green" : "text-signal-red"}`}>
+                        +${tradePotentialProfit.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-numbers-10 text-text-quaternary">Return</span>
+                      <span className={`text-numbers-12 font-bold ${tradeSide === "yes" ? "text-signal-green" : "text-signal-red"}`}>
+                        {tradePrice > 0 ? `+${(((1 - tradePrice) / tradePrice) * 100).toFixed(0)}%` : "--"}
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Buy button */}
+                <AnimatePresence mode="wait">
+                  {tradePlaced ? (
+                    <motion.div
+                      key="placed"
+                      className="flex items-center justify-center gap-2 rounded-[8px] bg-signal-green/15 py-3"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Check className="h-4 w-4 text-signal-green" />
+                      <span className="text-body-12 font-semibold text-signal-green">Order Placed</span>
+                    </motion.div>
+                  ) : (
+                    <motion.button
+                      key="buy"
+                      onClick={handlePlaceOrder}
+                      disabled={tradeAmountNum <= 0 || tradePlacing}
+                      className={`flex w-full items-center justify-center gap-2 rounded-[8px] py-3 text-body-14 font-bold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 ${
+                        tradeSide === "yes"
+                          ? "bg-signal-green text-bg-base-0 hover:shadow-[0_0_16px_rgba(0,255,133,0.35)] active:scale-[0.98]"
+                          : "bg-signal-red text-white hover:shadow-[0_0_16px_rgba(255,160,158,0.35)] active:scale-[0.98]"
+                      }`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      whileHover={tradeAmountNum > 0 ? { scale: 1.02 } : undefined}
+                      whileTap={tradeAmountNum > 0 ? { scale: 0.98 } : undefined}
+                    >
+                      {tradePlacing ? (
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      ) : (
+                        <ShoppingCart className="h-4 w-4" />
+                      )}
+                      {tradePlacing
+                        ? "Placing Order..."
+                        : `Buy ${tradeSide === "yes" ? "YES" : "NO"}${tradeAmountNum > 0 ? ` — $${tradeAmountNum.toFixed(2)}` : ""}`
+                      }
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+
+                {/* Trade on Polymarket link */}
+                <a
+                  href={`https://polymarket.com/event/${market.slug || market.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-1.5 rounded-[8px] bg-bg-base-2 py-2 text-numbers-12 font-medium text-text-secondary transition-all duration-200 hover:bg-bg-base-3 hover:text-text-primary"
+                  style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
+                >
+                  <ExternalLink className="h-3 w-3" />
+                  Trade on Polymarket
+                </a>
+              </div>
+            </Widget>
+          </motion.div>
+
           {/* ── Order Book ──────────────────────────────────────────────── */}
           <motion.div variants={fadeUp}>
             <Widget title="Order Book">

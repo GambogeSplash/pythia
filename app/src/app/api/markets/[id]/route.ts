@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getMarketById, getPriceHistory } from "@/lib/api/polymarket";
+import { getMarketById, getMarketBySlug, getPriceHistory } from "@/lib/api/polymarket";
 
 export async function GET(
   req: NextRequest,
@@ -11,7 +11,11 @@ export async function GET(
   const interval = (searchParams.get("interval") || "1m") as "1d" | "1w" | "1m" | "3m" | "all";
 
   try {
-    const market = await getMarketById(id);
+    // Try by ID first, then by slug, then by condition_id query
+    let market = await getMarketById(id);
+    if (!market) {
+      market = await getMarketBySlug(id);
+    }
     if (!market) {
       return NextResponse.json({ error: "Market not found" }, { status: 404 });
     }

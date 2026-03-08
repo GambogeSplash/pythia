@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import {
   Bell,
@@ -191,29 +191,25 @@ function TriggerFrequencyChart({ data }: { data: { label: string; value: number 
    ──────────────────────────────────────────── */
 
 export default function AlertPage() {
-  const { alerts: apiAlerts, isLoading: alertsLoading } = useAlerts();
+  const { alerts: apiAlerts, isLoading: alertsLoading, mutate } = useAlerts();
 
   // Map API alerts to local Alert shape
-  const [alerts, setAlerts] = useState<Alert[]>([]);
-  useEffect(() => {
-    if (apiAlerts.length > 0) {
-      const mapped: Alert[] = apiAlerts.map((a) => ({
-        id: a.id,
-        type: (["price", "whale", "volume", "anomaly", "sentiment"].includes(a.type) ? a.type : "price") as AlertType,
-        market: a.marketQuestion,
-        marketId: a.marketId,
-        condition: a.condition,
-        threshold: a.threshold,
-        status: (a.status === "active" || a.status === "paused" ? a.status : "active") as AlertStatus,
-        triggered: a.triggered,
-        lastTriggered: a.lastTriggeredAt,
-        accuracy: 0,
-        channels: a.channels as DeliveryChannel[],
-        createdAt: a.createdAt,
-        sparkline: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      }));
-      setAlerts(mapped);
-    }
+  const alerts: Alert[] = useMemo(() => {
+    return apiAlerts.map((a) => ({
+      id: a.id,
+      type: (["price", "whale", "volume", "anomaly", "sentiment"].includes(a.type) ? a.type : "price") as AlertType,
+      market: a.marketQuestion,
+      marketId: a.marketId,
+      condition: a.condition,
+      threshold: a.threshold,
+      status: (a.status === "active" || a.status === "paused" ? a.status : "active") as AlertStatus,
+      triggered: a.triggered,
+      lastTriggered: a.lastTriggeredAt,
+      accuracy: 0,
+      channels: a.channels as DeliveryChannel[],
+      createdAt: a.createdAt,
+      sparkline: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    }));
   }, [apiAlerts]);
 
   const [triggers, setTriggers] = useState<TriggerEvent[]>([]);
@@ -272,14 +268,33 @@ export default function AlertPage() {
     return [...alerts].sort((a, b) => b.triggered - a.triggered).slice(0, 4);
   }, [alerts]);
 
-  const toggleAlertStatus = useCallback((id: string) => {
-    setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, status: a.status === "active" ? "paused" : "active" } : a));
-  }, []);
+  const toggleAlertStatus = useCallback(async (id: string) => {
+    const alert = alerts.find((a) => a.id === id);
+    if (!alert) return;
+    const newStatus = alert.status === "active" ? "paused" : "active";
+    try {
+      const res = await fetch(`/api/user/alerts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) throw new Error("Failed to update alert");
+      mutate();
+    } catch (err) {
+      console.error("Toggle alert error:", err);
+    }
+  }, [alerts, mutate]);
 
-  const deleteAlert = useCallback((id: string) => {
-    setAlerts((prev) => prev.filter((a) => a.id !== id));
-    if (expandedId === id) setExpandedId(null);
-  }, [expandedId]);
+  const deleteAlert = useCallback(async (id: string) => {
+    try {
+      const res = await fetch(`/api/user/alerts/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete alert");
+      if (expandedId === id) setExpandedId(null);
+      mutate();
+    } catch (err) {
+      console.error("Delete alert error:", err);
+    }
+  }, [expandedId, mutate]);
 
   const markAsRead = useCallback((id: string) => {
     setTriggers((prev) => prev.map((t) => t.id === id ? { ...t, read: true } : t));
@@ -307,28 +322,35 @@ export default function AlertPage() {
     return [...fromApi, ...staticItems];
   }, [newMarketSearch, searchedMarkets]);
 
-  const createAlert = useCallback(() => {
-    if (!newMarketId || !newThreshold) return;
+  const [isCreating, setIsCreating] = useState(false);
+
+  const createAlert = useCallback(async () => {
+    if (!newMarketId || !newThreshold || isCreating) return;
+    setIsCreating(true);
     const meta = ALERT_TYPE_META[newAlertType];
-    const newAlert: Alert = {
-      id: String(Date.now()),
-      type: newAlertType,
-      market: newMarketName,
-      marketId: newMarketId,
-      condition: `${meta.label} ${newCondition}`,
-      threshold: newThreshold,
-      status: "active",
-      triggered: 0,
-      lastTriggered: null,
-      accuracy: 0,
-      channels: newChannels,
-      createdAt: "2026-03-07",
-      sparkline: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    };
-    setAlerts((prev) => [newAlert, ...prev]);
-    setDrawerOpen(false);
-    resetForm();
-  }, [newAlertType, newMarketId, newMarketName, newCondition, newThreshold, newChannels]);
+    try {
+      const res = await fetch("/api/user/alerts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: newAlertType,
+          marketId: newMarketId,
+          marketQuestion: newMarketName,
+          condition: `${meta.label} ${newCondition}`,
+          threshold: newThreshold,
+          channels: newChannels,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to create alert");
+      mutate();
+      setDrawerOpen(false);
+      resetForm();
+    } catch (err) {
+      console.error("Create alert error:", err);
+    } finally {
+      setIsCreating(false);
+    }
+  }, [newAlertType, newMarketId, newMarketName, newCondition, newThreshold, newChannels, isCreating, mutate]);
 
   const resetForm = () => {
     setNewAlertType("price");
@@ -1038,11 +1060,11 @@ export default function AlertPage() {
                 </button>
                 <button
                   onClick={createAlert}
-                  disabled={!newMarketId || !newThreshold}
+                  disabled={!newMarketId || !newThreshold || isCreating}
                   className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-[6px] bg-signal-green text-body-12 font-semibold text-bg-base-0 transition-colors hover:bg-signal-green/80 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   <Zap className="h-3.5 w-3.5" />
-                  <span className="text-body-12 font-semibold">Create Alert</span>
+                  <span className="text-body-12 font-semibold">{isCreating ? "Creating..." : "Create Alert"}</span>
                 </button>
               </div>
             </motion.div>

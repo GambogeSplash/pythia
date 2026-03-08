@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema";
+// OTP verification uses drizzle query builder (inline where helpers)
 
 const hasDb = db !== null;
 
@@ -36,6 +37,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // Without DB: return a stub user (session-only, no persistence)
         if (!db) {
           return { id: "local-user", email, name: email.split("@")[0], image: null };
+        }
+
+        // Verify that OTP was recently used for this email (within last 2 minutes)
+        const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+        const verifiedOtp = await db.query.otpCodes.findFirst({
+          where: (o, { eq: eq_, and: and_, gte: gte_ }) =>
+            and_(
+              eq_(o.email, email),
+              eq_(o.used, true),
+              gte_(o.createdAt, twoMinutesAgo),
+            ),
+        });
+
+        if (!verifiedOtp) {
+          return null; // OTP not verified — reject sign-in
         }
 
         // With DB: find or create user

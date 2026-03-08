@@ -64,9 +64,10 @@ export function NewsFeedWidget() {
           </div>
         ) : (
           events.map((event, idx) => (
-            <div
+            <Link
+              href={event.markets[0] ? `/dashboard/markets/${event.markets[0].id}` : "#"}
               key={event.id}
-              className={`animate-fade-in stagger-${Math.min(idx + 1, 8)} group/news px-3 py-3 transition-colors duration-150 hover:bg-action-translucent-hover`}
+              className={`block animate-fade-in stagger-${Math.min(idx + 1, 8)} group/news cursor-pointer px-3 py-3 transition-colors duration-150 hover:bg-action-translucent-hover`}
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
             >
               {/* Author row */}
@@ -123,7 +124,7 @@ export function NewsFeedWidget() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>

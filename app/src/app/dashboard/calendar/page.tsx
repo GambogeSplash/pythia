@@ -432,8 +432,8 @@ export default function CalendarPage() {
           <CalendarIcon className="h-3.5 w-3.5 text-signal-green" />
           <span className="text-body-12 font-semibold text-text-primary">Event Calendar</span>
         </div>
-        <div className="mx-2 h-3 w-px bg-bg-base-3" />
-        <div className="flex items-center gap-3">
+        <div className="mx-2 hidden h-3 w-px bg-bg-base-3 md:block" />
+        <div className="hidden items-center gap-3 md:flex">
           <span className="text-[10px] font-medium uppercase text-text-quaternary">
             Upcoming{" "}
             <span className="text-numbers-12 text-text-primary">{upcomingCount}</span>
@@ -484,7 +484,7 @@ export default function CalendarPage() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="flex flex-1 gap-4 overflow-hidden p-4">
+      <div className="flex flex-1 flex-col gap-4 overflow-hidden p-4 lg:flex-row">
         {/* ── Left: Calendar Grid ── */}
         <motion.div
           className="flex flex-1 flex-col rounded-[18px] bg-bg-base-1"
@@ -529,7 +529,7 @@ export default function CalendarPage() {
           </div>
 
           {/* Filter chips */}
-          <div className="flex gap-1.5 px-5 pb-3">
+          <div className="flex gap-1.5 overflow-x-auto px-5 pb-3">
             {(["all", "market_expiry", "economic", "political", "earnings", "sports"] as const).map(
               (type) => {
                 const isAll = type === "all";
@@ -611,7 +611,7 @@ export default function CalendarPage() {
                           }}
                           whileTap={{ scale: 0.96 }}
                           onClick={() => setSelectedDate(cell.dateStr)}
-                          className={`relative flex min-h-[72px] flex-col items-start rounded-[10px] p-2 text-left transition-colors ${
+                          className={`relative flex min-h-[48px] flex-col items-start rounded-[10px] p-1.5 text-left transition-colors md:min-h-[72px] md:p-2 ${
                             !cell.inMonth
                               ? "bg-transparent text-text-muted/40"
                               : isSelected
@@ -659,7 +659,7 @@ export default function CalendarPage() {
                             </div>
                           )}
                           {hasEvents && (
-                            <div className="mt-0.5 w-full truncate text-[9px] text-text-quaternary">
+                            <div className="mt-0.5 hidden w-full truncate text-[9px] text-text-quaternary md:block">
                               {dayEvents[0].title.length > 18
                                 ? dayEvents[0].title.slice(0, 18) + "..."
                                 : dayEvents[0].title}
@@ -800,7 +800,7 @@ export default function CalendarPage() {
 
         {/* ── Right: Side Panel ── */}
         <motion.div
-          className="flex w-[340px] shrink-0 flex-col gap-4"
+          className="hidden w-full shrink-0 flex-col gap-4 lg:flex lg:w-[340px]"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] as const }}

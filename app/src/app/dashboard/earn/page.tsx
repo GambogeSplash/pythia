@@ -272,7 +272,7 @@ export default function EarnPage() {
         </div>
 
         <motion.div
-          className="ml-4 flex items-center gap-4"
+          className="ml-4 hidden items-center gap-4 md:flex"
           variants={staggerContainer}
           initial="hidden"
           animate="show"
@@ -350,7 +350,7 @@ export default function EarnPage() {
                 </div>
               ) : (
               <motion.div
-                className="grid grid-cols-3 gap-2"
+                className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3"
                 variants={staggerContainer}
                 initial="hidden"
                 animate="show"
@@ -392,7 +392,7 @@ export default function EarnPage() {
 
                     {/* Stats grid */}
                     <motion.div
-                      className="mb-3 grid grid-cols-3 gap-3"
+                      className="mb-3 grid grid-cols-2 gap-3 md:grid-cols-3"
                       variants={staggerContainer}
                       initial="hidden"
                       animate="show"
@@ -495,7 +495,7 @@ export default function EarnPage() {
                   <span className="text-body-12 font-semibold text-text-primary">How Auto-MM Works</span>
                 </div>
                 <motion.div
-                  className="grid grid-cols-4 gap-4"
+                  className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
                   variants={staggerContainer}
                   initial="hidden"
                   animate="show"
@@ -567,7 +567,8 @@ export default function EarnPage() {
                     </button>
                   </div>
                 ) : (
-                <>
+                <div className="overflow-x-auto">
+                <div className="min-w-[700px]">
                 <div
                   className="grid grid-cols-[1fr_80px_100px_100px_80px_70px_110px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
                   style={heavyDivider}
@@ -631,7 +632,8 @@ export default function EarnPage() {
                       );
                     })}
                 </motion.div>
-                </>
+                </div>
+                </div>
                 )}
               </div>
             </motion.div>
@@ -649,7 +651,7 @@ export default function EarnPage() {
             >
               {/* Summary row */}
               <motion.div
-                className="grid grid-cols-4 gap-2"
+                className="grid grid-cols-2 gap-2 md:grid-cols-4"
                 variants={staggerContainer}
                 initial="hidden"
                 animate="show"
@@ -692,6 +694,8 @@ export default function EarnPage() {
                 <div className="flex h-10 items-center px-4" style={heavyDivider}>
                   <span className="text-body-12 font-semibold text-text-primary">Active LP Positions</span>
                 </div>
+                <div className="overflow-x-auto">
+                <div className="min-w-[640px]">
                 <div
                   className="grid grid-cols-[1fr_100px_100px_90px_70px_80px_60px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
                   style={rowDivider}
@@ -747,11 +751,13 @@ export default function EarnPage() {
                   ))}
                 </motion.div>
                 )}
+                </div>
+                </div>
               </motion.div>
 
               {/* Exposure + Risk side by side */}
               <motion.div
-                className="grid grid-cols-2 gap-2"
+                className="grid grid-cols-1 gap-2 md:grid-cols-2"
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
@@ -781,7 +787,7 @@ export default function EarnPage() {
           {tab === "rewards" && (
             <motion.div
               key="rewards"
-              className="flex gap-2"
+              className="flex flex-col gap-2 lg:flex-row"
               variants={tabContent}
               initial="initial"
               animate="animate"
@@ -923,7 +929,7 @@ export default function EarnPage() {
 
               {/* Right column: Leaderboard */}
               <motion.div
-                className="w-80 rounded-[18px] bg-bg-base-1"
+                className="w-full rounded-[18px] bg-bg-base-1 lg:w-80"
                 style={panelStyle}
                 initial={{ opacity: 0, x: 16 }}
                 animate={{ opacity: 1, x: 0 }}

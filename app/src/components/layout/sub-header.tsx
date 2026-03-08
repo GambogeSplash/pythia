@@ -119,14 +119,14 @@ export function SubHeader() {
       {/* Add widget */}
       <button
         onClick={toggleWidgetPanel}
-        className="ml-3 flex h-6 items-center gap-1 rounded-[4px] bg-action-translucent px-2 text-body-12 font-semibold text-text-primary transition-colors duration-150 hover:bg-action-translucent-hover active:bg-action-translucent-active"
+        className="ml-2 flex h-6 items-center gap-1 rounded-[4px] bg-action-translucent px-2 text-body-12 font-semibold text-text-primary transition-colors duration-150 hover:bg-action-translucent-hover active:bg-action-translucent-active sm:ml-3"
       >
         <Plus className="h-3.5 w-3.5" />
-        Add Widgets
+        <span className="hidden sm:inline">Add Widgets</span>
       </button>
 
-      {/* Right: live clock */}
-      <div className="ml-auto flex items-center gap-2">
+      {/* Right: live clock — hidden on mobile */}
+      <div className="ml-auto hidden items-center gap-2 sm:flex">
         <span className="text-numbers-10 text-text-quaternary">Last Updated</span>
         <span className="text-numbers-12 text-text-secondary">{time}</span>
       </div>

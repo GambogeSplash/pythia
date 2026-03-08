@@ -159,20 +159,34 @@ export function TopNav() {
 
             {/* mobile menu overlay */}
             {mobileMenuOpen && (
-              <div className="absolute top-full left-0 z-40 w-full bg-bg-base-0 shadow-md sm:hidden">
-                <div className="flex flex-col">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="px-4 py-2 text-body-12 text-text-primary hover:bg-bg-base-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+              <>
+                <div className="fixed inset-0 z-30 bg-black/50 sm:hidden" onClick={() => setMobileMenuOpen(false)} />
+                <div className="fixed left-0 right-0 top-12 z-40 bg-bg-base-1 sm:hidden" style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.5), inset 0 0 0 1px var(--color-divider-heavy)" }}>
+                  <div className="flex flex-col py-1">
+                    {navItems.map((item) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={`flex items-center px-4 py-3 text-body-12 font-medium transition-colors ${
+                            isActive ? "bg-signal-green/[0.06] text-signal-green" : "text-text-primary hover:bg-bg-base-2"
+                          }`}
+                          onClick={() => setMobileMenuOpen(false)}
+                          style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
+                        >
+                          {item.label}
+                          {item.badge && (
+                            <span className="ml-2 rounded-[4px] bg-action-brand px-1.5 py-0.5 text-[9px] font-bold text-bg-base-0">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
 
@@ -182,21 +196,21 @@ export function TopNav() {
           {/* Right: Actions */}
           <div className="flex items-center justify-end">
             <div className="flex items-center gap-1">
-              {/* Search — opens command palette */}
+              {/* Search — icon only on mobile, full bar on sm+ */}
               <button
                 onClick={() => setCommandPaletteOpen(true)}
-                className="flex h-6 max-w-[20rem] cursor-pointer items-center gap-2 overflow-hidden rounded-[4px] bg-bg-base-2 px-2 outline outline-1 -outline-offset-1 outline-divider-heavy transition-colors duration-150 hover:bg-bg-base-3 hover:outline-divider-medium"
+                className="flex h-6 cursor-pointer items-center gap-2 overflow-hidden rounded-[4px] bg-bg-base-2 px-2 outline outline-1 -outline-offset-1 outline-divider-heavy transition-colors duration-150 hover:bg-bg-base-3 hover:outline-divider-medium sm:max-w-[20rem]"
               >
                 <Search className="h-3.5 w-3.5 shrink-0 text-text-quaternary" />
-                <span className="truncate text-body-12 text-text-quaternary">
+                <span className="hidden truncate text-body-12 text-text-quaternary sm:inline">
                   Search markets, traders
                 </span>
-                <kbd className="ml-auto shrink-0 rounded-[4px] border border-divider-heavy bg-bg-base-1 px-1.5 py-0.5 font-mono text-[10px] text-text-quaternary">
+                <kbd className="ml-auto hidden shrink-0 rounded-[4px] border border-divider-heavy bg-bg-base-1 px-1.5 py-0.5 font-mono text-[10px] text-text-quaternary sm:inline">
                   /
                 </kbd>
               </button>
 
-              <div className="mx-1 h-3 w-px bg-divider-medium" />
+              <div className="mx-1 hidden h-3 w-px bg-divider-medium sm:block" />
 
               {/* AI Chat */}
               <NavIconButton
@@ -207,24 +221,26 @@ export function TopNav() {
                 <Brain className="h-4 w-4" />
               </NavIconButton>
 
-              {/* Wallet */}
-              {walletAddress ? (
-                <button
-                  onClick={() => setWalletModalOpen(true)}
-                  className="flex h-6 items-center gap-1.5 rounded-full bg-action-translucent px-2 text-[10px] font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-action-rise live-flicker-green" />
-                  <span className="font-mono">{walletShortAddress}</span>
-                  <span className="text-text-quaternary">{getChainName(walletChainId ?? 0)}</span>
-                </button>
-              ) : (
-                <NavIconButton
-                  aria-label="Connect Wallet"
-                  onClick={() => setWalletModalOpen(true)}
-                >
-                  <Wallet className="h-4 w-4" />
-                </NavIconButton>
-              )}
+              {/* Wallet — hidden on mobile */}
+              <span className="hidden sm:contents">
+                {walletAddress ? (
+                  <button
+                    onClick={() => setWalletModalOpen(true)}
+                    className="flex h-6 items-center gap-1.5 rounded-full bg-action-translucent px-2 text-[10px] font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-action-rise live-flicker-green" />
+                    <span>{walletShortAddress}</span>
+                    <span className="text-text-quaternary">{getChainName(walletChainId ?? 0)}</span>
+                  </button>
+                ) : (
+                  <NavIconButton
+                    aria-label="Connect Wallet"
+                    onClick={() => setWalletModalOpen(true)}
+                  >
+                    <Wallet className="h-4 w-4" />
+                  </NavIconButton>
+                )}
+              </span>
 
               {/* Notifications */}
               <div className="relative">

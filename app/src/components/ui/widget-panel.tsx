@@ -46,7 +46,7 @@ export function WidgetPanel() {
   return (
     <motion.aside
       initial={{ width: 0, opacity: 0 }}
-      animate={{ width: 320, opacity: 1 }}
+      animate={{ width: typeof window !== "undefined" && window.innerWidth < 640 ? window.innerWidth : 320, opacity: 1 }}
       exit={{ width: 0, opacity: 0 }}
       transition={{ type: "spring", damping: 28, stiffness: 300 }}
       className="relative z-40 flex h-full flex-shrink-0 flex-col overflow-hidden bg-bg-base-1"

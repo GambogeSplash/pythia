@@ -1,27 +1,17 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-  DragStartEvent,
-  DragOverlay,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  rectSortingStrategy,
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { motion, LayoutGroup } from "framer-motion";
+  ResponsiveGridLayout,
+  verticalCompactor,
+  type LayoutItem,
+  type Layout,
+  type ResponsiveLayouts,
+} from "react-grid-layout";
 import { useAppStore } from "@/lib/store";
+
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 
 export interface WidgetConfig {
   id: string;
@@ -35,126 +25,176 @@ interface WidgetGridProps {
   storageKey?: string;
 }
 
-function SortableItem({ id, span = 1, height, children }: { id: string; span?: number; height?: number; children: React.ReactNode }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
+/* ── Default layout generator ── */
 
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    gridColumn: `span ${span}`,
-    height: height || 320,
-  };
+function generateDefaultLayouts(widgets: WidgetConfig[]): Record<string, LayoutItem[]> {
+  const lgItems: LayoutItem[] = [];
+  let x = 0;
+  let y = 0;
+  let rowMaxH = 0;
 
-  return (
-    <motion.div
-      ref={setNodeRef}
-      style={style}
-      className="widget-sortable-item"
-      layout="position"
-      layoutId={id}
-      transition={{ type: "spring", stiffness: 200, damping: 28, mass: 0.8 }}
-      {...attributes}
-      {...listeners}
-    >
-      {isDragging ? (
-        <div
-          className="h-full w-full rounded-[18px]"
-          style={{
-            border: "2px dashed rgba(0, 255, 133, 0.35)",
-            background: "rgba(0, 255, 133, 0.04)",
-            boxShadow: "inset 0 0 24px rgba(0, 255, 133, 0.06)",
-          }}
-        />
-      ) : (
-        children
-      )}
-    </motion.div>
-  );
+  for (const w of widgets) {
+    const colW = Math.min(w.defaultLayout.w, 12);
+    const rowH = w.defaultLayout.h;
+    const minW = w.defaultLayout.minW ?? 3;
+    const minH = w.defaultLayout.minH ?? 2;
+
+    if (x + colW > 12) {
+      x = 0;
+      y += rowMaxH;
+      rowMaxH = 0;
+    }
+
+    lgItems.push({ i: w.id, x, y, w: colW, h: rowH, minW, minH });
+    rowMaxH = Math.max(rowMaxH, rowH);
+    x += colW;
+  }
+
+  const mdItems: LayoutItem[] = widgets.map((w, i) => ({
+    i: w.id,
+    x: (i % 2) * 5,
+    y: Math.floor(i / 2) * w.defaultLayout.h,
+    w: 5,
+    h: w.defaultLayout.h,
+    minW: 3,
+    minH: w.defaultLayout.minH ?? 2,
+  }));
+
+  const smItems: LayoutItem[] = widgets.map((w, i) => ({
+    i: w.id,
+    x: 0,
+    y: i * w.defaultLayout.h,
+    w: 6,
+    h: w.defaultLayout.h,
+    minW: 3,
+    minH: w.defaultLayout.minH ?? 2,
+  }));
+
+  return { lg: lgItems, md: mdItems, sm: smItems };
 }
 
-export function WidgetGrid({ widgets, storageKey = "pythia-widget-order" }: WidgetGridProps) {
-  const [widgetOrder, setWidgetOrder] = useState<string[]>([]);
+/* ── Persistence ── */
+
+type StoredLayouts = Record<string, LayoutItem[]>;
+
+function loadLayouts(key: string): StoredLayouts | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const saved = localStorage.getItem(key);
+    if (!saved) return null;
+    return JSON.parse(saved) as StoredLayouts;
+  } catch {
+    return null;
+  }
+}
+
+function saveLayouts(key: string, layouts: StoredLayouts) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(layouts));
+  } catch {}
+}
+
+/* ── Component ── */
+
+export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: WidgetGridProps) {
   const [mounted, setMounted] = useState(false);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const widgetSpans = useAppStore((s) => s.widgetSpans);
-  const widgetHeights = useAppStore((s) => s.widgetHeights);
-  const dropPreviewIndex = useAppStore((s) => s.dropPreviewIndex);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fullscreenWidgetId = useAppStore((s) => s.fullscreenWidgetId);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const defaultLayouts = useMemo(() => generateDefaultLayouts(widgets), [widgets]);
 
-  useEffect(() => {
-    const defaultOrder = widgets.map((w) => w.id);
+  const [layouts, setLayouts] = useState<StoredLayouts>(() => {
+    const saved = loadLayouts(storageKey);
+    if (saved) {
+      const widgetIds = new Set(widgets.map((w) => w.id));
+      const existingIds = new Set(saved.lg?.map((l) => l.i) ?? []);
+      const newWidgets = widgets.filter((w) => !existingIds.has(w.id));
 
-    if (!mounted) {
-      // First mount: try to restore saved order
-      const saved = loadOrder(storageKey);
-      if (saved) {
-        const valid = saved.filter((id) => widgets.some((w) => w.id === id));
-        const missing = defaultOrder.filter((id) => !valid.includes(id));
-        setWidgetOrder([...valid, ...missing]);
-      } else {
-        setWidgetOrder(defaultOrder);
+      let result: StoredLayouts = {
+        lg: (saved.lg ?? []).filter((l) => widgetIds.has(l.i)),
+        md: (saved.md ?? []).filter((l) => widgetIds.has(l.i)),
+        sm: (saved.sm ?? []).filter((l) => widgetIds.has(l.i)),
+      };
+
+      if (newWidgets.length > 0) {
+        const newDefaults = generateDefaultLayouts(newWidgets);
+        result = {
+          lg: [...result.lg, ...newDefaults.lg],
+          md: [...result.md, ...newDefaults.md],
+          sm: [...result.sm, ...newDefaults.sm],
+        };
       }
-      setMounted(true);
-    } else {
-      // After mount: sync with widget list changes (additions/removals)
-      setWidgetOrder((prev) => {
-        const removed = prev.filter((id) => defaultOrder.includes(id));
-        const added = defaultOrder.filter((id) => !removed.includes(id));
-        if (added.length === 0 && removed.length === prev.length) return prev;
-        // Insert new widgets at their position from the store order
-        const next = [...removed];
-        for (const id of added) {
-          const storeIdx = defaultOrder.indexOf(id);
-          // Find the right position: insert before the first existing widget that comes after it in defaultOrder
-          let insertAt = next.length;
-          for (let i = 0; i < next.length; i++) {
-            if (defaultOrder.indexOf(next[i]) > storeIdx) {
-              insertAt = i;
-              break;
-            }
-          }
-          next.splice(insertAt, 0, id);
-        }
-        saveOrder(storageKey, next);
-        return next;
-      });
+      return result;
     }
-  }, [widgets, storageKey, mounted]);
+    return defaultLayouts;
+  });
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
+  // Measure container width
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(el);
+    setContainerWidth(el.getBoundingClientRect().width);
+
+    return () => observer.disconnect();
   }, []);
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    setActiveId(null);
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setWidgetOrder((items) => {
-        const oldIndex = items.indexOf(active.id as string);
-        const newIndex = items.indexOf(over.id as string);
-        const newOrder = arrayMove(items, oldIndex, newIndex);
-        saveOrder(storageKey, newOrder);
-        return newOrder;
-      });
-    }
-  }, [storageKey]);
+  // Sync layouts when widgets change
+  useEffect(() => {
+    const widgetIds = new Set(widgets.map((w) => w.id));
+    const currentIds = new Set(layouts.lg?.map((l) => l.i) ?? []);
 
-  if (!mounted) {
+    const added = widgets.filter((w) => !currentIds.has(w.id));
+    const removed = [...currentIds].filter((id) => !widgetIds.has(id));
+
+    if (added.length === 0 && removed.length === 0) return;
+
+    setLayouts((prev) => {
+      let lg = (prev.lg ?? []).filter((l) => widgetIds.has(l.i));
+      let md = (prev.md ?? []).filter((l) => widgetIds.has(l.i));
+      let sm = (prev.sm ?? []).filter((l) => widgetIds.has(l.i));
+
+      if (added.length > 0) {
+        const addedDefaults = generateDefaultLayouts(added);
+        lg = [...lg, ...addedDefaults.lg];
+        md = [...md, ...addedDefaults.md];
+        sm = [...sm, ...addedDefaults.sm];
+      }
+
+      const next: StoredLayouts = { lg, md, sm };
+      saveLayouts(storageKey, next);
+      return next;
+    });
+  }, [widgets, storageKey]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleLayoutChange = useCallback(
+    (_currentLayout: Layout, allLayouts: ResponsiveLayouts) => {
+      // Convert readonly Layout to mutable for storage
+      const mutable: StoredLayouts = {};
+      for (const [key, value] of Object.entries(allLayouts)) {
+        if (value) mutable[key] = [...value] as LayoutItem[];
+      }
+      setLayouts(mutable);
+      saveLayouts(storageKey, mutable);
+    },
+    [storageKey]
+  );
+
+  if (!mounted || containerWidth === 0) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {widgets.map((w) => (
           <div
             key={w.id}
@@ -170,100 +210,33 @@ export function WidgetGrid({ widgets, storageKey = "pythia-widget-order" }: Widg
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <SortableContext items={widgetOrder} strategy={rectSortingStrategy}>
-        <LayoutGroup>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" style={{ gridAutoRows: "min-content" }}>
-            {widgetOrder.map((id, idx) => {
-              const w = widgets.find((w) => w.id === id);
-              if (!w) return null;
-              const Component = w.component;
-              // Derive default span from registry: 12-col w mapped to 3-col grid
-              const defaultSpan = Math.max(1, Math.min(3, Math.round(w.defaultLayout.w / 4)));
-              const span = widgetSpans[id] || defaultSpan;
-              const height = widgetHeights[id] || (w.defaultLayout.h * 80);
-              return (
-                <React.Fragment key={id}>
-                  {dropPreviewIndex === idx && (
-                    <div
-                      data-drop-preview="true"
-                      className="rounded-[18px] animate-in fade-in zoom-in-95 duration-200"
-                      style={{
-                        gridColumn: "span 1",
-                        height: 240,
-                        border: "2px dashed rgba(0, 255, 133, 0.4)",
-                        background: "rgba(0, 255, 133, 0.06)",
-                        boxShadow: "0 0 32px rgba(0, 255, 133, 0.08), inset 0 0 24px rgba(0, 255, 133, 0.04)",
-                      }}
-                    />
-                  )}
-                  <SortableItem id={id} span={span} height={height}>
-                    <div className="widget-grid-item h-full w-full">
-                      <Component />
-                    </div>
-                  </SortableItem>
-                </React.Fragment>
-              );
-            })}
-            {/* Preview at the end */}
-            {dropPreviewIndex !== null && dropPreviewIndex >= widgetOrder.length && (
-              <div
-                data-drop-preview="true"
-                className="rounded-[18px] animate-in fade-in zoom-in-95 duration-200"
-                style={{
-                  gridColumn: "span 1",
-                  height: 240,
-                  border: "2px dashed rgba(0, 255, 133, 0.4)",
-                  background: "rgba(0, 255, 133, 0.06)",
-                  boxShadow: "0 0 32px rgba(0, 255, 133, 0.08), inset 0 0 24px rgba(0, 255, 133, 0.04)",
-                }}
-              />
-            )}
-          </div>
-        </LayoutGroup>
-      </SortableContext>
-      <DragOverlay dropAnimation={{ duration: 200, easing: "cubic-bezier(0.25, 0.1, 0.25, 1)" }}>
-        {activeId ? (() => {
-          const w = widgets.find((w) => w.id === activeId);
-          if (!w) return null;
+    <div ref={containerRef}>
+      <ResponsiveGridLayout
+        className="pythia-grid-layout"
+        layouts={layouts}
+        breakpoints={{ lg: 1200, md: 768, sm: 0 }}
+        cols={{ lg: 12, md: 10, sm: 6 }}
+        rowHeight={60}
+        width={containerWidth}
+        margin={[12, 12]}
+        containerPadding={[0, 0]}
+        onLayoutChange={handleLayoutChange}
+        compactor={verticalCompactor}
+        dragConfig={{ enabled: true, handle: ".widget-drag-handle", threshold: 5 }}
+        resizeConfig={{ enabled: true, handles: ["se", "e", "s"] }}
+      >
+        {widgets.map((w) => {
           const Component = w.component;
+          if (fullscreenWidgetId === w.id) {
+            return <div key={w.id} />;
+          }
           return (
-            <div
-              className="widget-grid-item w-full"
-              style={{
-                opacity: 0.92,
-                boxShadow: "0 0 0 1px rgba(0, 255, 133, 0.2), 0 12px 40px -4px rgba(0, 0, 0, 0.6), 0 0 32px rgba(0, 255, 133, 0.1)",
-                borderRadius: 18,
-                overflow: "hidden",
-                pointerEvents: "none",
-              }}
-            >
+            <div key={w.id} className="widget-grid-item h-full w-full">
               <Component />
             </div>
           );
-        })() : null}
-      </DragOverlay>
-    </DndContext>
+        })}
+      </ResponsiveGridLayout>
+    </div>
   );
-}
-
-function loadOrder(key: string): string[] | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const saved = localStorage.getItem(key);
-    if (!saved) return null;
-    const parsed = JSON.parse(saved);
-    return Array.isArray(parsed) ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-function saveOrder(key: string, order: string[]) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(key, JSON.stringify(order));
-  } catch {
-    // storage full, ignore
-  }
 }

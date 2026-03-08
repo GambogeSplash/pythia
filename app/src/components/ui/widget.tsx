@@ -7,8 +7,9 @@ import {
   X,
   Pin,
   Copy,
+  GripVertical,
 } from "lucide-react";
-import { useState, useCallback, useRef, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppStore } from "@/lib/store";
 
@@ -38,9 +39,6 @@ export function Widget({
   const removeWidget = useAppStore((s) => s.removeWidget);
   const fullscreenWidgetId = useAppStore((s) => s.fullscreenWidgetId);
   const setFullscreenWidgetId = useAppStore((s) => s.setFullscreenWidgetId);
-  const widgetSpans = useAppStore((s) => s.widgetSpans);
-  const setWidgetSpan = useAppStore((s) => s.setWidgetSpan);
-  const currentSpan = id ? (widgetSpans[id] || 1) : 1;
 
   const isFullscreen = id ? fullscreenWidgetId === id : false;
 
@@ -88,6 +86,11 @@ export function Widget({
 
       {/* Widget Header */}
       <div className="relative z-[11] flex items-center overflow-hidden rounded-t-[inherit] px-3 py-2">
+        {/* Drag handle */}
+        <div className="widget-drag-handle mr-1 flex cursor-grab items-center opacity-0 transition-opacity duration-200 group-hover/widget:opacity-100 active:cursor-grabbing">
+          <GripVertical className="h-3.5 w-3.5 text-text-quaternary" />
+        </div>
+
         {/* Header content */}
         <div className="min-w-0 flex-grow">
           <div className="scrollbar-hide mr-1 flex items-center gap-1 overflow-x-auto whitespace-nowrap">
@@ -156,25 +159,6 @@ export function Widget({
                     {id && (
                       <>
                         <div className="mx-2 my-1 h-px bg-divider-heavy" />
-                        <div className="px-3 py-1.5">
-                          <span className="text-[10px] font-medium uppercase text-text-quaternary">Width</span>
-                          <div className="mt-1.5 flex gap-1">
-                            {[1, 2, 3, 4].map((span) => (
-                              <button
-                                key={span}
-                                onClick={() => { setWidgetSpan(id, span); setMenuOpen(false); }}
-                                className={`flex h-6 flex-1 items-center justify-center rounded-[4px] text-[10px] font-medium transition-colors ${
-                                  currentSpan === span
-                                    ? "bg-signal-green/15 text-signal-green"
-                                    : "bg-bg-base-3 text-text-secondary hover:bg-action-translucent-hover hover:text-text-primary"
-                                }`}
-                              >
-                                {span}x
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="mx-2 my-1 h-px bg-divider-heavy" />
                         <MenuButton onClick={handleRemove} variant="danger">
                           <X className="h-3.5 w-3.5" /> Remove Widget
                         </MenuButton>
@@ -207,14 +191,6 @@ export function Widget({
         <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
           <div className="flex-1 overflow-auto">{children}</div>
         </div>
-      )}
-
-      {/* Resize handles — all edges + corners */}
-      {id && !isFullscreen && (
-        <ResizeHandles
-          widgetId={id}
-          currentSpan={currentSpan}
-        />
       )}
     </div>
   );
@@ -296,160 +272,5 @@ export function WidgetPill({
     >
       {children}
     </button>
-  );
-}
-
-type Edge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
-
-const EDGE_CONFIG: Record<Edge, { cursor: string; cls: string; barCls: string }> = {
-  n:  { cursor: "ns-resize",   cls: "top-0 left-4 right-4 h-2",         barCls: "w-10 h-[3px] mx-auto" },
-  s:  { cursor: "ns-resize",   cls: "bottom-0 left-4 right-4 h-2",      barCls: "w-10 h-[3px] mx-auto" },
-  e:  { cursor: "ew-resize",   cls: "right-0 top-4 bottom-4 w-2",       barCls: "h-10 w-[3px] my-auto" },
-  w:  { cursor: "ew-resize",   cls: "left-0 top-4 bottom-4 w-2",        barCls: "h-10 w-[3px] my-auto" },
-  ne: { cursor: "nesw-resize", cls: "top-0 right-0 h-4 w-4",            barCls: "h-[6px] w-[6px] rounded-full" },
-  nw: { cursor: "nesw-resize", cls: "top-0 left-0 h-4 w-4",             barCls: "h-[6px] w-[6px] rounded-full" },
-  se: { cursor: "nwse-resize", cls: "bottom-0 right-0 h-4 w-4",         barCls: "h-[6px] w-[6px] rounded-full" },
-  sw: { cursor: "nwse-resize", cls: "bottom-0 left-0 h-4 w-4",          barCls: "h-[6px] w-[6px] rounded-full" },
-};
-
-function ResizeHandles({
-  widgetId,
-  currentSpan,
-}: {
-  widgetId: string;
-  currentSpan: number;
-}) {
-  const setWidgetSpan = useAppStore((s) => s.setWidgetSpan);
-  const setWidgetHeight = useAppStore((s) => s.setWidgetHeight);
-  const widgetHeights = useAppStore((s) => s.widgetHeights);
-  const [activeEdge, setActiveEdge] = useState<Edge | null>(null);
-
-  const handlePointerDown = useCallback(
-    (edge: Edge, e: React.PointerEvent) => {
-      e.stopPropagation();
-      e.preventDefault();
-
-      const startX = e.clientX;
-      const startY = e.clientY;
-
-      // Walk up to the sortable container (motion.div > .widget-grid-item > .widget-wrapper)
-      const wrapper = (e.target as HTMLElement).closest(".widget-wrapper");
-      const gridItem = wrapper?.parentElement; // .widget-grid-item
-      const sortableEl = gridItem?.parentElement; // motion.div (SortableItem)
-      if (!sortableEl) return;
-
-      const startRect = sortableEl.getBoundingClientRect();
-      const startWidth = startRect.width;
-      const startHeight = startRect.height;
-
-      // Find the grid to calculate column width for snapping
-      const grid = sortableEl.parentElement;
-      const gridWidth = grid ? grid.getBoundingClientRect().width : startWidth * 3;
-      const gap = 12; // gap-3 = 12px
-      const maxCols = 3;
-
-      setActiveEdge(edge);
-      document.body.style.cursor = EDGE_CONFIG[edge].cursor;
-      document.body.style.userSelect = "none";
-
-      // Disable Framer layout animation during drag
-      sortableEl.style.transition = "none";
-
-      const affectsX = edge.includes("e") || edge.includes("w");
-      const affectsY = edge === "n" || edge === "s" || edge.includes("n") || edge.includes("s");
-      const invertX = edge.includes("w");
-      const invertY = edge.includes("n");
-
-      let latestWidth = startWidth;
-      let latestHeight = startHeight;
-      let rafId = 0;
-
-      const applyStyles = () => {
-        if (affectsY) {
-          sortableEl.style.height = `${latestHeight}px`;
-        }
-        if (affectsX) {
-          // Temporarily override grid column to allow free-width
-          sortableEl.style.gridColumn = `span ${maxCols}`;
-          sortableEl.style.width = `${latestWidth}px`;
-          sortableEl.style.maxWidth = `${latestWidth}px`;
-        }
-      };
-
-      const handleMove = (ev: PointerEvent) => {
-        if (affectsX) {
-          const dx = (ev.clientX - startX) * (invertX ? -1 : 1);
-          // Clamp between 1 column width and full grid width
-          const colWidth = (gridWidth - gap * (maxCols - 1)) / maxCols;
-          const minW = colWidth;
-          const maxW = gridWidth;
-          latestWidth = Math.max(minW, Math.min(maxW, startWidth + dx));
-        }
-        if (affectsY) {
-          const dy = (ev.clientY - startY) * (invertY ? -1 : 1);
-          latestHeight = Math.max(150, startHeight + dy);
-        }
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(applyStyles);
-      };
-
-      const handleUp = () => {
-        cancelAnimationFrame(rafId);
-        setActiveEdge(null);
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
-
-        // Clear all inline overrides — let React take back control
-        sortableEl.style.transition = "";
-        sortableEl.style.width = "";
-        sortableEl.style.maxWidth = "";
-
-        // Commit final values to store
-        if (affectsX) {
-          const colWidth = (gridWidth - gap * (maxCols - 1)) / maxCols;
-          const newSpan = Math.max(1, Math.min(maxCols, Math.round(latestWidth / (colWidth + gap))));
-          sortableEl.style.gridColumn = "";
-          setWidgetSpan(widgetId, newSpan);
-        }
-        if (affectsY) {
-          setWidgetHeight(widgetId, Math.round(latestHeight));
-        }
-
-        window.removeEventListener("pointermove", handleMove);
-        window.removeEventListener("pointerup", handleUp);
-      };
-
-      window.addEventListener("pointermove", handleMove);
-      window.addEventListener("pointerup", handleUp);
-    },
-    [widgetId, currentSpan, widgetHeights, setWidgetSpan, setWidgetHeight]
-  );
-
-  return (
-    <>
-      {(Object.keys(EDGE_CONFIG) as Edge[]).map((edge) => {
-        const cfg = EDGE_CONFIG[edge];
-        const isActive = activeEdge === edge;
-        const isCorner = edge.length === 2;
-        return (
-          <div
-            key={edge}
-            onPointerDown={(e) => handlePointerDown(edge, e)}
-            className={`absolute z-20 flex items-center justify-center opacity-0 transition-opacity duration-300 ease-out group-hover/widget:opacity-100 ${cfg.cls}`}
-            style={{ cursor: cfg.cursor }}
-          >
-            <div
-              className={`rounded-full transition-all duration-300 ease-out ${cfg.barCls} ${
-                isActive
-                  ? "bg-signal-green shadow-[0_0_12px_rgba(0,255,133,0.5)] scale-125"
-                  : isCorner
-                    ? "bg-signal-green/40 hover:bg-signal-green/80 hover:scale-150 hover:shadow-[0_0_8px_rgba(0,255,133,0.4)]"
-                    : "bg-text-quaternary/30 hover:bg-signal-green/60 hover:shadow-[0_0_8px_rgba(0,255,133,0.3)]"
-              }`}
-            />
-          </div>
-        );
-      })}
-    </>
   );
 }

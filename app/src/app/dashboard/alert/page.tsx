@@ -383,7 +383,7 @@ export default function AlertPage() {
         <div className="flex h-6 items-center rounded-[4px] bg-bg-base-2 px-2 text-body-12 font-semibold text-text-primary outline outline-1 -outline-offset-1 outline-divider-heavy">
           ALERTS
         </div>
-        <div className="ml-4 flex items-center gap-4">
+        <div className="ml-4 hidden items-center gap-4 md:flex">
           <div className="flex items-center gap-1.5">
             <span className="text-body-12 text-text-quaternary">Active</span>
             <span className="text-numbers-12 font-medium text-signal-green">{activeCount}</span>
@@ -485,7 +485,7 @@ export default function AlertPage() {
             </div>
 
             {/* Content area */}
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto overflow-x-auto">
               <AnimatePresence mode="wait">
                 {tab === "alerts" ? (
                   <motion.div
@@ -513,6 +513,7 @@ export default function AlertPage() {
                       </motion.div>
                     ) : (<>
                     {/* Column headers */}
+                    <div className="min-w-[700px]">
                     <div
                       className="grid grid-cols-[32px_72px_1fr_1fr_64px_72px_80px_32px_32px] items-center gap-2 px-4 py-2 text-body-12 font-medium uppercase text-text-quaternary"
                       style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
@@ -646,6 +647,7 @@ export default function AlertPage() {
                       );
                     })}
 
+                    </div>
                     </>)}
                   </motion.div>
                 ) : (
@@ -728,7 +730,7 @@ export default function AlertPage() {
           {/* ══════════════════ RIGHT: Analytics panel ══════════════════ */}
           <motion.div
             variants={fadeUp}
-            className="flex w-72 shrink-0 flex-col gap-2"
+            className="hidden w-72 shrink-0 flex-col gap-2 lg:flex"
           >
             {/* Trigger frequency */}
             <div

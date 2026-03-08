@@ -298,7 +298,7 @@ export default function BotsPage() {
           <Bot className="h-3 w-3 text-signal-green" />
           TRADING BOTS
         </div>
-        <div className="ml-4 flex items-center gap-4">
+        <div className="ml-4 hidden items-center gap-4 md:flex">
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-text-quaternary">Active</span>
             <span className="text-numbers-12 font-medium text-signal-green">{runningBots}</span>
@@ -335,7 +335,7 @@ export default function BotsPage() {
         </div>
       </motion.div>
 
-      <motion.div variants={fadeUp} className="flex min-h-0 flex-1 gap-2 p-2">
+      <motion.div variants={fadeUp} className="flex min-h-0 flex-1 flex-col gap-2 p-2 md:flex-row">
         {/* Left: Bot list */}
         <div className="flex flex-1 flex-col rounded-[18px] bg-bg-base-1" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}>
           <div className="flex h-10 items-center gap-4 px-4" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
@@ -381,7 +381,7 @@ export default function BotsPage() {
                     </Link>
                   </motion.div>
                 ) : <>
-                <div className="grid grid-cols-[1fr_90px_80px_65px_65px_60px_55px_70px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
+                <div className="hidden md:grid grid-cols-[1fr_90px_80px_65px_65px_60px_55px_70px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
                   <span>Bot</span><span>Type</span><span className="text-right">PnL</span><span className="text-right">Trades</span>
                   <span className="text-right">Win %</span><span className="text-right">Sharpe</span><span className="text-right">Mode</span><span />
                 </div>
@@ -393,7 +393,7 @@ export default function BotsPage() {
                       onClick={() => setSelectedBotId(bot.id)}
                       whileHover={{ backgroundColor: "rgba(179, 200, 224, 0.06)", y: -1 }}
                       transition={{ duration: 0.15 }}
-                      className={`grid w-full grid-cols-[1fr_90px_80px_65px_65px_60px_55px_70px] items-center gap-2 px-4 py-3 text-left transition-colors duration-150 ${selectedBotId === bot.id ? "bg-action-translucent-hover" : ""}`}
+                      className={`flex w-full flex-col gap-2 px-4 py-3 text-left transition-colors duration-150 md:grid md:grid-cols-[1fr_90px_80px_65px_65px_60px_55px_70px] md:items-center md:gap-2 ${selectedBotId === bot.id ? "bg-action-translucent-hover" : ""}`}
                       style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
                     >
                       <div className="flex items-center gap-2">
@@ -402,14 +402,15 @@ export default function BotsPage() {
                           {bot.name}
                         </Link>
                       </div>
-                      <span className="text-body-12 text-text-secondary">{bot.type}</span>
-                      <span className={`text-right text-numbers-12 ${bot.pnl >= 0 ? "text-action-rise" : "text-action-fall"}`}>
-                        {bot.pnl >= 0 ? "+" : ""}${Math.abs(bot.pnl).toFixed(2)}
-                      </span>
-                      <span className="text-right text-numbers-12 text-text-primary">{bot.trades}</span>
-                      <span className="text-right text-numbers-12 text-text-primary">{bot.winRate}%</span>
-                      <span className="text-right text-numbers-12 text-text-secondary">{bot.sharpe.toFixed(2)}</span>
-                      <div className="flex justify-end">
+                      <span className="hidden text-body-12 text-text-secondary md:block">{bot.type}</span>
+                      <div className="flex flex-wrap items-center gap-2 md:contents">
+                        <span className="text-body-12 text-text-secondary md:hidden">{bot.type}</span>
+                        <span className={`text-numbers-12 md:text-right ${bot.pnl >= 0 ? "text-action-rise" : "text-action-fall"}`}>
+                          {bot.pnl >= 0 ? "+" : ""}${Math.abs(bot.pnl).toFixed(2)}
+                        </span>
+                        <span className="text-numbers-12 text-text-primary md:text-right">{bot.trades} trades</span>
+                        <span className="hidden text-right text-numbers-12 text-text-primary md:block">{bot.winRate}%</span>
+                        <span className="hidden text-right text-numbers-12 text-text-secondary md:block">{bot.sharpe.toFixed(2)}</span>
                         <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-medium ${bot.mode === "paper" ? "bg-signal-amber-dim text-signal-amber" : "bg-action-rise-dim text-action-rise"}`}>
                           {bot.mode === "paper" ? "Paper" : "Live"}
                         </span>
@@ -456,7 +457,7 @@ export default function BotsPage() {
               >
                 <p className="mb-4 text-body-12 text-text-secondary">Choose a bot type to start building. Configure triggers, parameters, and deploy.</p>
                 <motion.div
-                  className="grid grid-cols-2 gap-3"
+                  className="grid grid-cols-1 gap-3 md:grid-cols-2"
                   variants={staggerList}
                   initial="hidden"
                   animate="show"
@@ -500,7 +501,7 @@ export default function BotsPage() {
                 <div className="px-4 py-2 text-body-12 text-text-secondary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
                   Community-published strategies. Fork, customize, and deploy.
                 </div>
-                <div className="grid grid-cols-[1fr_100px_55px_55px_80px_80px_70px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
+                <div className="hidden md:grid grid-cols-[1fr_100px_55px_55px_80px_80px_70px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
                   <span>Strategy</span><span>Type</span><span className="text-right">Rating</span>
                   <span className="text-right">Forks</span><span className="text-right">30d PnL</span><span>Author</span><span className="text-right">License</span>
                 </div>
@@ -513,7 +514,7 @@ export default function BotsPage() {
                       className="px-4 py-3 transition-colors duration-150"
                       style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
                     >
-                      <div className="grid grid-cols-[1fr_100px_55px_55px_80px_80px_70px] items-center gap-2">
+                      <div className="flex flex-col gap-1 md:grid md:grid-cols-[1fr_100px_55px_55px_80px_80px_70px] md:items-center md:gap-2">
                         <span className="text-body-12 font-medium text-text-primary">{mb.name}</span>
                         <span className="text-body-12 text-text-secondary">{mb.type}</span>
                         <div className="flex items-center justify-end gap-1">
@@ -544,7 +545,7 @@ export default function BotsPage() {
         </div>
 
         {/* Right: Bot detail */}
-        <div className="flex w-72 flex-col gap-2">
+        <div className="hidden w-72 flex-col gap-2 md:flex">
           {!selectedBot ? (
             <div className="flex flex-1 flex-col items-center justify-center rounded-[18px] bg-bg-base-1 p-4" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}>
               <Bot className="mb-3 h-8 w-8 text-text-muted" />

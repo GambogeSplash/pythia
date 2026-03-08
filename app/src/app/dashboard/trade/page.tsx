@@ -432,7 +432,7 @@ export default function TradePage() {
           </div>
         </div>
         {/* Center: Quick stats */}
-        <div className="ml-4 flex items-center gap-4">
+        <div className="ml-4 hidden items-center gap-4 md:flex">
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-text-quaternary">Last Price</span>
             <span className="text-numbers-12 font-medium text-text-primary">{yesPercent}&cent;</span>
@@ -520,7 +520,7 @@ export default function TradePage() {
 
       {/* Left: Market list */}
       <div
-        className="flex w-80 flex-shrink-0 flex-col rounded-[18px] bg-bg-base-1 md:flex"
+        className="hidden w-80 flex-shrink-0 flex-col rounded-[18px] bg-bg-base-1 md:flex"
         style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
       >
         <div
@@ -574,7 +574,7 @@ export default function TradePage() {
                 <SkeletonLine className="h-4 w-48" />
               ) : selectedMarket ? (
                 <>
-                  <span className="text-body-14 font-semibold text-text-primary">
+                  <span className="text-body-14 font-semibold text-text-primary line-clamp-1">
                     {selectedMarket.question}
                   </span>
                   <span className="rounded-[4px] bg-bg-base-3 px-1.5 py-0.5 text-[10px] text-text-quaternary">
@@ -623,7 +623,7 @@ export default function TradePage() {
 
         {/* Order book + Recent trades */}
         <div
-          className="flex h-56 rounded-[18px] bg-bg-base-1"
+          className="flex h-auto flex-col md:h-56 md:flex-row rounded-[18px] bg-bg-base-1 overflow-x-auto"
           style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
         >
           {/* Bids */}
@@ -773,7 +773,7 @@ export default function TradePage() {
 
       {/* Right: Trade panel */}
       <div
-        className="flex w-72 flex-shrink-0 flex-col rounded-[18px] bg-bg-base-1"
+        className="hidden w-72 flex-shrink-0 flex-col rounded-[18px] bg-bg-base-1 lg:flex"
         style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
       >
         <div

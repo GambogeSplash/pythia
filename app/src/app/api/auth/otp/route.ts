@@ -18,7 +18,7 @@ async function sendOtpEmail(email: string, code: string) {
     const { Resend } = await import("resend");
     const resend = new Resend(apiKey);
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || "Pythia <noreply@pythia.dev>",
+      from: process.env.RESEND_FROM_EMAIL || "Pythia <onboarding@resend.dev>",
       to: email,
       subject: "Your Pythia verification code",
       html: `

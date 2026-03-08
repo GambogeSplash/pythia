@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Search, ChevronDown, TrendingUp, TrendingDown } from "lucide-react";
 import { createChart, LineSeries, HistogramSeries, type IChartApi, type UTCTimestamp, ColorType, LineStyle } from "lightweight-charts";
 import { useMarkets, useSearchMarkets, useMarket, useOrderbook } from "@/hooks/use-markets";
+import { useTrades } from "@/hooks/use-user-data";
 import { formatVolume, formatTimeLeft } from "@/lib/format";
 import type { Market } from "@/lib/api/types";
 
@@ -389,6 +390,9 @@ export default function TradePage() {
     };
   }, [selectedId, priceHistory, selectedMarket]);
 
+  /* ----- recent trades ----- */
+  const { trades: recentTrades, isLoading: tradesLoading } = useTrades(5);
+
   /* ----- order calculations ----- */
   const currentPrice = side === "yes" ? yesPercent : noPercent;
   const shares = amount
@@ -693,7 +697,7 @@ export default function TradePage() {
 
           <div className="w-px bg-divider-heavy" />
 
-          {/* Recent Trades - placeholder (no trades API yet) */}
+          {/* Recent Trades */}
           <div className="flex flex-1 flex-col">
             <div
               className="flex h-8 items-center px-3 text-[10px] font-medium uppercase text-text-quaternary"
@@ -706,11 +710,56 @@ export default function TradePage() {
               <span className="flex-1 text-right">Amount</span>
               <span className="w-12 text-right">Price</span>
             </div>
-            <div className="flex flex-1 items-center justify-center">
-              <span className="text-[10px] text-text-quaternary">
-                Recent trades coming soon
-              </span>
-            </div>
+            {tradesLoading ? (
+              <div className="flex-1 overflow-auto">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex items-center px-3 py-1.5">
+                    <SkeletonLine className="h-3 w-12" />
+                    <SkeletonLine className="ml-2 h-3 w-8" />
+                    <SkeletonLine className="ml-auto h-3 w-10" />
+                    <SkeletonLine className="ml-2 h-3 w-10" />
+                  </div>
+                ))}
+              </div>
+            ) : recentTrades.length === 0 ? (
+              <div className="flex flex-1 flex-col items-center justify-center gap-1">
+                <span className="text-[10px] text-text-quaternary">No trades yet</span>
+                <span className="text-[9px] text-text-muted">Place an order to get started</span>
+              </div>
+            ) : (
+              <div className="flex-1 overflow-auto">
+                {recentTrades.slice(0, 5).map((trade) => {
+                  const timeAgo = (() => {
+                    const diff = Date.now() - new Date(trade.executedAt).getTime();
+                    const mins = Math.floor(diff / 60000);
+                    if (mins < 1) return "now";
+                    if (mins < 60) return `${mins}m`;
+                    const hrs = Math.floor(mins / 60);
+                    if (hrs < 24) return `${hrs}h`;
+                    const days = Math.floor(hrs / 24);
+                    return `${days}d`;
+                  })();
+                  return (
+                    <div
+                      key={trade.id}
+                      className="flex items-center px-3 py-1.5 transition-colors hover:bg-action-translucent-hover"
+                      title={trade.marketQuestion}
+                    >
+                      <span className="w-16 text-numbers-10 text-text-quaternary">{timeAgo}</span>
+                      <span className={`w-10 text-numbers-10 font-medium ${trade.side === "YES" ? "text-action-buy" : "text-action-sell"}`}>
+                        {trade.side}
+                      </span>
+                      <span className="flex-1 text-right text-numbers-10 text-text-secondary">
+                        ${trade.amount.toFixed(2)}
+                      </span>
+                      <span className="w-12 text-right text-numbers-10 text-text-secondary">
+                        {Math.round(trade.price * 100)}&cent;
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>

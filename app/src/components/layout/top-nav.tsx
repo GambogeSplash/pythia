@@ -30,7 +30,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppStore, type Notification } from "@/lib/store";
+import { useThemeStore, type Theme } from "@/lib/theme-store";
 import { useSession } from "@/hooks/use-session";
+import { signOut } from "next-auth/react";
 
 const navItems = [
   { label: "DASHBOARD", href: "/dashboard" },
@@ -62,6 +64,8 @@ export function TopNav() {
   const markAllRead = useAppStore((s) => s.markAllRead);
   const unreadCount = useAppStore((s) => s.unreadCount);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const currentTheme = useThemeStore((s) => s.theme);
+  const setTheme = useThemeStore((s) => s.setTheme);
   const { user, isAuthenticated } = useSession();
   const displayName = user?.name || user?.email?.split("@")[0] || "User";
   const displayInitial = displayName.charAt(0).toUpperCase();
@@ -247,7 +251,13 @@ export function TopNav() {
                   onClick={() => toggleDropdown("theme")}
                   active={activeDropdown === "theme"}
                 >
-                  <Moon className="h-4 w-4" />
+                  {currentTheme === "light" ? (
+                    <Sun className="h-4 w-4" />
+                  ) : currentTheme === "system" ? (
+                    <Monitor className="h-4 w-4" />
+                  ) : (
+                    <Moon className="h-4 w-4" />
+                  )}
                 </NavIconButton>
 
                 <AnimatePresence>
@@ -256,28 +266,26 @@ export function TopNav() {
                       <div className="px-3 py-1.5 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
                         Appearance
                       </div>
-                      {[
-                        { icon: <Moon className="h-3.5 w-3.5" />, label: "Dark", active: true },
-                        { icon: <Sun className="h-3.5 w-3.5" />, label: "Light", active: false, disabled: true },
-                        { icon: <Monitor className="h-3.5 w-3.5" />, label: "System", active: false, disabled: true },
-                      ].map((item) => (
+                      {([
+                        { icon: <Moon className="h-3.5 w-3.5" />, label: "Dark", value: "dark" as Theme },
+                        { icon: <Sun className="h-3.5 w-3.5" />, label: "Light", value: "light" as Theme },
+                        { icon: <Monitor className="h-3.5 w-3.5" />, label: "System", value: "system" as Theme },
+                      ]).map((item) => (
                         <button
                           key={item.label}
-                          disabled={item.disabled}
+                          onClick={() => {
+                            setTheme(item.value);
+                            closeAll();
+                          }}
                           className={`flex w-full items-center gap-2.5 px-3 py-2 text-body-12 transition-colors duration-150 ${
-                            item.active
+                            currentTheme === item.value
                               ? "text-text-primary"
-                              : item.disabled
-                                ? "cursor-not-allowed text-text-muted"
-                                : "text-text-secondary hover:bg-action-translucent-hover hover:text-text-primary"
+                              : "text-text-secondary hover:bg-action-translucent-hover hover:text-text-primary"
                           }`}
                         >
                           {item.icon}
                           <span className="flex-1 text-left">{item.label}</span>
-                          {item.active && <Check className="h-3.5 w-3.5 text-signal-green" />}
-                          {item.disabled && (
-                            <span className="rounded bg-bg-base-3 px-1 text-[8px] font-bold text-text-muted">SOON</span>
-                          )}
+                          {currentTheme === item.value && <Check className="h-3.5 w-3.5 text-signal-green" />}
                         </button>
                       ))}
                     </DropdownPanel>
@@ -310,7 +318,7 @@ export function TopNav() {
                       ].map((item) => (
                         <button
                           key={item.label}
-                          onClick={closeAll}
+                          onClick={() => { closeAll(); router.push("/dashboard/settings"); }}
                           className="flex w-full items-center gap-2.5 px-3 py-2 text-body-12 text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary"
                         >
                           {item.icon}
@@ -320,7 +328,7 @@ export function TopNav() {
                       ))}
                       <div className="mx-2 my-1 h-px bg-divider-heavy" />
                       <button
-                        onClick={closeAll}
+                        onClick={() => { closeAll(); router.push("/dashboard/settings"); }}
                         className="flex w-full items-center gap-2.5 px-3 py-2 text-body-12 text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary"
                       >
                         <HelpCircle className="h-3.5 w-3.5" />
@@ -373,15 +381,15 @@ export function TopNav() {
                           <div className="py-1">
                             <ProfileMenuItem icon={<User className="h-3.5 w-3.5" />} label="My Profile" onClick={() => { closeAll(); router.push("/dashboard/portfolio"); }} />
                             <ProfileMenuItem icon={<Wallet className="h-3.5 w-3.5" />} label="Portfolio" onClick={() => { closeAll(); router.push("/dashboard"); }} />
-                            <ProfileMenuItem icon={<TrendingUp className="h-3.5 w-3.5" />} label="Trade History" onClick={closeAll} />
-                            <ProfileMenuItem icon={<Settings className="h-3.5 w-3.5" />} label="Settings" onClick={closeAll} />
+                            <ProfileMenuItem icon={<TrendingUp className="h-3.5 w-3.5" />} label="Trade History" onClick={() => { closeAll(); router.push("/dashboard/portfolio"); }} />
+                            <ProfileMenuItem icon={<Settings className="h-3.5 w-3.5" />} label="Settings" onClick={() => { closeAll(); router.push("/dashboard/settings"); }} />
                           </div>
 
                           <div className="mx-2 my-1 h-px bg-divider-heavy" />
 
                           <div className="py-1">
                             <button
-                              onClick={closeAll}
+                              onClick={() => { closeAll(); signOut({ callbackUrl: "/login" }); }}
                               className="flex w-full items-center gap-2.5 px-3 py-2 text-body-12 text-action-fall transition-colors duration-150 hover:bg-action-fall-dim"
                             >
                               <LogOut className="h-3.5 w-3.5" />

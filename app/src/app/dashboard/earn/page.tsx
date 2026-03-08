@@ -300,20 +300,6 @@ export default function EarnPage() {
         </motion.button>
       </motion.div>
 
-      {/* ============ SIMULATED DATA BANNER ============ */}
-      <motion.div
-        className="flex items-center gap-2 bg-signal-amber/8 px-4 py-1.5"
-        style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.3 }}
-      >
-        <Info className="h-3.5 w-3.5 shrink-0 text-signal-amber" />
-        <span className="text-[11px] text-signal-amber">
-          Yield data is simulated -- live integration coming soon
-        </span>
-      </motion.div>
-
       {/* ============ TAB BAR ============ */}
       <div
         className="flex h-10 shrink-0 items-center gap-5 bg-bg-base-0 px-4"
@@ -356,8 +342,11 @@ export default function EarnPage() {
               {POOLS.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 px-4">
                   <Droplets className="mb-2 h-8 w-8 text-text-muted" />
-                  <p className="text-body-12 font-medium text-text-secondary">Coming Soon</p>
-                  <p className="mt-1 text-[11px] text-text-quaternary text-center">Yield opportunities will appear here when available</p>
+                  <p className="text-body-12 font-medium text-text-secondary">Market Making Pools</p>
+                  <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Provide liquidity to prediction markets and earn yield from spreads. Pools are diversified across categories with automated rebalancing.</p>
+                  <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
+                    Notify Me
+                  </button>
                 </div>
               ) : (
               <motion.div
@@ -570,9 +559,12 @@ export default function EarnPage() {
               <div className="rounded-[18px] bg-bg-base-1" style={panelStyle}>
                 {filteredMarkets.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 px-4">
-                    <Droplets className="mb-2 h-8 w-8 text-text-muted" />
-                    <p className="text-body-12 font-medium text-text-secondary">Coming Soon</p>
-                    <p className="mt-1 text-[11px] text-text-quaternary text-center">Yield opportunities will appear here when available</p>
+                    <Target className="mb-2 h-8 w-8 text-text-muted" />
+                    <p className="text-body-12 font-medium text-text-secondary">Opportunity Scanner</p>
+                    <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Automatically scans markets for wide spreads and low liquidity -- ideal conditions for market making. Get alerts when high-yield opportunities appear.</p>
+                    <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
+                      Learn More
+                    </button>
                   </div>
                 ) : (
                 <>
@@ -714,9 +706,9 @@ export default function EarnPage() {
                 </div>
                 {MY_POSITIONS.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 px-4">
-                    <Droplets className="mb-2 h-8 w-8 text-text-muted" />
-                    <p className="text-body-12 font-medium text-text-secondary">Coming Soon</p>
-                    <p className="mt-1 text-[11px] text-text-quaternary text-center">Yield opportunities will appear here when available</p>
+                    <DollarSign className="mb-2 h-8 w-8 text-text-muted" />
+                    <p className="text-body-12 font-medium text-text-secondary">No Active Positions</p>
+                    <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Your liquidity positions and earned yield will be tracked here. Deposit into a pool to start earning from market making spreads.</p>
                   </div>
                 ) : (
                 <motion.div variants={staggerContainer} initial="hidden" animate="show">
@@ -864,9 +856,12 @@ export default function EarnPage() {
                   </div>
                   {REWARD_TIERS.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 px-4">
-                      <Droplets className="mb-2 h-8 w-8 text-text-muted" />
-                      <p className="text-body-12 font-medium text-text-secondary">Coming Soon</p>
-                      <p className="mt-1 text-[11px] text-text-quaternary text-center">Yield opportunities will appear here when available</p>
+                      <Award className="mb-2 h-8 w-8 text-text-muted" />
+                      <p className="text-body-12 font-medium text-text-secondary">Reward Tiers</p>
+                      <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Earn points by providing liquidity. Higher tiers unlock reduced fees, priority pool access, and boosted APY multipliers.</p>
+                      <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
+                        Notify Me
+                      </button>
                     </div>
                   ) : (
                   <motion.div variants={staggerContainer} initial="hidden" animate="show">
@@ -947,9 +942,12 @@ export default function EarnPage() {
                 </div>
                 {LEADERBOARD.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 px-4">
-                    <Droplets className="mb-2 h-8 w-8 text-text-muted" />
-                    <p className="text-body-12 font-medium text-text-secondary">Coming Soon</p>
-                    <p className="mt-1 text-[11px] text-text-quaternary text-center">Yield opportunities will appear here when available</p>
+                    <Flame className="mb-2 h-8 w-8 text-text-muted" />
+                    <p className="text-body-12 font-medium text-text-secondary">Leaderboard</p>
+                    <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Top market makers ranked by volume, consistency, and risk-adjusted returns. Compete for bonus rewards and recognition.</p>
+                    <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
+                      Notify Me
+                    </button>
                   </div>
                 ) : (
                 <>

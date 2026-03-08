@@ -102,9 +102,95 @@
   --radius-full: 9999px;
 }
 
+/* ── Light Mode Overrides ── */
+.light {
+  --color-bg-base-0: #FFFFFF;
+  --color-bg-base-1: #F5F6F8;
+  --color-bg-base-2: #EBEDF0;
+  --color-bg-base-3: #DFE1E5;
+  --color-bg-overlay: rgba(255, 255, 255, 0.82);
+
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F5F6F8;
+  --color-bg-surface: #EBEDF0;
+  --color-bg-surface-raised: #DFE1E5;
+  --color-bg-hover: #DFE1E5;
+
+  --color-text-primary: #1A1B1D;
+  --color-text-secondary: #4A4D52;
+  --color-text-tertiary: #6B6F76;
+  --color-text-quaternary: #8E929A;
+  --color-text-muted: #B0B4BC;
+
+  --color-divider-ultra-thin: rgba(0, 0, 0, 0.04);
+  --color-divider-thin: rgba(0, 0, 0, 0.06);
+  --color-divider: rgba(0, 0, 0, 0.08);
+  --color-divider-medium: rgba(0, 0, 0, 0.10);
+  --color-divider-heavy: rgba(0, 0, 0, 0.14);
+
+  --color-border-primary: rgba(0, 0, 0, 0.10);
+  --color-border-secondary: rgba(0, 0, 0, 0.14);
+
+  /* Signal colors — slightly adjusted for light bg contrast */
+  --color-signal-green: #00B85E;
+  --color-signal-green-dim: rgba(0, 184, 94, 0.10);
+  --color-signal-red: #E5252A;
+  --color-signal-red-dim: rgba(229, 37, 42, 0.08);
+  --color-signal-amber: #D49800;
+  --color-signal-amber-dim: rgba(212, 152, 0, 0.10);
+  --color-signal-blue: #2563EB;
+  --color-signal-blue-dim: rgba(37, 99, 235, 0.08);
+  --color-signal-teal: #0D9488;
+  --color-signal-purple: #7C3AED;
+  --color-signal-purple-dim: rgba(124, 58, 237, 0.08);
+
+  /* Trading actions — adjusted for light bg */
+  --color-action-buy: #16A34A;
+  --color-action-buy-hover: #15803D;
+  --color-action-buy-dim: rgba(22, 163, 74, 0.10);
+  --color-action-sell: #DC2626;
+  --color-action-sell-hover: #B91C1C;
+  --color-action-sell-dim: rgba(220, 38, 38, 0.08);
+  --color-action-rise: #16A34A;
+  --color-action-rise-dim: rgba(22, 163, 74, 0.10);
+  --color-action-fall: #EA580C;
+  --color-action-fall-dim: rgba(234, 88, 12, 0.08);
+
+  /* Action buttons */
+  --color-action-brand: #00B85E;
+  --color-action-brand-hover: #009E50;
+  --color-action-brand-active: #008544;
+  --color-action-secondary: #EBEDF0;
+  --color-action-secondary-hover: #DFE1E5;
+  --color-action-secondary-active: #D2D5DA;
+  --color-action-translucent: rgba(0, 0, 0, 0.05);
+  --color-action-translucent-hover: rgba(0, 0, 0, 0.08);
+  --color-action-translucent-active: rgba(0, 0, 0, 0.03);
+
+  /* Chart palette — adjusted for light bg readability */
+  --color-chart-green: #16A34A;
+  --color-chart-red: #DC2626;
+  --color-chart-blue: #2563EB;
+  --color-chart-purple: #7C3AED;
+  --color-chart-fuchsia: #C026D3;
+  --color-chart-orange: #EA580C;
+  --color-chart-yellow: #CA8A04;
+  --color-chart-lime: #65A30D;
+  --color-chart-aqua: #0D9488;
+  --color-chart-teal: #0F766E;
+  --color-chart-peach: #C2410C;
+  --color-chart-silver: #6B7280;
+  --color-chart-navy: #1D4ED8;
+  --color-chart-pink: #DB2777;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(179, 200, 224, 0.08) transparent;
+}
+
+.light * {
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
 }
 
 body {

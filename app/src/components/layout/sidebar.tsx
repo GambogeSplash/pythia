@@ -105,10 +105,10 @@ export function Sidebar() {
       {/* Bottom */}
       <div className="p-2" style={{ boxShadow: "inset 0 1px 0 0 var(--color-divider-heavy)" }}>
         <Link
-          href="/dashboard"
-          className={`flex items-center gap-2.5 rounded-[4px] px-2 py-1.5 text-body-12 text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary ${
-            collapsed ? "justify-center" : ""
-          }`}
+          href="/dashboard/settings"
+          className={`flex items-center gap-2.5 rounded-[4px] px-2 py-1.5 text-body-12 transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary ${
+            pathname === "/dashboard/settings" ? "text-signal-green" : "text-text-secondary"
+          } ${collapsed ? "justify-center" : ""}`}
         >
           <Settings className="h-4 w-4" />
           {!collapsed && <span>Settings</span>}

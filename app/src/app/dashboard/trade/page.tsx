@@ -294,7 +294,7 @@ export default function TradePage() {
         background: { type: ColorType.Solid, color: "transparent" },
         textColor: "#6B7380",
         fontSize: 10,
-        fontFamily: "JetBrains Mono, monospace",
+        fontFamily: "IBM Plex Sans Condensed, sans-serif",
       },
       grid: {
         vertLines: { color: "#161819" },

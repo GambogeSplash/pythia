@@ -26,7 +26,7 @@ async function sendOtpEmail(email: string, code: string) {
           <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">Pythia</h2>
           <p style="margin: 0 0 24px; font-size: 13px; color: #666;">Your verification code</p>
           <div style="background: #0D0D0E; border: 1px solid #1A1B1D; border-radius: 10px; padding: 24px; text-align: center;">
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #00FF85;">${code}</span>
+            <span style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #00FF85;">${code}</span>
           </div>
           <p style="margin: 16px 0 0; font-size: 11px; color: #444;">This code expires in 10 minutes. If you didn't request this, ignore this email.</p>
         </div>

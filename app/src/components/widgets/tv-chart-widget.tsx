@@ -80,7 +80,7 @@ export function TVChartWidget({ marketId }: { marketId?: string }) {
         background: { type: ColorType.Solid, color: "transparent" },
         textColor: "#666666",
         fontSize: 10,
-        fontFamily: "JetBrains Mono, monospace",
+        fontFamily: "IBM Plex Sans Condensed, sans-serif",
       },
       grid: {
         vertLines: { color: "#161819" },

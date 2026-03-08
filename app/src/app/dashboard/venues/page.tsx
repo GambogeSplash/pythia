@@ -591,7 +591,7 @@ export default function VenuesPage() {
           VENUE INTEGRATIONS
         </div>
         <motion.div
-          className="ml-4 flex items-center gap-4"
+          className="ml-4 hidden items-center gap-4 md:flex"
           variants={statsStagger}
           initial="hidden"
           animate="show"
@@ -843,7 +843,7 @@ export default function VenuesPage() {
 
               {/* Technical notes */}
               <motion.div
-                className="mt-4 grid grid-cols-3 gap-2"
+                className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-3"
                 variants={noteCardsStagger}
                 initial="hidden"
                 whileInView="show"
@@ -912,6 +912,8 @@ export default function VenuesPage() {
             </div>
 
             {/* Table header */}
+            <div className="overflow-x-auto">
+            <div className="min-w-[580px]">
             <div
               className="grid grid-cols-[1fr_200px_80px_100px_100px] gap-4 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
@@ -985,6 +987,8 @@ export default function VenuesPage() {
                 </motion.div>
               ))}
             </motion.div>
+            </div>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -322,7 +322,7 @@ export default function CrossVenueSearchPage() {
           <Globe className="h-3 w-3 text-signal-blue" />
           CROSS-VENUE SEARCH
         </div>
-        <div className="ml-4 flex items-center gap-4">
+        <div className="ml-4 hidden items-center gap-4 md:flex">
           <Tooltip label="Total indexed markets across all venues">
             <div className="flex items-center gap-1 cursor-default">
               <span className="text-[10px] text-text-quaternary">Markets</span>
@@ -836,7 +836,7 @@ export default function CrossVenueSearchPage() {
           </div>
 
           {/* Right: Trending + Stats Panel */}
-          <motion.div variants={fadeUp} className="flex w-72 shrink-0 flex-col gap-2">
+          <motion.div variants={fadeUp} className="hidden w-72 shrink-0 flex-col gap-2 lg:flex">
             {/* Quick stats */}
             {statsLoading ? (
               <StatsSkeleton />

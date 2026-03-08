@@ -76,11 +76,11 @@ export default function SettingsPage() {
       </motion.div>
 
       {/* ============ CONTENT ============ */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
         {/* Settings sidebar */}
         <motion.nav
-          className="flex w-48 shrink-0 flex-col gap-0.5 overflow-y-auto p-3"
-          style={{ boxShadow: "inset -1px 0 0 0 var(--color-divider-heavy)" }}
+          className="flex w-full shrink-0 flex-row gap-0.5 overflow-x-auto p-2 md:w-48 md:flex-col md:overflow-y-auto md:p-3"
+          style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
@@ -105,7 +105,7 @@ export default function SettingsPage() {
 
         {/* Main panel */}
         <motion.div
-          className="flex-1 overflow-y-auto p-6"
+          className="flex-1 overflow-y-auto p-4 md:p-6"
           key={activeTab}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -238,7 +238,7 @@ function AppearanceSection() {
 
       <motion.div variants={fadeUp} className="space-y-3">
         <label className="text-body-12 font-medium text-text-secondary">Theme</label>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {themes.map((t) => (
             <button
               key={t.value}

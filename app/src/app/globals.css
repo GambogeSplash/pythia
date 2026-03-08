@@ -87,7 +87,7 @@
 
   /* ── Fonts ── */
   --font-sans: var(--font-ibm-plex-sans-condensed);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-mono: var(--font-ibm-plex-sans-condensed);
 
   /* ── Spacing (ref: TakeProfit rem-based scale) ── */
   --spacing-px: 1px;

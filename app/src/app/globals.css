@@ -1,0 +1,398 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ── Background (4-tier depth system, ref: TakeProfit) ── */
+  --color-bg-base-0: #080909;
+  --color-bg-base-1: #0F1012;
+  --color-bg-base-2: #131517;
+  --color-bg-base-3: #1B1E22;
+  --color-bg-overlay: rgba(8, 9, 9, 0.78);
+
+  /* Legacy aliases (keep existing classes working) */
+  --color-bg-primary: #080909;
+  --color-bg-secondary: #0F1012;
+  --color-bg-surface: #131517;
+  --color-bg-surface-raised: #1B1E22;
+  --color-bg-hover: #1B1E22;
+
+  /* ── Text (4-tier hierarchy) ── */
+  --color-text-primary: #F0F3F8;
+  --color-text-secondary: #BAC1CC;
+  --color-text-tertiary: #A2ABB8;
+  --color-text-quaternary: #6B7380;
+  --color-text-muted: #424852;
+
+  /* ── Dividers (opacity-based, ultra-subtle) ── */
+  --color-divider-ultra-thin: rgba(179, 200, 224, 0.04);
+  --color-divider-thin: rgba(179, 200, 224, 0.04);
+  --color-divider: rgba(179, 200, 224, 0.08);
+  --color-divider-medium: rgba(179, 200, 224, 0.08);
+  --color-divider-heavy: rgba(179, 200, 224, 0.12);
+
+  /* Legacy border aliases */
+  --color-border-primary: rgba(179, 200, 224, 0.08);
+  --color-border-secondary: rgba(179, 200, 224, 0.12);
+
+  /* ── Signal / Semantic Colors ── */
+  --color-signal-green: #00FF85;
+  --color-signal-green-dim: rgba(0, 255, 133, 0.12);
+  --color-signal-red: #FF3B3B;
+  --color-signal-red-dim: rgba(255, 59, 59, 0.12);
+  --color-signal-amber: #FFB800;
+  --color-signal-amber-dim: rgba(255, 184, 0, 0.12);
+  --color-signal-blue: #3B82F6;
+  --color-signal-blue-dim: rgba(59, 130, 246, 0.12);
+  --color-signal-teal: #2DD4BF;
+  --color-signal-purple: #854DFF;
+  --color-signal-purple-dim: rgba(133, 77, 255, 0.12);
+
+  /* ── Trading Actions (ref: TakeProfit buy/sell/rise/fall) ── */
+  --color-action-buy: #59F94A;
+  --color-action-buy-hover: #79FF6A;
+  --color-action-buy-dim: rgba(89, 249, 74, 0.12);
+  --color-action-sell: #FFA09E;
+  --color-action-sell-hover: #FFB8B6;
+  --color-action-sell-dim: rgba(255, 160, 158, 0.12);
+  --color-action-rise: #59F94A;
+  --color-action-rise-dim: rgba(89, 249, 74, 0.12);
+  --color-action-fall: #FF8664;
+  --color-action-fall-dim: rgba(255, 134, 100, 0.12);
+
+  /* ── Action Buttons (ref: TakeProfit translucent system) ── */
+  --color-action-brand: #00FF85;
+  --color-action-brand-hover: #33FF9D;
+  --color-action-brand-active: #00CC6A;
+  --color-action-secondary: #1B1E22;
+  --color-action-secondary-hover: #242830;
+  --color-action-secondary-active: #131517;
+  --color-action-translucent: rgba(179, 200, 224, 0.08);
+  --color-action-translucent-hover: rgba(179, 200, 224, 0.12);
+  --color-action-translucent-active: rgba(179, 200, 224, 0.04);
+
+  /* ── Chart Palette (ref: TakeProfit 20-color chart system) ── */
+  --color-chart-green: #34E94A;
+  --color-chart-red: #FE3450;
+  --color-chart-blue: #2F89FF;
+  --color-chart-purple: #854DFF;
+  --color-chart-fuchsia: #DD0075;
+  --color-chart-orange: #EB4814;
+  --color-chart-yellow: #FBDA00;
+  --color-chart-lime: #B8F200;
+  --color-chart-aqua: #0DF3D6;
+  --color-chart-teal: #009884;
+  --color-chart-peach: #E56F00;
+  --color-chart-silver: #A2ABB8;
+  --color-chart-navy: #004FAF;
+  --color-chart-pink: #FF4693;
+
+  /* ── Fonts ── */
+  --font-sans: var(--font-ibm-plex-sans-condensed);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* ── Spacing (ref: TakeProfit rem-based scale) ── */
+  --spacing-px: 1px;
+
+  /* ── Border Radius (ref: TakeProfit scale) ── */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-widget: 18px;
+  --radius-full: 9999px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(179, 200, 224, 0.08) transparent;
+}
+
+body {
+  background: var(--color-bg-base-0);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography Utilities (ref: TakeProfit tw-body/caption/numbers) ── */
+.text-body-14 {
+  font-size: 14px;
+  line-height: 16px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.text-body-12 {
+  font-size: 12px;
+  line-height: 16px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.text-caption-12 {
+  font-size: 12px;
+  line-height: 16px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.text-numbers-12 {
+  font-size: 12px;
+  line-height: 16px;
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.text-numbers-10 {
+  font-size: 10px;
+  line-height: 12px;
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.text-header-20 {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Tabular numbers for data */
+.font-data {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ── Widget Glow Effect (ref: TakeProfit gradient-border glow) ── */
+@keyframes gradient-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.widget-glow-border {
+  pointer-events: none;
+  position: absolute;
+  inset: 1px;
+  z-index: 9;
+  overflow: hidden;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.widget-wrapper:hover .widget-glow-border,
+.widget-wrapper:focus-within .widget-glow-border {
+  opacity: 1;
+}
+
+.glow-layer {
+  position: absolute;
+  inset: 0;
+  filter: blur(2px);
+}
+
+.glow-mask {
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+}
+
+.glow-rotate {
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from 0deg, transparent 0%, var(--glow-color, rgba(0, 255, 133, 0.4)) 10%, transparent 20%);
+  animation: gradient-rotate 3s linear infinite;
+  border-radius: inherit;
+}
+
+.glow-rotate-paused {
+  animation-play-state: paused;
+}
+
+/* ── Widget Header Reveal (ref: TakeProfit hover-reveal actions) ── */
+.widget-header-actions {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.widget-wrapper:hover .widget-header-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Live indicator flicker ── */
+@keyframes flicker-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes flicker-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.live-flicker-green {
+  animation: flicker-green 2s ease-in-out infinite;
+}
+.live-flicker-red {
+  animation: flicker-red 1.5s ease-in-out infinite;
+}
+
+/* Pulse bar for live data rows */
+@keyframes pulse-bar {
+  0% { transform: scaleX(0.3); opacity: 0.6; }
+  50% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(0.3); opacity: 0.6; }
+}
+
+.live-pulse-bar {
+  animation: pulse-bar 3s ease-in-out infinite;
+  transform-origin: left;
+}
+
+/* ── react-grid-layout overrides ── */
+.widget-grid {
+  min-height: 100%;
+}
+
+/* ── dnd-kit drag styles ── */
+.widget-grid-item {
+  transition: none;
+  cursor: grab;
+}
+.widget-grid-item:active {
+  cursor: grabbing;
+}
+
+/* ── Animated Number Transitions ── */
+@keyframes count-up-flash {
+  0% { opacity: 0.4; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes count-down-flash {
+  0% { opacity: 0.4; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.number-flash-up { animation: count-up-flash 300ms ease-out; }
+.number-flash-down { animation: count-down-flash 300ms ease-out; }
+
+/* ── SVG Path Draw-in ── */
+@keyframes draw-path {
+  from { stroke-dashoffset: var(--path-length, 1000); }
+  to { stroke-dashoffset: 0; }
+}
+.animate-draw-path {
+  stroke-dasharray: var(--path-length, 1000);
+  animation: draw-path 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* ── Staggered Fade-in for lists ── */
+@keyframes fade-slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-slide-in 350ms ease-out both;
+}
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
+.stagger-7 { animation-delay: 350ms; }
+.stagger-8 { animation-delay: 400ms; }
+
+/* ── Bar grow from bottom ── */
+@keyframes grow-up {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.animate-grow-up {
+  transform-origin: bottom;
+  animation: grow-up 600ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Slide-in for new feed items ── */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-top {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-in-right { animation: slide-in-right 300ms ease-out; }
+.animate-slide-in-top { animation: slide-in-top 300ms ease-out; }
+
+/* ── Flash border for alerts ── */
+@keyframes flash-border {
+  0%, 100% { box-shadow: inset 0 0 0 1px var(--color-divider-heavy); }
+  50% { box-shadow: inset 0 0 0 1px var(--flash-color, rgba(0, 255, 133, 0.5)), 0 0 12px var(--flash-color, rgba(0, 255, 133, 0.1)); }
+}
+.animate-flash-border {
+  animation: flash-border 2s ease-in-out;
+}
+
+/* ── Progress bar fill ── */
+@keyframes fill-bar {
+  from { width: 0; }
+}
+.animate-fill-bar {
+  animation: fill-bar 800ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* ── Ripple effect for buttons ── */
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.4; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-ripple:active::after {
+  animation: ripple 400ms ease-out;
+}
+
+/* ── Skeleton shimmer for loading states ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-base-2) 25%,
+    var(--color-bg-base-3) 50%,
+    var(--color-bg-base-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* ── Scrollbar hiding (ref: TakeProfit tw-scrollbar-hide) ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

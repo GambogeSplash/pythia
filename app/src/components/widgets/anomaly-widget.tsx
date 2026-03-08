@@ -79,6 +79,7 @@ export function AnomalyWidget() {
             : "Volume anomaly detected",
       market: market.question,
       marketIcon: categoryIcon(market.category),
+      marketImage: market.image,
       size: formatVolume(market.volume24h),
       timestamp: formatTimeAgo(market.updatedAt),
       severity,
@@ -149,7 +150,13 @@ export function AnomalyWidget() {
                       <span className="ml-auto flex-shrink-0 text-[10px] text-text-quaternary">{item.timestamp}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-2 text-[10px]">
-                      <span>{item.marketIcon}</span>
+                      <div className="flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2">
+                        {item.marketImage ? (
+                          <img src={item.marketImage} alt="" className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="text-[8px]">{item.marketIcon}</span>
+                        )}
+                      </div>
                       <Link href={`/dashboard/markets/${item.id}`} className="text-text-secondary hover:text-text-primary transition-colors">{item.market}</Link>
                       <span className="ml-auto font-data font-medium text-text-primary">{item.size}</span>
                     </div>

@@ -18,6 +18,7 @@ import { PortfolioWidget } from "@/components/widgets/portfolio-widget";
 import { CorrelationWidget } from "@/components/widgets/correlation-widget";
 import { SentimentWidget } from "@/components/widgets/sentiment-widget";
 import { NarrativeWidget } from "@/components/widgets/narrative-widget";
+import { AISignalsWidget } from "@/components/widgets/ai-signals-widget";
 
 export const ALL_WIDGETS: WidgetConfig[] = [
   {
@@ -122,6 +123,12 @@ export const ALL_WIDGETS: WidgetConfig[] = [
     component: NarrativeWidget,
     defaultLayout: { w: 4, h: 4, minW: 3, minH: 3 },
   },
+  {
+    id: "ai-signals",
+    title: "AI Signals",
+    component: AISignalsWidget,
+    defaultLayout: { w: 4, h: 4, minW: 3, minH: 3 },
+  },
 ];
 
 // Default dashboard shows these widgets
@@ -131,6 +138,7 @@ export const DEFAULT_DASHBOARD_WIDGETS = [
   "news-feed",
   "traders-activity",
   "sentiment",
+  "ai-signals",
 ];
 
 export function getWidgetsByIds(ids: string[]): WidgetConfig[] {

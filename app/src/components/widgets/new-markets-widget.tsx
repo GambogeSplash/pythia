@@ -122,10 +122,10 @@ export function NewMarketsWidget() {
                         alt=""
                         width={16}
                         height={16}
-                        className="h-4 w-4 shrink-0 rounded-full object-cover"
+                        className="h-4 w-4 shrink-0 rounded-[3px] object-cover"
                       />
                     ) : (
-                      <div className="h-4 w-4 shrink-0 rounded-full bg-bg-surface" />
+                      <div className="h-4 w-4 shrink-0 rounded-[3px] bg-bg-surface" />
                     )}
                     <Link href={`/dashboard/markets/${market.slug || market.id}`} className="truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">{truncate(market.question, 50)}</Link>
                   </div>

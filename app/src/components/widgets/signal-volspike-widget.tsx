@@ -3,12 +3,12 @@
 import { Widget } from "@/components/ui/widget";
 import { AlphaFilter } from "@/components/ui/alpha-filter";
 import { PriceDisplay } from "@/components/ui/price-display";
-import { useTrendingMarkets } from "@/hooks/use-markets";
+import { useNewMarkets } from "@/hooks/use-markets";
 import { formatVolume } from "@/lib/format";
 import { ChevronDown } from "lucide-react";
 
 export function SignalVolSpikeWidget() {
-  const { markets, isLoading } = useTrendingMarkets(6);
+  const { markets, isLoading } = useNewMarkets(6);
 
   return (
     <Widget
@@ -84,7 +84,13 @@ export function SignalVolSpikeWidget() {
                 {/* Market */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">{categoryIcon(market.category)}</span>
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2">
+                      {market.image ? (
+                        <img src={market.image} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                      )}
+                    </div>
                     <span className="truncate text-body-12 text-text-primary">{market.question}</span>
                   </div>
                   <div className="ml-7">

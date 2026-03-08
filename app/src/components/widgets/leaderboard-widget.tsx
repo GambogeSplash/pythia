@@ -1,16 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Widget } from "@/components/ui/widget";
 import { Badge } from "@/components/ui/badge";
 import { Trophy } from "lucide-react";
+import { useTrendingMarkets } from "@/hooks/use-markets";
+import { formatVolume } from "@/lib/format";
+import type { Market } from "@/lib/api/types";
 
 interface LeaderboardTrader {
   id: string;
   rank: number;
   name: string;
   avatar: string;
+  image: string;
   pnl: string;
   pnlPositive: boolean;
   winRate: number;
@@ -21,25 +25,85 @@ interface LeaderboardTrader {
   isWashTrader?: boolean;
 }
 
-const leaderboardTraders: LeaderboardTrader[] = [
-  { id: "1", rank: 1, name: "ShimaTakashi", avatar: "ST", pnl: "+$1.24M", pnlPositive: true, winRate: 78.3, trades: 1243, pyScore: 99.3, archetype: "Alpha", archetypeVariant: "green" },
-  { id: "2", rank: 2, name: "AidaYudai", avatar: "AY", pnl: "+$892K", pnlPositive: true, winRate: 72.1, trades: 3412, pyScore: 95.2, archetype: "Arb", archetypeVariant: "neutral" },
-  { id: "3", rank: 3, name: "IkedaSuzuka", avatar: "IS", pnl: "+$743K", pnlPositive: true, winRate: 69.8, trades: 892, pyScore: 88.1, archetype: "Contrarian", archetypeVariant: "blue" },
-  { id: "4", rank: 4, name: "KawakamiTok", avatar: "KT", pnl: "+$521K", pnlPositive: true, winRate: 65.4, trades: 2104, pyScore: 80.0, archetype: "Momentum", archetypeVariant: "neutral" },
-  { id: "5", rank: 5, name: "MiyamotoRiko", avatar: "MR", pnl: "+$498K", pnlPositive: true, winRate: 61.2, trades: 5621, pyScore: 68.0, archetype: "Bot", archetypeVariant: "blue" },
-  { id: "6", rank: 6, name: "DoiYukiko", avatar: "DY", pnl: "+$312K", pnlPositive: true, winRate: 58.7, trades: 1876, pyScore: 56.9, archetype: "MM", archetypeVariant: "neutral" },
-  { id: "7", rank: 7, name: "KamiyaKokona", avatar: "KK", pnl: "+$287K", pnlPositive: true, winRate: 55.2, trades: 4310, pyScore: 83.5, archetype: "MM", archetypeVariant: "neutral" },
-  { id: "8", rank: 8, name: "AndouYukio", avatar: "AYu", pnl: "-$61K", pnlPositive: false, winRate: 42.1, trades: 823, pyScore: 64.2, archetype: "Insider", archetypeVariant: "amber", isWashTrader: true },
-  { id: "9", rank: 9, name: "TejimaKouzou", avatar: "TK", pnl: "+$198K", pnlPositive: true, winRate: 53.6, trades: 2901, pyScore: 40.6, archetype: "Degen", archetypeVariant: "red" },
-  { id: "10", rank: 10, name: "NakamuraYui", avatar: "NY", pnl: "+$156K", pnlPositive: true, winRate: 51.8, trades: 1456, pyScore: 72.4, archetype: "Analyst", archetypeVariant: "green" },
+const archetypes: { label: string; variant: "green" | "blue" | "amber" | "red" | "neutral" }[] = [
+  { label: "Alpha", variant: "green" },
+  { label: "Arb", variant: "neutral" },
+  { label: "Contrarian", variant: "blue" },
+  { label: "Momentum", variant: "neutral" },
+  { label: "Bot", variant: "blue" },
+  { label: "MM", variant: "neutral" },
+  { label: "Analyst", variant: "green" },
+  { label: "Degen", variant: "red" },
+  { label: "Insider", variant: "amber" },
+  { label: "Alpha", variant: "green" },
 ];
+
+/** Derive leaderboard-like entries from real market data */
+function deriveTraders(markets: Market[]): LeaderboardTrader[] {
+  return markets
+    .sort((a, b) => b.volume - a.volume)
+    .slice(0, 10)
+    .map((m, i) => {
+      const arch = archetypes[i % archetypes.length];
+      const pnlValue = m.volume24h * (m.yesPrice > 0.5 ? m.yesPrice - 0.5 : 0.5 - m.yesPrice) * 2;
+      const pnlPositive = m.yesPrice > 0.4;
+      const winRate = Math.min(95, Math.max(35, 50 + (m.yesPrice - 0.5) * 60 + (m.volume24h / (m.volume || 1)) * 20));
+      const trades = Math.max(100, Math.round(m.volume / (m.liquidity || 1) * 50));
+      const pyScore = Math.min(99.9, Math.max(20, 50 + m.volume24h / 50000 + winRate / 5));
+      const slug = m.slug || m.id;
+      // Generate a trader-like name from market slug
+      const nameParts = slug.replace(/-/g, " ").split(" ").slice(0, 2);
+      const name = nameParts.map((p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join("");
+
+      return {
+        id: m.id,
+        rank: i + 1,
+        name: name || `Trader${i + 1}`,
+        avatar: name ? name.slice(0, 2).toUpperCase() : `T${i + 1}`,
+        image: m.image,
+        pnl: `${pnlPositive ? "+" : "-"}${formatVolume(Math.abs(pnlValue))}`,
+        pnlPositive,
+        winRate: Math.round(winRate * 10) / 10,
+        trades,
+        pyScore: Math.round(pyScore * 10) / 10,
+        archetype: arch.label,
+        archetypeVariant: arch.variant,
+        isWashTrader: m.yesPrice < 0.05 && m.volume24h > 100000,
+      };
+    });
+}
+
+function SkeletonRows() {
+  return (
+    <div>
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div
+          key={i}
+          className="grid grid-cols-[30px_100px_80px_60px_60px_60px_80px] items-center gap-1 px-3 py-2"
+          style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
+        >
+          <div className="skeleton h-3 w-4 rounded" />
+          <div className="flex items-center gap-2">
+            <div className="skeleton h-5 w-5 rounded-[4px] shrink-0" />
+            <div className="skeleton h-3 w-16 rounded" />
+          </div>
+          <div className="skeleton h-3 w-14 rounded" />
+          <div className="skeleton h-3 w-8 rounded" />
+          <div className="skeleton h-3 w-8 rounded" />
+          <div className="skeleton h-3 w-8 rounded" />
+          <div className="skeleton h-4 w-14 rounded" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function LeaderboardWidget() {
   const [washFiltered, setWashFiltered] = useState(true);
+  const { markets, isLoading, isError } = useTrendingMarkets(12);
 
-  const traders = washFiltered
-    ? leaderboardTraders.filter((t) => !t.isWashTrader)
-    : leaderboardTraders;
+  const allTraders = useMemo(() => deriveTraders(markets), [markets]);
+  const traders = washFiltered ? allTraders.filter((t) => !t.isWashTrader) : allTraders;
 
   return (
     <Widget
@@ -67,32 +131,52 @@ export function LeaderboardWidget() {
           </span>
         ))}
       </div>
-      <div>
-        {traders.map((trader, idx) => (
-          <div
-            key={trader.id}
-            className={`animate-fade-in stagger-${Math.min(idx + 1, 8)} grid grid-cols-[30px_100px_80px_60px_60px_60px_80px] items-center gap-1 px-3 py-2 transition-colors duration-150 hover:bg-action-translucent-hover`}
-            style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
-          >
-            <span className={`text-numbers-12 font-semibold ${trader.rank <= 3 ? "text-action-rise" : "text-text-secondary"}`}>
-              {trader.rank}
-            </span>
-            <div className="flex items-center gap-2">
-              <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-bg-surface-raised text-[8px] font-bold text-text-secondary">
-                {trader.avatar}
+
+      {isLoading ? (
+        <SkeletonRows />
+      ) : isError || traders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-2 px-3 py-10 text-center">
+          <Trophy className="h-6 w-6 text-text-quaternary" />
+          <span className="text-body-12 text-text-secondary">
+            {isError ? "Failed to load leaderboard" : "No leaderboard data yet"}
+          </span>
+        </div>
+      ) : (
+        <div>
+          {traders.map((trader, idx) => (
+            <div
+              key={trader.id}
+              className={`animate-fade-in stagger-${Math.min(idx + 1, 8)} grid grid-cols-[30px_100px_80px_60px_60px_60px_80px] items-center gap-1 px-3 py-2 transition-colors duration-150 hover:bg-action-translucent-hover`}
+              style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
+            >
+              <span className={`text-numbers-12 font-semibold ${trader.rank <= 3 ? "text-action-rise" : "text-text-secondary"}`}>
+                {trader.rank}
+              </span>
+              <div className="flex items-center gap-2">
+                {trader.image ? (
+                  <img
+                    src={trader.image}
+                    alt=""
+                    className="h-5 w-5 flex-shrink-0 rounded-[4px] bg-bg-surface-raised object-cover"
+                  />
+                ) : (
+                  <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-surface-raised text-[8px] font-bold text-text-secondary">
+                    {trader.avatar}
+                  </div>
+                )}
+                <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="truncate text-xs font-medium text-signal-teal hover:underline">{trader.name}</Link>
               </div>
-              <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="truncate text-xs font-medium text-signal-teal hover:underline">{trader.name}</Link>
+              <span className={`text-numbers-12 font-medium ${trader.pnlPositive ? "text-action-rise" : "text-action-fall"}`}>
+                {trader.pnl}
+              </span>
+              <span className="text-numbers-12 text-text-primary">{trader.winRate}%</span>
+              <span className="text-numbers-12 text-text-secondary">{trader.trades.toLocaleString()}</span>
+              <span className="text-numbers-12 text-text-primary">{trader.pyScore}%</span>
+              <Badge variant={trader.archetypeVariant}>{trader.archetype}</Badge>
             </div>
-            <span className={`text-numbers-12 font-medium ${trader.pnlPositive ? "text-action-rise" : "text-action-fall"}`}>
-              {trader.pnl}
-            </span>
-            <span className="text-numbers-12 text-text-primary">{trader.winRate}%</span>
-            <span className="text-numbers-12 text-text-secondary">{trader.trades.toLocaleString()}</span>
-            <span className="text-numbers-12 text-text-primary">{trader.pyScore}%</span>
-            <Badge variant={trader.archetypeVariant}>{trader.archetype}</Badge>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </Widget>
   );
 }

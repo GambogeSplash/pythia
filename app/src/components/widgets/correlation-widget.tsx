@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Widget } from "@/components/ui/widget";
 import { GitBranch } from "lucide-react";
-import { useTrendingMarkets } from "@/hooks/use-markets";
+import { useMarkets } from "@/hooks/use-markets";
 
 // ---------- Helpers ----------
 
@@ -35,7 +35,7 @@ type Tab = (typeof tabs)[number];
 
 export function CorrelationWidget() {
   const [activeTab, setActiveTab] = useState<Tab>("Market Pairs");
-  const { markets, isLoading } = useTrendingMarkets(20);
+  const { markets, isLoading } = useMarkets({ limit: 20, offset: 20 });
 
   // Generate correlation pairs from markets in the same category
   const correlationPairs = useMemo(() => {

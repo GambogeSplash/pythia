@@ -11,20 +11,15 @@ import {
   LogOut,
   User,
   Copy,
-  ExternalLink,
   Check,
   ChevronRight,
-  Shield,
-  Palette,
   Monitor,
-  Globe,
-  HelpCircle,
-  MessageSquare,
-  Zap,
   Users,
   TrendingUp,
   AlertTriangle,
   Menu,
+  Camera,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -33,6 +28,10 @@ import { useAppStore, type Notification } from "@/lib/store";
 import { useThemeStore, type Theme } from "@/lib/theme-store";
 import { useSession } from "@/hooks/use-session";
 import { signOut } from "next-auth/react";
+import { useWalletStore, shortenAddress, getChainName } from "@/lib/wallet-store";
+import { WalletConnectModal } from "@/components/wallet-connect-modal";
+import { AIChatPanel } from "@/components/ai-chat-panel";
+import { Brain } from "lucide-react";
 
 const navItems = [
   { label: "DASHBOARD", href: "/dashboard" },
@@ -69,6 +68,28 @@ export function TopNav() {
   const { user, isAuthenticated } = useSession();
   const displayName = user?.name || user?.email?.split("@")[0] || "User";
   const displayInitial = displayName.charAt(0).toUpperCase();
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
+  const [aiChatOpen, setAiChatOpen] = useState(false);
+  const walletAddress = useWalletStore((s) => s.address);
+  const walletShortAddress = useWalletStore((s) => s.shortAddress);
+  const walletChainId = useWalletStore((s) => s.chainId);
+  const profileImage = useThemeStore((s) => s.profileImage);
+  const setProfileImage = useThemeStore((s) => s.setProfileImage);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Image must be under 2MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setProfileImage(ev.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const toggleDropdown = (id: string) => {
     setActiveDropdown(activeDropdown === id ? null : id);
@@ -177,6 +198,34 @@ export function TopNav() {
 
               <div className="mx-1 h-3 w-px bg-divider-medium" />
 
+              {/* AI Chat */}
+              <NavIconButton
+                aria-label="Pythia AI"
+                onClick={() => setAiChatOpen(true)}
+                className="text-signal-green"
+              >
+                <Brain className="h-4 w-4" />
+              </NavIconButton>
+
+              {/* Wallet */}
+              {walletAddress ? (
+                <button
+                  onClick={() => setWalletModalOpen(true)}
+                  className="flex h-6 items-center gap-1.5 rounded-full bg-action-translucent px-2 text-[10px] font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-action-rise live-flicker-green" />
+                  <span className="font-mono">{walletShortAddress}</span>
+                  <span className="text-text-quaternary">{getChainName(walletChainId ?? 0)}</span>
+                </button>
+              ) : (
+                <NavIconButton
+                  aria-label="Connect Wallet"
+                  onClick={() => setWalletModalOpen(true)}
+                >
+                  <Wallet className="h-4 w-4" />
+                </NavIconButton>
+              )}
+
               {/* Notifications */}
               <div className="relative">
                 <NavIconButton
@@ -244,112 +293,16 @@ export function TopNav() {
                 </AnimatePresence>
               </div>
 
-              {/* Theme */}
-              <div className="relative">
-                <NavIconButton
-                  aria-label="Theme"
-                  onClick={() => toggleDropdown("theme")}
-                  active={activeDropdown === "theme"}
-                >
-                  {currentTheme === "light" ? (
-                    <Sun className="h-4 w-4" />
-                  ) : currentTheme === "system" ? (
-                    <Monitor className="h-4 w-4" />
-                  ) : (
-                    <Moon className="h-4 w-4" />
-                  )}
-                </NavIconButton>
-
-                <AnimatePresence>
-                  {activeDropdown === "theme" && (
-                    <DropdownPanel width="w-48" align="right">
-                      <div className="px-3 py-1.5 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
-                        Appearance
-                      </div>
-                      {([
-                        { icon: <Moon className="h-3.5 w-3.5" />, label: "Dark", value: "dark" as Theme },
-                        { icon: <Sun className="h-3.5 w-3.5" />, label: "Light", value: "light" as Theme },
-                        { icon: <Monitor className="h-3.5 w-3.5" />, label: "System", value: "system" as Theme },
-                      ]).map((item) => (
-                        <button
-                          key={item.label}
-                          onClick={() => {
-                            setTheme(item.value);
-                            closeAll();
-                          }}
-                          className={`flex w-full items-center gap-2.5 px-3 py-2 text-body-12 transition-colors duration-150 ${
-                            currentTheme === item.value
-                              ? "text-text-primary"
-                              : "text-text-secondary hover:bg-action-translucent-hover hover:text-text-primary"
-                          }`}
-                        >
-                          {item.icon}
-                          <span className="flex-1 text-left">{item.label}</span>
-                          {currentTheme === item.value && <Check className="h-3.5 w-3.5 text-signal-green" />}
-                        </button>
-                      ))}
-                    </DropdownPanel>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Settings */}
-              <div className="relative hidden sm:block">
-                <NavIconButton
-                  aria-label="Settings"
-                  onClick={() => toggleDropdown("settings")}
-                  active={activeDropdown === "settings"}
-                >
-                  <Settings className="h-4 w-4" />
-                </NavIconButton>
-
-                <AnimatePresence>
-                  {activeDropdown === "settings" && (
-                    <DropdownPanel width="w-52" align="right">
-                      <div className="px-3 py-1.5 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
-                        Settings
-                      </div>
-                      {[
-                        { icon: <Palette className="h-3.5 w-3.5" />, label: "Layout & Widgets" },
-                        { icon: <Bell className="h-3.5 w-3.5" />, label: "Notifications" },
-                        { icon: <Shield className="h-3.5 w-3.5" />, label: "Security" },
-                        { icon: <Globe className="h-3.5 w-3.5" />, label: "API Keys" },
-                        { icon: <Zap className="h-3.5 w-3.5" />, label: "Bot Settings" },
-                      ].map((item) => (
-                        <button
-                          key={item.label}
-                          onClick={() => { closeAll(); router.push("/dashboard/settings"); }}
-                          className="flex w-full items-center gap-2.5 px-3 py-2 text-body-12 text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary"
-                        >
-                          {item.icon}
-                          <span className="flex-1 text-left">{item.label}</span>
-                          <ChevronRight className="h-3 w-3 text-text-muted" />
-                        </button>
-                      ))}
-                      <div className="mx-2 my-1 h-px bg-divider-heavy" />
-                      <button
-                        onClick={() => { closeAll(); router.push("/dashboard/settings"); }}
-                        className="flex w-full items-center gap-2.5 px-3 py-2 text-body-12 text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary"
-                      >
-                        <HelpCircle className="h-3.5 w-3.5" />
-                        <span className="flex-1 text-left">Help & Support</span>
-                      </button>
-                      <button
-                        onClick={closeAll}
-                        className="flex w-full items-center gap-2.5 px-3 py-2 text-body-12 text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover hover:text-text-primary"
-                      >
-                        <MessageSquare className="h-3.5 w-3.5" />
-                        <span className="flex-1 text-left">Feedback</span>
-                      </button>
-                    </DropdownPanel>
-                  )}
-                </AnimatePresence>
-              </div>
-
               {/* Profile / Sign In */}
               {isAuthenticated ? (
                 <>
-                  {/* Profile */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleProfileImageUpload}
+                  />
                   <div className="relative">
                     <button
                       onClick={() => toggleDropdown("profile")}
@@ -357,32 +310,76 @@ export function TopNav() {
                         activeDropdown === "profile" ? "bg-action-secondary-hover" : ""
                       }`}
                     >
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full font-mono text-[8px] font-medium leading-none text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
-                        {displayInitial}
-                      </div>
+                      {profileImage ? (
+                        <img src={profileImage} alt="" className="h-5 w-5 rounded-full object-cover" />
+                      ) : (
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full font-mono text-[8px] font-medium leading-none text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
+                          {displayInitial}
+                        </div>
+                      )}
                     </button>
 
                     <AnimatePresence>
                       {activeDropdown === "profile" && (
-                        <DropdownPanel width="w-56" align="right">
-                          {/* Profile header */}
+                        <DropdownPanel width="w-60" align="right">
+                          {/* Profile header with uploadable avatar */}
                           <div className="px-3 py-3" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
                             <div className="flex items-center gap-2.5">
-                              <div className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
-                                {displayInitial}
-                              </div>
-                              <div>
-                                <div className="text-body-12 font-semibold text-text-primary">{displayName}</div>
-                                {user?.email && <div className="text-[10px] text-text-quaternary">{user.email}</div>}
+                              <button
+                                onClick={() => fileInputRef.current?.click()}
+                                className="group relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                              >
+                                {profileImage ? (
+                                  <img src={profileImage} alt="" className="h-10 w-10 rounded-full object-cover" />
+                                ) : (
+                                  <div className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
+                                    {displayInitial}
+                                  </div>
+                                )}
+                                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                                  <Camera className="h-3.5 w-3.5 text-white" />
+                                </div>
+                              </button>
+                              <div className="min-w-0">
+                                <div className="truncate text-body-12 font-semibold text-text-primary">{displayName}</div>
+                                {user?.email && <div className="truncate text-[10px] text-text-quaternary">{user.email}</div>}
                               </div>
                             </div>
                           </div>
 
+                          {/* Navigation */}
                           <div className="py-1">
                             <ProfileMenuItem icon={<User className="h-3.5 w-3.5" />} label="My Profile" onClick={() => { closeAll(); router.push("/dashboard/portfolio"); }} />
                             <ProfileMenuItem icon={<Wallet className="h-3.5 w-3.5" />} label="Portfolio" onClick={() => { closeAll(); router.push("/dashboard"); }} />
                             <ProfileMenuItem icon={<TrendingUp className="h-3.5 w-3.5" />} label="Trade History" onClick={() => { closeAll(); router.push("/dashboard/portfolio"); }} />
                             <ProfileMenuItem icon={<Settings className="h-3.5 w-3.5" />} label="Settings" onClick={() => { closeAll(); router.push("/dashboard/settings"); }} />
+                          </div>
+
+                          <div className="mx-2 my-1 h-px bg-divider-heavy" />
+
+                          {/* Theme toggle */}
+                          <div className="px-3 py-1.5 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                            Appearance
+                          </div>
+                          <div className="flex items-center gap-1 px-3 pb-2">
+                            {([
+                              { icon: <Moon className="h-3 w-3" />, value: "dark" as Theme, label: "Dark" },
+                              { icon: <Sun className="h-3 w-3" />, value: "light" as Theme, label: "Light" },
+                              { icon: <Monitor className="h-3 w-3" />, value: "system" as Theme, label: "System" },
+                            ]).map((item) => (
+                              <button
+                                key={item.value}
+                                onClick={() => setTheme(item.value)}
+                                className={`flex flex-1 items-center justify-center gap-1.5 rounded-[6px] py-1.5 text-[10px] font-medium transition-all duration-150 ${
+                                  currentTheme === item.value
+                                    ? "bg-signal-green/10 text-signal-green"
+                                    : "text-text-quaternary hover:bg-action-translucent hover:text-text-secondary"
+                                }`}
+                              >
+                                {item.icon}
+                                {item.label}
+                              </button>
+                            ))}
                           </div>
 
                           <div className="mx-2 my-1 h-px bg-divider-heavy" />
@@ -414,6 +411,9 @@ export function TopNav() {
           </div>
         </div>
       </header>
+
+      <WalletConnectModal isOpen={walletModalOpen} onClose={() => setWalletModalOpen(false)} />
+      <AIChatPanel isOpen={aiChatOpen} onClose={() => setAiChatOpen(false)} />
     </>
   );
 }

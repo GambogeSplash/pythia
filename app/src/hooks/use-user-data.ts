@@ -102,7 +102,7 @@ export function useBots() {
   const { data, error, isLoading, mutate } = useSWR<{ data: Bot[] } | null>(
     "/api/user/bots",
     fetcher,
-    { revalidateOnFocus: false, dedupingInterval: 30_000 },
+    { revalidateOnFocus: true, dedupingInterval: 5_000 },
   );
 
   return {

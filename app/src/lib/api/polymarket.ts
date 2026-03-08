@@ -273,10 +273,10 @@ export async function getClosingSoon(limit = 10): Promise<Market[]> {
 }
 
 export async function getTopMovers(limit = 10): Promise<Market[]> {
-  // Use volume24hr as proxy for price movers — high-volume markets tend to be actively moving
+  // Fetch by liquidity to get different markets than trending (which sorts by volume)
   const { markets } = await getMarkets({
     limit,
-    order: "volume24hr",
+    order: "liquidity",
     ascending: false,
     active: true,
     closed: false,

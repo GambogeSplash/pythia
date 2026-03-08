@@ -97,7 +97,13 @@ export function CalendarWidget() {
                   <div className="text-numbers-10 text-text-quaternary">{timeLeft}</div>
                 </div>
                 <div className="flex min-w-0 flex-1 items-center gap-2">
-                  <span className="text-sm">{categoryIcon(market.category)}</span>
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2">
+                    {market.image ? (
+                      <img src={market.image} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                    )}
+                  </div>
                   <Link href={`/dashboard/markets/${market.id}`} className="truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">{market.question}</Link>
                 </div>
                 <Badge variant={type.variant}>{type.label}</Badge>

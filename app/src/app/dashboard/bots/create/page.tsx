@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { mutate } from "swr";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -349,6 +350,7 @@ export default function BotCreatePage() {
         }),
       });
       if (res.ok) {
+        await mutate("/api/user/bots");
         router.push("/dashboard/bots");
       } else {
         alert("Failed to deploy bot. Please try again.");

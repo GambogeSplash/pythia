@@ -98,8 +98,15 @@ function MarketListItem({
         boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)",
       }}
     >
-      <div className="flex items-center justify-between">
-        <span className="text-body-12 font-medium text-text-primary line-clamp-1">
+      <div className="flex items-center gap-2">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2">
+          {market.image ? (
+            <img src={market.image} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <span className="text-[10px] text-text-quaternary">M</span>
+          )}
+        </div>
+        <span className="flex-1 text-body-12 font-medium text-text-primary line-clamp-1">
           {market.question}
         </span>
         <span className="ml-1 shrink-0 text-numbers-10 text-text-quaternary">

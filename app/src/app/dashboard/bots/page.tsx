@@ -182,7 +182,7 @@ export default function BotsPage() {
 
   // Sync API bots to local state
   useEffect(() => {
-    if (apiBots.length > 0) {
+    {
       const mapped: LocalBot[] = apiBots.map((b) => ({
         id: b.id,
         name: b.name,

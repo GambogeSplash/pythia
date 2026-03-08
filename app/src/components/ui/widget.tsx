@@ -84,10 +84,10 @@ export function Widget({
         style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
       />
 
-      {/* Widget Header */}
-      <div className="relative z-[11] flex items-center overflow-hidden rounded-t-[inherit] px-3 py-2">
-        {/* Drag handle */}
-        <div className="widget-drag-handle mr-1 flex cursor-grab items-center opacity-0 transition-opacity duration-200 group-hover/widget:opacity-100 active:cursor-grabbing">
+      {/* Widget Header — entire header is drag handle */}
+      <div className="widget-drag-handle relative z-[11] flex cursor-grab items-center overflow-hidden rounded-t-[inherit] px-3 py-2 active:cursor-grabbing">
+        {/* Drag grip dots */}
+        <div className="mr-1 flex items-center opacity-0 transition-opacity duration-200 group-hover/widget:opacity-40">
           <GripVertical className="h-3.5 w-3.5 text-text-quaternary" />
         </div>
 

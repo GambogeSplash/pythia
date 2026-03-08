@@ -3,12 +3,12 @@
 import { useMemo } from "react";
 import { Widget } from "@/components/ui/widget";
 import { Activity, TrendingUp, TrendingDown } from "lucide-react";
-import { useTrendingMarkets } from "@/hooks/use-markets";
+import { useMarkets } from "@/hooks/use-markets";
 
 // ── Widget ──────────────────────────────────────────────────────────────
 
 export function SentimentWidget() {
-  const { markets, isLoading } = useTrendingMarkets(20);
+  const { markets, isLoading } = useMarkets({ limit: 20 });
 
   const sentiment = useMemo(() => {
     if (markets.length === 0) return null;

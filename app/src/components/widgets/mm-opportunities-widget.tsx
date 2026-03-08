@@ -7,7 +7,7 @@ import { useMarkets } from "@/hooks/use-markets";
 import { formatVolume } from "@/lib/format";
 
 export function MMOpportunitiesWidget() {
-  const { markets, isLoading } = useMarkets({ limit: 6, mode: "trending" });
+  const { markets, isLoading } = useMarkets({ limit: 6, offset: 10, mode: "trending" });
 
   return (
     <Widget id="mm-opportunities" title="Top MM Opportunities" icon={<span className="text-xs">⊞</span>}>
@@ -59,7 +59,13 @@ export function MMOpportunitiesWidget() {
                 {/* Market */}
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">{categoryIcon(market.category)}</span>
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2">
+                      {market.image ? (
+                        <img src={market.image} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                      )}
+                    </div>
                     <div className="min-w-0">
                       <Link href={`/dashboard/markets/${market.id}`} className="block truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">
                         {market.question}

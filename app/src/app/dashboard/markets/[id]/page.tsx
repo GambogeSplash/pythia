@@ -3,6 +3,7 @@
 import { use, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { useMarket, useOrderbook } from "@/hooks/use-markets";
+import { useAIAnalysis } from "@/hooks/use-ai";
 import { formatVolume, formatTimeLeft } from "@/lib/format";
 import type { PricePoint } from "@/lib/api/types";
 import {
@@ -16,6 +17,8 @@ import {
   DollarSign,
   ShoppingCart,
   Check,
+  Brain,
+  RefreshCw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -165,6 +168,9 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
   const [tradeAmount, setTradeAmount] = useState("");
   const [tradePlacing, setTradePlacing] = useState(false);
   const [tradePlaced, setTradePlaced] = useState(false);
+
+  // ── AI Analysis ────────────────────────────────────────────────────────
+  const { analysis, isLoading: aiLoading, refetch: refetchAI } = useAIAnalysis(id);
 
   // ── Real data hooks ─────────────────────────────────────────────────────
   const interval = TIMEFRAME_TO_INTERVAL[activeTimeframe] ?? "1d";
@@ -437,8 +443,8 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
               <div className="relative flex-1 px-3 py-3">
                 {/* Y-axis labels */}
                 <div className="absolute left-0 top-3 flex h-[200px] flex-col justify-between py-1 pl-1">
-                  {yLabels.map((label) => (
-                    <span key={label} className="text-numbers-10 text-text-quaternary">{label}</span>
+                  {yLabels.map((label, i) => (
+                    <span key={i} className="text-numbers-10 text-text-quaternary">{label}</span>
                   ))}
                 </div>
 
@@ -595,6 +601,50 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                 )}
               </motion.div>
             )}
+
+            {/* AI Analysis */}
+            <motion.div
+              variants={fadeUp}
+              className="rounded-[12px] bg-bg-base-1"
+              style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
+            >
+              <div
+                className="flex h-9 items-center justify-between px-4"
+                style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
+              >
+                <div className="flex items-center gap-2">
+                  <Brain className="h-3.5 w-3.5 text-signal-green" />
+                  <span className="text-body-12 font-semibold text-text-primary">Pythia AI Analysis</span>
+                </div>
+                <button
+                  onClick={() => refetchAI()}
+                  disabled={aiLoading}
+                  className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-[10px] text-text-secondary transition-colors hover:bg-action-secondary-hover hover:text-text-primary disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-2.5 w-2.5 ${aiLoading ? "animate-spin" : ""}`} />
+                  {analysis ? "Refresh" : "Analyze"}
+                </button>
+              </div>
+              <div className="px-4 py-3">
+                {!analysis && !aiLoading && (
+                  <p className="text-body-12 text-text-quaternary">
+                    Click &ldquo;Analyze&rdquo; to get AI-powered insights for this market.
+                  </p>
+                )}
+                {aiLoading && !analysis && (
+                  <div className="space-y-2">
+                    <div className="skeleton h-3 w-full rounded" />
+                    <div className="skeleton h-3 w-4/5 rounded" />
+                    <div className="skeleton h-3 w-3/5 rounded" />
+                  </div>
+                )}
+                {analysis && (
+                  <div className="prose-invert text-body-12 leading-relaxed text-text-secondary whitespace-pre-wrap">
+                    {analysis}
+                  </div>
+                )}
+              </div>
+            </motion.div>
           </div>
 
           {/* ── Right panel: trade + orderbook + stats ────────────────────── */}

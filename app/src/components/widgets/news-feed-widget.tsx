@@ -73,7 +73,7 @@ export function NewsFeedWidget() {
               {/* Author row */}
               <div className="flex items-start gap-2.5">
                 {/* Avatar / image */}
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-bg-base-3 text-[10px] font-bold text-text-secondary overflow-hidden">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-base-3 text-[10px] font-bold text-text-secondary overflow-hidden">
                   {event.image ? (
                     <img src={event.image} alt="" className="h-full w-full object-cover" />
                   ) : (

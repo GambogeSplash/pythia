@@ -100,10 +100,10 @@ export function TrendingWidget() {
                       alt=""
                       width={20}
                       height={20}
-                      className="h-5 w-5 shrink-0 rounded-full object-cover"
+                      className="h-5 w-5 shrink-0 rounded-[4px] object-cover"
                     />
                   ) : (
-                    <div className="h-5 w-5 shrink-0 rounded-full bg-bg-surface" />
+                    <div className="h-5 w-5 shrink-0 rounded-[4px] bg-bg-surface" />
                   )}
                   <div className="min-w-0">
                     <Link href={`/dashboard/markets/${market.slug || market.id}`} className="block truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">{truncate(market.question, 50)}</Link>

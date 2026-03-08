@@ -125,10 +125,10 @@ export function ClosingSoonWidget() {
                         alt=""
                         width={24}
                         height={24}
-                        className="h-6 w-6 shrink-0 rounded-full object-cover"
+                        className="h-6 w-6 shrink-0 rounded-[4px] object-cover"
                       />
                     ) : (
-                      <div className="h-6 w-6 shrink-0 rounded-full bg-bg-surface" />
+                      <div className="h-6 w-6 shrink-0 rounded-[4px] bg-bg-surface" />
                     )}
                     <div className="min-w-0">
                       <div className="flex items-center gap-1">

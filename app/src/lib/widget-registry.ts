@@ -19,6 +19,12 @@ import { CorrelationWidget } from "@/components/widgets/correlation-widget";
 import { SentimentWidget } from "@/components/widgets/sentiment-widget";
 import { NarrativeWidget } from "@/components/widgets/narrative-widget";
 import { AISignalsWidget } from "@/components/widgets/ai-signals-widget";
+import { WatchlistWidget } from "@/components/widgets/watchlist-widget";
+import { OrderBookWidget } from "@/components/widgets/orderbook-widget";
+import { PositionsWidget } from "@/components/widgets/positions-widget";
+import { ScreenerWidget } from "@/components/widgets/screener-widget";
+import { TickerTapeWidget } from "@/components/widgets/ticker-tape-widget";
+import { HeatmapWidget } from "@/components/widgets/heatmap-widget";
 
 export const ALL_WIDGETS: WidgetConfig[] = [
   {
@@ -128,6 +134,42 @@ export const ALL_WIDGETS: WidgetConfig[] = [
     title: "AI Signals",
     component: AISignalsWidget,
     defaultLayout: { w: 4, h: 5, minW: 3, minH: 3 },
+  },
+  {
+    id: "watchlist",
+    title: "Watchlist",
+    component: WatchlistWidget,
+    defaultLayout: { w: 4, h: 5, minW: 3, minH: 3 },
+  },
+  {
+    id: "orderbook",
+    title: "Order Book",
+    component: OrderBookWidget,
+    defaultLayout: { w: 4, h: 5, minW: 3, minH: 3 },
+  },
+  {
+    id: "positions",
+    title: "Positions",
+    component: PositionsWidget,
+    defaultLayout: { w: 4, h: 4, minW: 3, minH: 2 },
+  },
+  {
+    id: "screener",
+    title: "Market Screener",
+    component: ScreenerWidget,
+    defaultLayout: { w: 8, h: 5, minW: 4, minH: 3 },
+  },
+  {
+    id: "ticker-tape",
+    title: "Ticker Tape",
+    component: TickerTapeWidget,
+    defaultLayout: { w: 12, h: 1, minW: 6, minH: 1 },
+  },
+  {
+    id: "heatmap",
+    title: "Heat Map",
+    component: HeatmapWidget,
+    defaultLayout: { w: 8, h: 5, minW: 4, minH: 3 },
   },
 ];
 

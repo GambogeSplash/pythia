@@ -680,7 +680,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                     onClick={() => setTradeSide("no")}
                     className={`flex items-center justify-center gap-1.5 rounded-[8px] py-2.5 text-body-14 font-bold transition-all duration-200 ${
                       tradeSide === "no"
-                        ? "bg-signal-red text-white shadow-[0_0_12px_rgba(255,160,158,0.3)]"
+                        ? "bg-signal-red text-white shadow-[0_0_12px_rgba(255,59,59,0.3)]"
                         : "bg-bg-base-2 text-text-secondary hover:bg-bg-base-3 hover:text-text-primary"
                     }`}
                     style={tradeSide !== "no" ? { boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" } : undefined}
@@ -800,7 +800,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                       className={`flex w-full items-center justify-center gap-2 rounded-[8px] py-3 text-body-14 font-bold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 ${
                         tradeSide === "yes"
                           ? "bg-signal-green text-bg-base-0 hover:shadow-[0_0_16px_rgba(0,255,133,0.35)] active:scale-[0.98]"
-                          : "bg-signal-red text-white hover:shadow-[0_0_16px_rgba(255,160,158,0.35)] active:scale-[0.98]"
+                          : "bg-signal-red text-white hover:shadow-[0_0_16px_rgba(255,59,59,0.35)] active:scale-[0.98]"
                       }`}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}

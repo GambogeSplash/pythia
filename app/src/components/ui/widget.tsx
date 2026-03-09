@@ -1,17 +1,23 @@
 "use client";
 
 import {
-  MoreHorizontal,
   Maximize2,
   Minimize2,
   X,
-  Pin,
-  Copy,
   GripVertical,
+  Link2,
+  Unlink,
+  Check,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAppStore } from "@/lib/store";
+import { useAppStore, LINK_CHANNEL_COLORS } from "@/lib/store";
+
+const WidgetFullscreenContext = createContext(false);
+export function useWidgetFullscreen() {
+  return useContext(WidgetFullscreenContext);
+}
 
 interface WidgetProps {
   id?: string;
@@ -34,29 +40,32 @@ export function Widget({
   accentColor,
   liveIndicator,
 }: WidgetProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [linkSelectorOpen, setLinkSelectorOpen] = useState(false);
   const removeWidget = useAppStore((s) => s.removeWidget);
   const fullscreenWidgetId = useAppStore((s) => s.fullscreenWidgetId);
   const setFullscreenWidgetId = useAppStore((s) => s.setFullscreenWidgetId);
+  const setContextMenu = useAppStore((s) => s.setContextMenu);
+  const widgetLinks = useAppStore((s) => s.widgetLinks);
+  const setWidgetLink = useAppStore((s) => s.setWidgetLink);
+
+  const linkedChannel = id !== undefined ? widgetLinks[id] : undefined;
 
   const isFullscreen = id ? fullscreenWidgetId === id : false;
 
   const handleFullscreen = () => {
     if (!id) return;
     setFullscreenWidgetId(isFullscreen ? null : id);
-    setMenuOpen(false);
   };
 
   const handleRemove = () => {
     if (!id) return;
     removeWidget(id);
-    setMenuOpen(false);
   };
 
-  const handleCollapse = () => {
-    setCollapsed(!collapsed);
-    setMenuOpen(false);
+  const handleContextMenu = (e: React.MouseEvent) => {
+    if (!id) return;
+    e.preventDefault();
+    setContextMenu({ widgetId: id, x: e.clientX, y: e.clientY });
   };
 
   const widgetContent = (
@@ -65,6 +74,7 @@ export function Widget({
       style={{
         "--widget-accent": accentColor || "var(--color-signal-green)",
       } as React.CSSProperties}
+      onContextMenu={handleContextMenu}
     >
       {/* Glow border */}
       <div className="widget-glow-border rounded-[inherit]">
@@ -103,6 +113,75 @@ export function Widget({
               {title}
             </span>
 
+            {/* Link channel indicator */}
+            {id && linkedChannel !== undefined && (
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLinkSelectorOpen(!linkSelectorOpen);
+                  }}
+                  className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-125"
+                  aria-label={`Linked to channel ${linkedChannel + 1}`}
+                >
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: LINK_CHANNEL_COLORS[linkedChannel] }}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {linkSelectorOpen && (
+                    <>
+                      <div className="fixed inset-0 z-30" onClick={() => setLinkSelectorOpen(false)} />
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.12 }}
+                        className="absolute left-0 top-5 z-40 overflow-hidden rounded-[8px] bg-bg-base-2 p-2"
+                        style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy), 0 8px 24px -4px rgba(0,0,0,0.5)" }}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          {LINK_CHANNEL_COLORS.map((color, i) => (
+                            <button
+                              key={i}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setWidgetLink(id, i);
+                                setLinkSelectorOpen(false);
+                              }}
+                              className="relative flex h-5 w-5 items-center justify-center rounded-full transition-transform hover:scale-125"
+                              aria-label={`Link to channel ${i + 1}`}
+                            >
+                              <div
+                                className="h-3 w-3 rounded-full"
+                                style={{ backgroundColor: color }}
+                              />
+                              {linkedChannel === i && (
+                                <Check className="absolute h-2 w-2 text-white" />
+                              )}
+                            </button>
+                          ))}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setWidgetLink(id, null);
+                              setLinkSelectorOpen(false);
+                            }}
+                            className="flex h-5 w-5 items-center justify-center rounded-full text-text-quaternary transition-colors hover:text-text-primary"
+                            aria-label="Unlink"
+                          >
+                            <Unlink className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
             {/* Live indicator */}
             {liveIndicator && (
               <span className="relative flex h-2 w-2 shrink-0">
@@ -126,50 +205,6 @@ export function Widget({
         {/* Hover-reveal actions */}
         <div className="widget-header-actions absolute right-2 top-1.5 z-20 flex items-center gap-1">
           {/* Menu with options */}
-          <div className="relative">
-            <WidgetAction aria-label="Widget menu" onClick={() => setMenuOpen(!menuOpen)}>
-              <MoreHorizontal className="h-3.5 w-3.5" />
-            </WidgetAction>
-
-            <AnimatePresence>
-              {menuOpen && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: -4 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-7 z-40 w-44 overflow-hidden rounded-[8px] bg-bg-base-2 py-1"
-                    style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy), 0 8px 24px -4px rgba(0,0,0,0.5)" }}
-                  >
-                    <MenuButton onClick={handleFullscreen}>
-                      {isFullscreen ? (
-                        <><Minimize2 className="h-3.5 w-3.5" /> Minimize</>
-                      ) : (
-                        <><Maximize2 className="h-3.5 w-3.5" /> Fullscreen</>
-                      )}
-                    </MenuButton>
-                    <MenuButton onClick={handleCollapse}>
-                      <Pin className="h-3.5 w-3.5" /> {collapsed ? "Expand" : "Collapse"}
-                    </MenuButton>
-                    <MenuButton onClick={() => setMenuOpen(false)}>
-                      <Copy className="h-3.5 w-3.5" /> Duplicate
-                    </MenuButton>
-                    {id && (
-                      <>
-                        <div className="mx-2 my-1 h-px bg-divider-heavy" />
-                        <MenuButton onClick={handleRemove} variant="danger">
-                          <X className="h-3.5 w-3.5" /> Remove Widget
-                        </MenuButton>
-                      </>
-                    )}
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-          </div>
-
           <WidgetAction aria-label="Toggle fullscreen" onClick={handleFullscreen}>
             {isFullscreen ? (
               <Minimize2 className="h-3.5 w-3.5" />
@@ -187,30 +222,36 @@ export function Widget({
       </div>
 
       {/* Widget Body */}
-      {!collapsed && (
-        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-          <div className="flex-1 overflow-auto">{children}</div>
-        </div>
-      )}
+      {/* Widget Body */}
+      <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="flex-1 overflow-auto">{children}</div>
+      </div>
     </div>
   );
 
-  // Fullscreen overlay
-  if (isFullscreen) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 flex flex-col bg-bg-base-0 p-4"
-      >
-        {widgetContent}
-      </motion.div>
-    );
-  }
-
-  return widgetContent;
+  // Always render the widget in its grid slot.
+  // When fullscreen, also render a portal overlay on top.
+  return (
+    <>
+      {widgetContent}
+      {isFullscreen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <WidgetFullscreenContext.Provider value={true}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-50 flex flex-col bg-bg-base-0 p-4"
+            >
+              {widgetContent}
+            </motion.div>
+          </WidgetFullscreenContext.Provider>,
+          document.body
+        )}
+    </>
+  );
 }
 
 function WidgetAction({
@@ -223,29 +264,6 @@ function WidgetAction({
       className="flex h-5 w-5 items-center justify-center rounded-full bg-action-secondary text-text-primary transition-all duration-150 hover:bg-action-secondary-hover hover:scale-110 active:scale-95 active:bg-action-secondary-active"
       onClick={onClick}
       {...props}
-    >
-      {children}
-    </button>
-  );
-}
-
-function MenuButton({
-  children,
-  onClick,
-  variant = "default",
-}: {
-  children: ReactNode;
-  onClick?: () => void;
-  variant?: "default" | "danger";
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex w-full items-center gap-2 px-3 py-1.5 text-body-12 transition-colors duration-150 ${
-        variant === "danger"
-          ? "text-action-fall hover:bg-action-fall-dim"
-          : "text-text-secondary hover:bg-action-translucent-hover hover:text-text-primary"
-      }`}
     >
       {children}
     </button>

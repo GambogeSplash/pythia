@@ -83,7 +83,7 @@ const BOT_TYPES = [
     desc: "Follow traders by wallet. Full or scaled copy, category-specific, whitelist/blacklist.",
     difficulty: "Beginner",
     avgReturn: "Mirrors target",
-    color: "#FF8664",
+    color: "#FF3B3B",
   },
 ];
 

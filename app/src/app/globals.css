@@ -47,16 +47,16 @@
   --color-signal-purple-dim: rgba(133, 77, 255, 0.12);
 
   /* ── Trading Actions (ref: TakeProfit buy/sell/rise/fall) ── */
-  --color-action-buy: #59F94A;
-  --color-action-buy-hover: #79FF6A;
-  --color-action-buy-dim: rgba(89, 249, 74, 0.12);
-  --color-action-sell: #FFA09E;
-  --color-action-sell-hover: #FFB8B6;
-  --color-action-sell-dim: rgba(255, 160, 158, 0.12);
-  --color-action-rise: #59F94A;
-  --color-action-rise-dim: rgba(89, 249, 74, 0.12);
-  --color-action-fall: #FF8664;
-  --color-action-fall-dim: rgba(255, 134, 100, 0.12);
+  --color-action-buy: #00FF85;
+  --color-action-buy-hover: #33FF9D;
+  --color-action-buy-dim: rgba(0, 255, 133, 0.12);
+  --color-action-sell: #FF3B3B;
+  --color-action-sell-hover: #FF5C5C;
+  --color-action-sell-dim: rgba(255, 59, 59, 0.12);
+  --color-action-rise: #00FF85;
+  --color-action-rise-dim: rgba(0, 255, 133, 0.12);
+  --color-action-fall: #FF3B3B;
+  --color-action-fall-dim: rgba(255, 59, 59, 0.12);
 
   /* ── Action Buttons (ref: TakeProfit translucent system) ── */
   --color-action-brand: #00FF85;
@@ -70,8 +70,8 @@
   --color-action-translucent-active: rgba(179, 200, 224, 0.04);
 
   /* ── Chart Palette (ref: TakeProfit 20-color chart system) ── */
-  --color-chart-green: #34E94A;
-  --color-chart-red: #FE3450;
+  --color-chart-green: #00FF85;
+  --color-chart-red: #FF3B3B;
   --color-chart-blue: #2F89FF;
   --color-chart-purple: #854DFF;
   --color-chart-fuchsia: #DD0075;
@@ -153,8 +153,8 @@
   --color-action-sell-dim: rgba(220, 38, 38, 0.08);
   --color-action-rise: #16A34A;
   --color-action-rise-dim: rgba(22, 163, 74, 0.10);
-  --color-action-fall: #EA580C;
-  --color-action-fall-dim: rgba(234, 88, 12, 0.08);
+  --color-action-fall: #DC2626;
+  --color-action-fall-dim: rgba(220, 38, 38, 0.08);
 
   /* Action buttons */
   --color-action-brand: #00B85E;
@@ -374,10 +374,17 @@ body {
 /* ── dnd-kit drag styles ── */
 .widget-grid-item {
   transition: none;
+}
+
+.widget-drag-handle {
   cursor: grab;
 }
-.widget-grid-item:active {
+.widget-drag-handle:active {
   cursor: grabbing;
+}
+
+.drop-target-active {
+  background: radial-gradient(ellipse at center, rgba(0, 255, 133, 0.02) 0%, transparent 70%);
 }
 
 /* ── Animated Number Transitions ── */
@@ -526,20 +533,31 @@ body {
   opacity: 0.95;
 }
 
+.react-grid-item.resizing .widget-wrapper {
+  box-shadow: 0 0 0 2px rgba(0, 255, 133, 0.3), 0 0 24px rgba(0, 255, 133, 0.08);
+}
+
 .react-grid-item.react-draggable-dragging {
   z-index: 40;
   will-change: transform;
   opacity: 0.92;
-  box-shadow: 0 0 0 1px rgba(0, 255, 133, 0.25), 0 16px 48px -8px rgba(0, 0, 0, 0.6), 0 0 32px rgba(0, 255, 133, 0.1);
+  transform: scale(1.02);
+  box-shadow: 0 0 0 1px rgba(0, 255, 133, 0.25), 0 20px 60px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 255, 133, 0.12);
   border-radius: 18px;
 }
 
 .react-grid-placeholder {
-  background: rgba(0, 255, 133, 0.06) !important;
-  border: 2px dashed rgba(0, 255, 133, 0.35) !important;
+  background: rgba(0, 255, 133, 0.04) !important;
+  border: 2px solid rgba(0, 255, 133, 0.3) !important;
   border-radius: 18px !important;
-  box-shadow: inset 0 0 24px rgba(0, 255, 133, 0.06), 0 0 32px rgba(0, 255, 133, 0.08) !important;
+  box-shadow: inset 0 0 32px rgba(0, 255, 133, 0.06), 0 0 24px rgba(0, 255, 133, 0.06) !important;
   opacity: 1 !important;
+  animation: placeholder-pulse 1.5s ease-in-out infinite !important;
+}
+
+@keyframes placeholder-pulse {
+  0%, 100% { border-color: rgba(0, 255, 133, 0.3); box-shadow: inset 0 0 32px rgba(0, 255, 133, 0.06), 0 0 24px rgba(0, 255, 133, 0.06); }
+  50% { border-color: rgba(0, 255, 133, 0.5); box-shadow: inset 0 0 32px rgba(0, 255, 133, 0.1), 0 0 32px rgba(0, 255, 133, 0.12); }
 }
 
 /* Resize handles */

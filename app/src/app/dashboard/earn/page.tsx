@@ -50,7 +50,7 @@ const POOLS: {
 const RISK_CONFIG = {
   Conservative: { color: "text-action-rise", bg: "bg-action-rise-dim", dot: "var(--color-signal-green)" },
   Moderate: { color: "text-signal-amber", bg: "bg-signal-amber-dim", dot: "var(--color-signal-amber)" },
-  Aggressive: { color: "text-action-fall", bg: "bg-action-fall-dim", dot: "#FF3B3B" },
+  Aggressive: { color: "text-action-fall", bg: "bg-action-fall-dim", dot: "var(--color-action-fall)" },
 };
 
 const SCANNER_CATEGORIES = ["All", "Politics", "Macro", "Crypto", "Sports"];

@@ -9,6 +9,7 @@ import {
   type ResponsiveLayouts,
 } from "react-grid-layout";
 import { useAppStore } from "@/lib/store";
+import { ALL_WIDGETS } from "@/lib/widget-registry";
 
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
@@ -95,41 +96,67 @@ function saveLayouts(key: string, layouts: StoredLayouts) {
   } catch {}
 }
 
+/* ── Look up a widget's default size from the registry ── */
+function getWidgetDefaultSize(widgetId: string): { w: number; h: number; minW: number; minH: number } {
+  const widget = ALL_WIDGETS.find((w) => w.id === widgetId);
+  if (widget) {
+    return {
+      w: Math.min(widget.defaultLayout.w, 12),
+      h: widget.defaultLayout.h,
+      minW: widget.defaultLayout.minW ?? 3,
+      minH: widget.defaultLayout.minH ?? 2,
+    };
+  }
+  return { w: 4, h: 4, minW: 3, minH: 2 };
+}
+
 /* ── Component ── */
 
 export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: WidgetGridProps) {
   const [mounted, setMounted] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const fullscreenWidgetId = useAppStore((s) => s.fullscreenWidgetId);
+  const layoutLocked = useAppStore((s) => s.layoutLocked);
+  const addWidget = useAppStore((s) => s.addWidget);
+  const setWidgetPanelOpen = useAppStore((s) => s.setWidgetPanelOpen);
+  const setDraggingFromPanel = useAppStore((s) => s.setDraggingFromPanel);
 
-  const defaultLayouts = useMemo(() => generateDefaultLayouts(widgets), [widgets]);
-
-  const [layouts, setLayouts] = useState<StoredLayouts>(() => {
-    const saved = loadLayouts(storageKey);
-    if (saved) {
-      const widgetIds = new Set(widgets.map((w) => w.id));
-      const existingIds = new Set(saved.lg?.map((l) => l.i) ?? []);
-      const newWidgets = widgets.filter((w) => !existingIds.has(w.id));
-
-      let result: StoredLayouts = {
-        lg: (saved.lg ?? []).filter((l) => widgetIds.has(l.i)),
-        md: (saved.md ?? []).filter((l) => widgetIds.has(l.i)),
-        sm: (saved.sm ?? []).filter((l) => widgetIds.has(l.i)),
-      };
-
-      if (newWidgets.length > 0) {
-        const newDefaults = generateDefaultLayouts(newWidgets);
-        result = {
-          lg: [...result.lg, ...newDefaults.lg],
-          md: [...result.md, ...newDefaults.md],
-          sm: [...result.sm, ...newDefaults.sm],
-        };
-      }
-      return result;
-    }
-    return defaultLayouts;
+  // Raw layout state — only updated by user interactions (drag/resize/drop)
+  const [rawLayouts, setRawLayouts] = useState<StoredLayouts>(() => {
+    return loadLayouts(storageKey) ?? generateDefaultLayouts(widgets);
   });
+
+  // Effective layouts — derived from rawLayouts + current widgets.
+  // Adds default layouts for new widgets, removes stale entries.
+  // This is a pure derivation, no setState needed, so no infinite loops.
+  const layouts = useMemo<StoredLayouts>(() => {
+    const widgetIds = new Set(widgets.map((w) => w.id));
+    const existingIds = new Set(rawLayouts.lg?.map((l) => l.i) ?? []);
+    const newWidgets = widgets.filter((w) => !existingIds.has(w.id));
+    const hasStale = rawLayouts.lg?.some((l) => !widgetIds.has(l.i)) ?? false;
+
+    // If everything matches, return raw as-is (stable reference)
+    if (newWidgets.length === 0 && !hasStale) return rawLayouts;
+
+    // Filter out stale entries
+    let result: StoredLayouts = {
+      lg: (rawLayouts.lg ?? []).filter((l) => widgetIds.has(l.i)),
+      md: (rawLayouts.md ?? []).filter((l) => widgetIds.has(l.i)),
+      sm: (rawLayouts.sm ?? []).filter((l) => widgetIds.has(l.i)),
+    };
+
+    // Add defaults for new widgets
+    if (newWidgets.length > 0) {
+      const newDefaults = generateDefaultLayouts(newWidgets);
+      result = {
+        lg: [...result.lg, ...newDefaults.lg],
+        md: [...result.md, ...newDefaults.md],
+        sm: [...result.sm, ...newDefaults.sm],
+      };
+    }
+
+    return result;
+  }, [rawLayouts, widgets]);
 
   // Measure container width
   useEffect(() => {
@@ -147,49 +174,83 @@ export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: W
     return () => observer.disconnect();
   }, []);
 
-  // Sync layouts when widgets change
-  useEffect(() => {
-    const widgetIds = new Set(widgets.map((w) => w.id));
-    const currentIds = new Set(layouts.lg?.map((l) => l.i) ?? []);
-
-    const added = widgets.filter((w) => !currentIds.has(w.id));
-    const removed = [...currentIds].filter((id) => !widgetIds.has(id));
-
-    if (added.length === 0 && removed.length === 0) return;
-
-    setLayouts((prev) => {
-      let lg = (prev.lg ?? []).filter((l) => widgetIds.has(l.i));
-      let md = (prev.md ?? []).filter((l) => widgetIds.has(l.i));
-      let sm = (prev.sm ?? []).filter((l) => widgetIds.has(l.i));
-
-      if (added.length > 0) {
-        const addedDefaults = generateDefaultLayouts(added);
-        lg = [...lg, ...addedDefaults.lg];
-        md = [...md, ...addedDefaults.md];
-        sm = [...sm, ...addedDefaults.sm];
-      }
-
-      const next: StoredLayouts = { lg, md, sm };
-      saveLayouts(storageKey, next);
-      return next;
-    });
-  }, [widgets, storageKey]);
-
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Track recently dropped widget IDs to protect their size from onLayoutChange
+  const recentDropRef = useRef<Map<string, LayoutItem>>(new Map());
+
   const handleLayoutChange = useCallback(
     (_currentLayout: Layout, allLayouts: ResponsiveLayouts) => {
-      // Convert readonly Layout to mutable for storage
       const mutable: StoredLayouts = {};
       for (const [key, value] of Object.entries(allLayouts)) {
         if (value) mutable[key] = [...value] as LayoutItem[];
       }
-      setLayouts(mutable);
+
+      // Protect recently dropped widgets — RGL may report them with placeholder size
+      if (recentDropRef.current.size > 0) {
+        for (const [widgetId, intended] of recentDropRef.current) {
+          for (const bp of Object.keys(mutable)) {
+            mutable[bp] = (mutable[bp] ?? []).map((l) =>
+              l.i === widgetId
+                ? { ...l, w: intended.w, h: intended.h, minW: intended.minW, minH: intended.minH }
+                : l
+            );
+          }
+        }
+        recentDropRef.current.clear();
+      }
+
+      setRawLayouts(mutable);
       saveLayouts(storageKey, mutable);
     },
     [storageKey]
+  );
+
+  // Called when an external element is dragged over the grid.
+  const handleDropDragOver = useCallback((e: React.DragEvent) => {
+    if (!e.dataTransfer.types.includes("widget-id")) return false;
+    return { w: 4, h: 4 };
+  }, []);
+
+  // Called when an external element is dropped on the grid
+  const handleDrop = useCallback(
+    (layout: Layout, item: LayoutItem | undefined, e: Event) => {
+      const dragEvent = e as unknown as DragEvent;
+      const widgetId = dragEvent?.dataTransfer?.getData("widget-id");
+      if (!widgetId || !item) return;
+
+      const size = getWidgetDefaultSize(widgetId);
+
+      const newItem: LayoutItem = {
+        i: widgetId,
+        x: item.x,
+        y: item.y,
+        w: size.w,
+        h: size.h,
+        minW: size.minW,
+        minH: size.minH,
+      };
+
+      // Protect this widget's intended size from being overwritten by onLayoutChange
+      recentDropRef.current.set(widgetId, newItem);
+
+      // Pre-insert the layout item so it's available when RGL re-renders
+      setRawLayouts((prev) => {
+        const next: StoredLayouts = {};
+        for (const bp of Object.keys(prev)) {
+          next[bp] = [...(prev[bp] ?? []), newItem];
+        }
+        saveLayouts(storageKey, next);
+        return next;
+      });
+
+      addWidget(widgetId);
+      setWidgetPanelOpen(false);
+      setDraggingFromPanel(false);
+    },
+    [addWidget, setWidgetPanelOpen, setDraggingFromPanel, storageKey]
   );
 
   if (!mounted || containerWidth === 0) {
@@ -222,14 +283,14 @@ export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: W
         containerPadding={[0, 0]}
         onLayoutChange={handleLayoutChange}
         compactor={verticalCompactor}
-        dragConfig={{ enabled: true, handle: ".widget-drag-handle", threshold: 5 }}
-        resizeConfig={{ enabled: true, handles: ["se", "e", "s"] }}
+        dragConfig={{ enabled: !layoutLocked, handle: ".widget-drag-handle", threshold: 5 }}
+        resizeConfig={{ enabled: !layoutLocked, handles: ["se", "e", "s"] }}
+        dropConfig={{ enabled: true, defaultItem: { w: 4, h: 4 } }}
+        onDrop={handleDrop}
+        onDropDragOver={handleDropDragOver}
       >
         {widgets.map((w) => {
           const Component = w.component;
-          if (fullscreenWidgetId === w.id) {
-            return <div key={w.id} />;
-          }
           return (
             <div key={w.id} className="widget-grid-item h-full w-full">
               <Component />

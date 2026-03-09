@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Condensed } from "next/font/google";
+import { IBM_Plex_Sans_Condensed, Crimson_Pro } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
 const ibmPlexSansCondensed = IBM_Plex_Sans_Condensed({
   variable: "--font-ibm-plex-sans-condensed",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const crimsonPro = Crimson_Pro({
+  variable: "--font-crimson-pro",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -23,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body
-        className={`${ibmPlexSansCondensed.variable} font-sans antialiased`}
+        className={`${ibmPlexSansCondensed.variable} ${crimsonPro.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

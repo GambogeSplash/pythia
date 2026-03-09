@@ -73,7 +73,8 @@ export function TopNav() {
   const walletAddress = useWalletStore((s) => s.address);
   const walletShortAddress = useWalletStore((s) => s.shortAddress);
   const walletChainId = useWalletStore((s) => s.chainId);
-  const profileImage = useThemeStore((s) => s.profileImage);
+  const localProfileImage = useThemeStore((s) => s.profileImage);
+  const profileImage = user?.image || localProfileImage;
   const setProfileImage = useThemeStore((s) => s.setProfileImage);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

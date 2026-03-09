@@ -202,8 +202,16 @@ export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: W
         recentDropRef.current.clear();
       }
 
-      setRawLayouts(mutable);
-      saveLayouts(storageKey, mutable);
+      // Only update state if layouts actually changed — prevents infinite loop
+      // (RGL fires onLayoutChange when layouts prop changes, which would
+      // set state → new prop → onLayoutChange → set state → loop)
+      setRawLayouts((prev) => {
+        const prevStr = JSON.stringify(prev);
+        const nextStr = JSON.stringify(mutable);
+        if (prevStr === nextStr) return prev; // same reference = no re-render
+        saveLayouts(storageKey, mutable);
+        return mutable;
+      });
     },
     [storageKey]
   );

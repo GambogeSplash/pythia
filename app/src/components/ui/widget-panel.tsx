@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { X, Check, Activity, Zap, Newspaper, Users, Clock, TrendingUp, Trophy, Wallet, Calendar, AlertTriangle, CandlestickChart, Layers, BarChart3, Sparkles, Heart, GitBranch, BookOpen } from "lucide-react";
+import { useRef, useState } from "react";
+import { X, Check, Activity, Zap, Newspaper, Users, Clock, TrendingUp, Trophy, Wallet, Calendar, AlertTriangle, CandlestickChart, Layers, BarChart3, Sparkles, Heart, GitBranch, BookOpen, Star, List, Crosshair, LayoutGrid, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ALL_WIDGETS } from "@/lib/widget-registry";
 import { useAppStore } from "@/lib/store";
@@ -20,17 +20,24 @@ const WIDGET_META: Record<string, WidgetMeta> = {
   "traders-activity": { icon: <Users className="h-5 w-5" />, description: "Real-time trader bets and PnL feed", accent: "#2DD4BF", liveIndicator: true },
   "market-chart": { icon: <CandlestickChart className="h-5 w-5" />, description: "Custom SVG probability chart", accent: "#00FF85" },
   "tv-chart": { icon: <BarChart3 className="h-5 w-5" />, description: "TradingView live candlestick chart", accent: "#00FF85", liveIndicator: true },
-  "closing-soon": { icon: <Clock className="h-5 w-5" />, description: "Markets expiring within 24 hours", accent: "#FF8664" },
+  "closing-soon": { icon: <Clock className="h-5 w-5" />, description: "Markets expiring within 24 hours", accent: "#FF3B3B" },
   "new-markets": { icon: <Sparkles className="h-5 w-5" />, description: "Recently launched prediction markets", accent: "#854DFF" },
   calendar: { icon: <Calendar className="h-5 w-5" />, description: "Upcoming events & market expiries", accent: "#3B82F6" },
   leaderboard: { icon: <Trophy className="h-5 w-5" />, description: "Top traders ranked by performance", accent: "#FFB800" },
-  pnl: { icon: <TrendingUp className="h-5 w-5" />, description: "Your profit and loss overview", accent: "#59F94A", liveIndicator: true },
+  pnl: { icon: <TrendingUp className="h-5 w-5" />, description: "Your profit and loss overview", accent: "#00FF85", liveIndicator: true },
   trending: { icon: <TrendingUp className="h-5 w-5" />, description: "Markets trending by volume & momentum", accent: "#00FF85", liveIndicator: true },
   anomaly: { icon: <AlertTriangle className="h-5 w-5" />, description: "Whale alerts, insider signals, anomalies", accent: "#FF3B3B", liveIndicator: true },
   portfolio: { icon: <Wallet className="h-5 w-5" />, description: "Your positions and exposure breakdown", accent: "#2DD4BF" },
   sentiment: { icon: <Heart className="h-5 w-5" />, description: "NLP sentiment scores & price divergence", accent: "#9B59FF", liveIndicator: true },
   correlation: { icon: <GitBranch className="h-5 w-5" />, description: "Cross-market correlation explorer", accent: "#4DA6FF" },
   narrative: { icon: <BookOpen className="h-5 w-5" />, description: "News-to-price impact tracker", accent: "#FFB800", liveIndicator: true },
+  "ai-signals": { icon: <Sparkles className="h-5 w-5" />, description: "AI-powered trading signals & predictions", accent: "#9B59FF", liveIndicator: true },
+  watchlist: { icon: <Star className="h-5 w-5" />, description: "Track your favorite markets with sparklines", accent: "#FFB800" },
+  orderbook: { icon: <BarChart3 className="h-5 w-5" />, description: "Live bid/ask depth visualization", accent: "#00FF85", liveIndicator: true },
+  positions: { icon: <Wallet className="h-5 w-5" />, description: "Open positions, PnL & risk exposure", accent: "#2DD4BF" },
+  screener: { icon: <List className="h-5 w-5" />, description: "Filter & sort markets by key metrics", accent: "#3B82F6" },
+  "ticker-tape": { icon: <Activity className="h-5 w-5" />, description: "Scrolling live market ticker", accent: "#00FF85", liveIndicator: true },
+  heatmap: { icon: <LayoutGrid className="h-5 w-5" />, description: "Visual market heatmap by category", accent: "#FF3B3B" },
 };
 
 export function WidgetPanel() {
@@ -40,6 +47,19 @@ export function WidgetPanel() {
   const addWidget = useAppStore((s) => s.addWidget);
   const removeWidget = useAppStore((s) => s.removeWidget);
   const setDraggingFromPanel = useAppStore((s) => s.setDraggingFromPanel);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredWidgets = searchTerm
+    ? ALL_WIDGETS.filter((w) => {
+        const term = searchTerm.toLowerCase();
+        const meta = WIDGET_META[w.id];
+        return (
+          w.title.toLowerCase().includes(term) ||
+          (meta?.description ?? "").toLowerCase().includes(term)
+        );
+      })
+    : ALL_WIDGETS;
 
   if (!widgetPanelOpen) return null;
 
@@ -65,7 +85,9 @@ export function WidgetPanel() {
           </div>
           <span className="text-body-12 font-semibold text-text-primary">Widgets</span>
           <span className="rounded-full bg-bg-base-2 px-1.5 py-0.5 text-numbers-10 text-text-quaternary">
-            {dashboardWidgets.length}/{ALL_WIDGETS.length}
+            {searchTerm
+              ? `${filteredWidgets.length} of ${ALL_WIDGETS.length}`
+              : `${dashboardWidgets.length}/${ALL_WIDGETS.length}`}
           </span>
         </div>
         <button
@@ -83,28 +105,59 @@ export function WidgetPanel() {
         </span>
       </div>
 
+      {/* Search */}
+      <div className="px-3 pb-2">
+        <div
+          className="relative flex items-center rounded-[6px] bg-bg-base-2 h-7 px-2 focus-within:ring-1 focus-within:ring-signal-green/30"
+          style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
+        >
+          <Search className="h-3 w-3 text-text-quaternary flex-shrink-0" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search widgets..."
+            className="ml-1.5 flex-1 bg-transparent text-body-12 text-text-primary placeholder:text-text-quaternary outline-none"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-text-quaternary transition-colors hover:text-text-primary"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Widget grid */}
       <div className="scrollbar-hide flex-1 overflow-y-auto px-2 pb-4">
-        <div className="grid grid-cols-2 gap-2">
-          {ALL_WIDGETS.map((w) => {
-            const meta = WIDGET_META[w.id];
-            const isActive = dashboardWidgets.includes(w.id);
+        {filteredWidgets.length === 0 ? (
+          <div className="flex items-center justify-center py-8">
+            <span className="text-body-12 text-text-quaternary">No widgets found</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            {filteredWidgets.map((w) => {
+              const meta = WIDGET_META[w.id];
+              const isActive = dashboardWidgets.includes(w.id);
 
-            return (
-              <WidgetCard
-                key={w.id}
-                widget={w}
-                meta={meta}
-                isActive={isActive}
-                onToggle={() => (isActive ? removeWidget(w.id) : addWidget(w.id))}
-                onDragStart={() => setDraggingFromPanel(true)}
-                onDragEnd={() => {
-                  setDraggingFromPanel(false);
-                }}
-              />
-            );
-          })}
-        </div>
+              return (
+                <WidgetCard
+                  key={w.id}
+                  widget={w}
+                  meta={meta}
+                  isActive={isActive}
+                  onToggle={() => (isActive ? removeWidget(w.id) : addWidget(w.id))}
+                  onDragStart={() => setDraggingFromPanel(true)}
+                  onDragEnd={() => {
+                    setDraggingFromPanel(false);
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Footer */}

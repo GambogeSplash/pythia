@@ -466,7 +466,7 @@ export default function TradePage() {
         </button>
       </div>
       {/* Page content */}
-      <div className="min-h-0 flex-1 overflow-auto p-2">
+      <div className="min-h-0 flex-1 overflow-hidden p-2">
     <div className="flex flex-col md:flex-row h-full gap-2">
       {/* mobile market panel overlay */}
       {marketPanelOpen && (
@@ -560,7 +560,7 @@ export default function TradePage() {
       <div className="flex flex-1 flex-col gap-2">
         {/* Chart area */}
         <div
-          className="flex flex-1 flex-col rounded-[18px] bg-bg-base-1"
+          className="flex max-h-[560px] flex-1 flex-col overflow-hidden rounded-[18px] bg-bg-base-1"
           style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
         >
           <div
@@ -617,13 +617,13 @@ export default function TradePage() {
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-bg-base-3 border-t-signal-green" />
             </div>
           ) : (
-            <div ref={chartContainerRef} className="flex-1" />
+            <div ref={chartContainerRef} className="min-h-0 flex-1" />
           )}
         </div>
 
         {/* Order book + Recent trades */}
         <div
-          className="flex h-auto flex-col md:h-56 md:flex-row rounded-[18px] bg-bg-base-1 overflow-x-auto"
+          className="flex h-56 rounded-[18px] bg-bg-base-1"
           style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
         >
           {/* Bids */}

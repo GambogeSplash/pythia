@@ -59,7 +59,7 @@ const VENUES = [
   { name: "Kalshi", color: "#4DA6FF", volume: "$17.1B" },
   { name: "Opinion Labs", color: "#C084FC", volume: "$10B+" },
   { name: "Limitless", color: "#FFB800", volume: "$2.1B" },
-  { name: "Myriad", color: "#FF6B6B", volume: "$890M" },
+  { name: "Myriad", color: "#FF3B3B", volume: "$890M" },
 ];
 
 const STATS = [

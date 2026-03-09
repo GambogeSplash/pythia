@@ -181,33 +181,33 @@ export default function BotsPage() {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   // Sync API bots to local state
+  const apiBotsJson = JSON.stringify(apiBots.map((b) => b.id));
   useEffect(() => {
-    {
-      const mapped: LocalBot[] = apiBots.map((b) => ({
-        id: b.id,
-        name: b.name,
-        type: b.type,
-        typeId: b.type.toLowerCase().replace(/\s+/g, "-"),
-        status: (b.status === "running" || b.status === "paused" || b.status === "stopped" ? b.status : "paused") as "running" | "paused" | "stopped",
-        pnl: b.pnl,
-        pnlPct: b.pnlPercent,
-        trades: b.totalTrades,
-        winRate: b.winRate,
-        uptime: "",
-        capital: b.capital,
-        maxDrawdown: b.maxDrawdown,
-        sharpe: b.sharpe,
-        lastTrade: "",
-        markets: b.marketsCount,
-        mode: (b.mode === "paper" ? "paper" : "live") as "live" | "paper",
-        recentTrades: [],
-      }));
-      setBots(mapped);
-      if (!selectedBotId || !mapped.find((m) => m.id === selectedBotId)) {
-        setSelectedBotId(mapped[0]?.id ?? null);
-      }
+    if (apiBots.length === 0 && bots.length === 0) return;
+    const mapped: LocalBot[] = apiBots.map((b) => ({
+      id: b.id,
+      name: b.name,
+      type: b.type,
+      typeId: b.type.toLowerCase().replace(/\s+/g, "-"),
+      status: (b.status === "running" || b.status === "paused" || b.status === "stopped" ? b.status : "paused") as "running" | "paused" | "stopped",
+      pnl: b.pnl,
+      pnlPct: b.pnlPercent,
+      trades: b.totalTrades,
+      winRate: b.winRate,
+      uptime: "",
+      capital: b.capital,
+      maxDrawdown: b.maxDrawdown,
+      sharpe: b.sharpe,
+      lastTrade: "",
+      markets: b.marketsCount,
+      mode: (b.mode === "paper" ? "paper" : "live") as "live" | "paper",
+      recentTrades: [],
+    }));
+    setBots(mapped);
+    if (!selectedBotId || !mapped.find((m) => m.id === selectedBotId)) {
+      setSelectedBotId(mapped[0]?.id ?? null);
     }
-  }, [apiBots]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [apiBotsJson]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selectedBot = bots.find((b) => b.id === selectedBotId) ?? bots[0] ?? null;
 

@@ -101,7 +101,7 @@ export function PnlWidget() {
       id="pnl"
       title="Best / Worst PnL (24h)"
       liveIndicator
-      accentColor="#59F94A"
+      accentColor="#00FF85"
       icon={<ArrowUpDown className="h-3.5 w-3.5 text-text-tertiary" />}
       actions={
         <div className="flex items-center gap-1">

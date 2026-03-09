@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema";
@@ -24,6 +25,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verifyRequest: "/verify",
   },
   providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
     Credentials({
       name: "Email",
       credentials: {
@@ -73,15 +79,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (user) {
         token.id = user.id;
+        token.picture = user.image;
+      }
+      // Google profile picture (higher quality)
+      if (profile?.picture) {
+        token.picture = profile.picture as string;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
+      }
+      if (session.user && token.picture) {
+        session.user.image = token.picture as string;
       }
       return session;
     },

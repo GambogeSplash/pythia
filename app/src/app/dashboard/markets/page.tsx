@@ -124,7 +124,7 @@ function VenueBadge({ venueId }: { venueId: string }) {
     return <Logo size={16} />;
   }
   return (
-    <span className="flex h-4 items-center rounded-[3px] bg-bg-base-3 px-1.5 text-[9px] font-medium uppercase text-text-quaternary">
+    <span className="flex h-4 items-center rounded-[3px] bg-bg-base-3 px-1.5 text-label-9 text-text-quaternary">
       {venueId}
     </span>
   );
@@ -295,15 +295,15 @@ export default function MarketsIndexPage() {
         </div>
         <div className="ml-4 flex items-center gap-4">
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Total Markets</span>
+            <span className="text-caption-10 text-text-quaternary">Total Markets</span>
             <span className="text-numbers-12 font-medium text-text-primary">{totalMarkets}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">24h Volume</span>
+            <span className="text-caption-10 text-text-quaternary">24h Volume</span>
             <span className="text-numbers-12 font-medium text-signal-green">{totalVolume}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Liquidity</span>
+            <span className="text-caption-10 text-text-quaternary">Liquidity</span>
             <span className="text-numbers-12 font-medium text-text-primary">{totalLiquidity}</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -311,7 +311,7 @@ export default function MarketsIndexPage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-green opacity-40" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-signal-green" />
             </span>
-            <span className="text-[10px] font-medium text-signal-green">Live</span>
+            <span className="text-caption-10 font-medium text-signal-green">Live</span>
           </div>
         </div>
       </div>
@@ -339,7 +339,7 @@ export default function MarketsIndexPage() {
                 <span className="text-body-12 font-semibold text-text-primary">
                   Trending Markets
                 </span>
-                <span className="rounded-full bg-signal-amber/10 px-1.5 py-0.5 text-[9px] font-bold text-signal-amber">
+                <span className="rounded-full bg-signal-amber/10 px-1.5 py-0.5 text-label-9 font-bold text-signal-amber">
                   HOT
                 </span>
               </div>
@@ -366,11 +366,11 @@ export default function MarketsIndexPage() {
                             }}
                           >
                             {/* Rank badge */}
-                            <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-signal-amber/10 text-[9px] font-bold text-signal-amber">
+                            <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-signal-amber/10 text-label-9 font-bold text-signal-amber">
                               #{idx + 1}
                             </div>
                             {/* Category */}
-                            <span className="text-[10px] font-medium uppercase text-text-quaternary">
+                            <span className="text-label-10 text-text-quaternary">
                               {market.category}
                             </span>
                             {/* Name */}
@@ -434,7 +434,7 @@ export default function MarketsIndexPage() {
                     <motion.button
                       key={cat}
                       onClick={() => handleCategoryChange(cat)}
-                      className={`relative flex items-center gap-1 rounded-[6px] px-2.5 py-1 text-[11px] font-medium transition-colors duration-150 ${
+                      className={`relative flex items-center gap-1 rounded-[6px] px-2.5 py-1 text-body-12 font-medium transition-colors duration-150 ${
                         activeCategory === cat
                           ? "text-text-primary"
                           : "text-text-quaternary hover:text-text-secondary"
@@ -468,7 +468,7 @@ export default function MarketsIndexPage() {
                     onChange={(e) => handleSearchChange(e.target.value)}
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => setSearchFocused(false)}
-                    className="h-7 w-full rounded-[6px] bg-bg-base-2 pl-8 pr-3 text-[11px] text-text-primary placeholder-text-muted outline-none transition-all duration-200"
+                    className="h-7 w-full rounded-[6px] bg-bg-base-2 pl-8 pr-3 text-body-12 text-text-primary placeholder-text-muted outline-none transition-all duration-200"
                     animate={{
                       boxShadow: searchFocused
                         ? "inset 0 0 0 1px rgba(0,255,133,0.5), 0 0 12px rgba(0,255,133,0.08)"
@@ -483,12 +483,12 @@ export default function MarketsIndexPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   <SlidersHorizontal className="h-3 w-3 text-text-muted" />
-                  <span className="mr-1 text-[10px] text-text-quaternary">Sort:</span>
+                  <span className="mr-1 text-caption-10 text-text-quaternary">Sort:</span>
                   {SORT_OPTIONS.map((opt) => (
                     <motion.button
                       key={opt.value}
                       onClick={() => handleSortChange(opt.value)}
-                      className={`flex items-center gap-1 rounded-[4px] px-2 py-0.5 text-[10px] font-medium transition-colors duration-150 ${
+                      className={`flex items-center gap-1 rounded-[4px] px-2 py-0.5 text-caption-10 font-medium transition-colors duration-150 ${
                         sortBy === opt.value
                           ? "bg-signal-green/10 text-signal-green"
                           : "text-text-quaternary hover:bg-action-translucent-hover hover:text-text-primary"
@@ -501,7 +501,7 @@ export default function MarketsIndexPage() {
                     </motion.button>
                   ))}
                 </div>
-                <span className="text-[10px] text-text-quaternary">
+                <span className="text-caption-10 text-text-quaternary">
                   {visibleMarkets.length} market{visibleMarkets.length !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -542,7 +542,7 @@ export default function MarketsIndexPage() {
                     <p className="mt-4 text-body-12 font-medium text-text-secondary">
                       No markets found
                     </p>
-                    <p className="mt-1 text-[11px] text-text-quaternary">
+                    <p className="mt-1 text-body-12 text-text-quaternary">
                       Try adjusting your search or category filter
                     </p>
                     <motion.button
@@ -550,7 +550,7 @@ export default function MarketsIndexPage() {
                         handleSearchChange("");
                         handleCategoryChange("All");
                       }}
-                      className="mt-4 flex items-center gap-1 rounded-[6px] bg-bg-base-2 px-3 py-1.5 text-[11px] font-medium text-text-secondary transition-colors hover:text-text-primary"
+                      className="mt-4 flex items-center gap-1 rounded-[6px] bg-bg-base-2 px-3 py-1.5 text-body-12 font-medium text-text-secondary transition-colors hover:text-text-primary"
                       style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
@@ -566,7 +566,7 @@ export default function MarketsIndexPage() {
                     <motion.button
                       onClick={handleLoadMore}
                       disabled={isLoadingMore}
-                      className="flex items-center gap-2 rounded-[8px] bg-bg-base-2 px-5 py-2 text-[11px] font-medium text-text-secondary transition-colors hover:text-text-primary disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-[8px] bg-bg-base-2 px-5 py-2 text-body-12 font-medium text-text-secondary transition-colors hover:text-text-primary disabled:opacity-50"
                       style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}
                       whileHover={{ scale: 1.03, boxShadow: "inset 0 0 0 1px rgba(0,255,133,0.3)" }}
                       whileTap={{ scale: 0.97 }}
@@ -623,16 +623,16 @@ function MarketCard({ market }: { market: Market }) {
         <div className="p-3 pb-0">
           {/* Category + closing soon badge */}
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-medium uppercase text-text-quaternary">
+            <span className="text-label-10 text-text-quaternary">
               {market.category}
             </span>
             {isClosingSoon ? (
-              <span className="flex items-center gap-0.5 rounded-[3px] bg-signal-amber/10 px-1.5 py-0.5 text-[9px] font-bold text-signal-amber">
+              <span className="flex items-center gap-0.5 rounded-[3px] bg-signal-amber/10 px-1.5 py-0.5 text-label-9 font-bold text-signal-amber">
                 <Timer className="h-2.5 w-2.5" />
                 {timeLeft}
               </span>
             ) : (
-              <span className="flex items-center gap-0.5 text-[9px] text-text-muted">
+              <span className="flex items-center gap-0.5 text-label-9 text-text-muted">
                 <Clock className="h-2.5 w-2.5" />
                 {timeLeft}
               </span>

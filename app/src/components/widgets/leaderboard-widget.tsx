@@ -113,20 +113,20 @@ export function LeaderboardWidget() {
       actions={
         <button
           onClick={() => setWashFiltered(!washFiltered)}
-          className={`flex items-center gap-1.5 rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+          className={`flex items-center gap-1.5 rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
             washFiltered
               ? "bg-action-rise-dim text-action-rise"
               : "bg-bg-surface-raised text-text-secondary"
           }`}
         >
-          <span className="text-[8px]">{washFiltered ? "●" : "○"}</span>
+          <span className="text-label-9">{washFiltered ? "●" : "○"}</span>
           Wash-trade filtered
         </button>
       }
     >
       <div className="grid grid-cols-[30px_100px_80px_60px_60px_60px_80px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
         {["#", "TRADER", "PNL", "WIN %", "TRADES", "PY SCORE", "ARCHETYPE"].map((h) => (
-          <span key={h} className="text-[10px] font-medium uppercase text-text-quaternary">
+          <span key={h} className="text-label-10 text-text-quaternary">
             {h}
           </span>
         ))}
@@ -160,11 +160,11 @@ export function LeaderboardWidget() {
                     className="h-5 w-5 flex-shrink-0 rounded-[4px] bg-bg-surface-raised object-cover"
                   />
                 ) : (
-                  <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-surface-raised text-[8px] font-bold text-text-secondary">
+                  <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-surface-raised text-label-9 font-bold text-text-secondary">
                     {trader.avatar}
                   </div>
                 )}
-                <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="truncate text-xs font-medium text-signal-teal hover:underline">{trader.name}</Link>
+                <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="truncate text-body-12 font-medium text-signal-teal hover:underline">{trader.name}</Link>
               </div>
               <span className={`text-numbers-12 font-medium ${trader.pnlPositive ? "text-action-rise" : "text-action-fall"}`}>
                 {trader.pnl}

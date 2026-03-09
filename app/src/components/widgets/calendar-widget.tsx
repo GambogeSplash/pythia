@@ -101,13 +101,13 @@ export function CalendarWidget() {
                     {market.image ? (
                       <img src={market.image} alt="" className="h-full w-full object-cover" />
                     ) : (
-                      <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                      <span className="text-caption-10">{categoryIcon(market.category)}</span>
                     )}
                   </div>
                   <Link href={`/dashboard/markets/${market.id}`} className="truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">{market.question}</Link>
                 </div>
                 <Badge variant={type.variant}>{type.label}</Badge>
-                <span className="flex-shrink-0 text-[10px] text-signal-teal">
+                <span className="flex-shrink-0 text-caption-10 text-signal-teal">
                   {formatVolume(market.volume)}
                 </span>
               </div>

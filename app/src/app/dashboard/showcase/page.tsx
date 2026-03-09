@@ -81,7 +81,7 @@ export default function ShowcasePage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="mb-3 text-sm font-semibold text-text-secondary">{title}</h2>
+      <h2 className="mb-3 text-body-14 font-semibold text-text-secondary">{title}</h2>
       {children}
     </div>
   );

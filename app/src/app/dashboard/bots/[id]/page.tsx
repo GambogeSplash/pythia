@@ -94,7 +94,7 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
         <div className="flex flex-1 flex-col items-center justify-center py-24">
           <Bot className="mb-3 h-10 w-10 text-text-muted" />
           <p className="text-body-12 font-medium text-text-secondary">Bot not found</p>
-          <p className="mt-1 text-[11px] text-text-quaternary text-center">Bot not found or database not connected</p>
+          <p className="mt-1 text-body-12 text-text-quaternary text-center">Bot not found or database not connected</p>
           <Link
             href="/dashboard/bots"
             className="mt-4 flex h-7 items-center gap-1 rounded-[6px] bg-action-translucent px-3 text-body-12 font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
@@ -131,16 +131,16 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
 
         {isRunning && (
           <>
-            <span className="ml-3 rounded-full bg-action-rise-dim px-2 py-0.5 text-[9px] font-medium text-action-rise">
+            <span className="ml-3 rounded-full bg-action-rise-dim px-2 py-0.5 text-label-9 font-medium text-action-rise">
               Running
             </span>
-            <span className="ml-1.5 rounded-full bg-action-rise-dim px-2 py-0.5 text-[9px] font-medium text-action-rise">
+            <span className="ml-1.5 rounded-full bg-action-rise-dim px-2 py-0.5 text-label-9 font-medium text-action-rise">
               Live
             </span>
           </>
         )}
         {!isRunning && (
-          <span className="ml-3 rounded-full bg-bg-base-3 px-2 py-0.5 text-[9px] font-medium text-text-quaternary">
+          <span className="ml-3 rounded-full bg-bg-base-3 px-2 py-0.5 text-label-9 font-medium text-text-quaternary">
             {botStatus.charAt(0).toUpperCase() + botStatus.slice(1)}
           </span>
         )}
@@ -178,7 +178,7 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
             className="rounded-[12px] bg-bg-base-1 px-3 py-2.5"
             style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
-            <div className="text-[10px] text-text-quaternary">{s.label}</div>
+            <div className="text-caption-10 text-text-quaternary">{s.label}</div>
             <div className={`text-numbers-12 font-semibold ${s.color}`}>--</div>
           </div>
         ))}
@@ -197,7 +197,7 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
               className="flex items-center justify-between px-4 py-2"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
             >
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">
+              <span className="text-label-10 text-text-quaternary">
                 Equity Curve
               </span>
             </div>
@@ -216,14 +216,14 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
               className="flex shrink-0 items-center justify-between px-4 py-2"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
             >
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">
+              <span className="text-label-10 text-text-quaternary">
                 Trade History
               </span>
             </div>
 
             {/* Table header */}
             <div
-              className="grid shrink-0 grid-cols-[50px_120px_1fr_42px_65px_55px_55px_65px_50px] gap-2 px-4 py-1.5 text-[10px] font-medium uppercase text-text-quaternary"
+              className="grid shrink-0 grid-cols-[50px_120px_1fr_42px_65px_55px_55px_65px_50px] gap-2 px-4 py-1.5 text-label-10 text-text-quaternary"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
             >
               <span>ID</span>
@@ -258,7 +258,7 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
               className="flex items-center justify-between px-4 py-2"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
             >
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">
+              <span className="text-label-10 text-text-quaternary">
                 Signal Accuracy Log
               </span>
             </div>
@@ -274,7 +274,7 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
             style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
             <div
-              className="px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
+              className="px-4 py-2 text-label-10 text-text-quaternary"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
             >
               Active Positions (0)
@@ -290,12 +290,12 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
             className="rounded-[18px] bg-bg-base-1 p-4"
             style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
-            <div className="mb-3 text-[10px] font-medium uppercase text-text-quaternary">
+            <div className="mb-3 text-label-10 text-text-quaternary">
               Bot Configuration
             </div>
             <div className="flex flex-col items-center justify-center py-6">
               <Settings className="mb-2 h-5 w-5 text-text-muted" />
-              <p className="text-[11px] text-text-quaternary text-center">Connect to a database to view bot configuration</p>
+              <p className="text-body-12 text-text-quaternary text-center">Connect to a database to view bot configuration</p>
             </div>
             <Link
               href="/dashboard/bots/create"
@@ -310,12 +310,12 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
             className="rounded-[18px] bg-bg-base-1 p-4"
             style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
-            <div className="mb-3 flex items-center gap-1.5 text-[10px] font-medium uppercase text-text-quaternary">
+            <div className="mb-3 flex items-center gap-1.5 text-label-10 text-text-quaternary">
               <Shield className="h-3 w-3" /> Risk Metrics
             </div>
             <div className="flex flex-col items-center justify-center py-6">
               <Zap className="mb-2 h-5 w-5 text-text-muted" />
-              <p className="text-[11px] text-text-quaternary text-center">Risk metrics require trade history data</p>
+              <p className="text-body-12 text-text-quaternary text-center">Risk metrics require trade history data</p>
             </div>
           </div>
         </div>
@@ -333,7 +333,7 @@ export default function BotDetailPage({ params }: { params: Promise<{ id: string
             style={{ boxShadow: "0 24px 48px rgba(0,0,0,0.5), inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
             <div className="mb-1 text-body-12 font-semibold text-text-primary">Delete Bot</div>
-            <p className="mb-4 text-[11px] text-text-secondary">
+            <p className="mb-4 text-body-12 text-text-secondary">
               Are you sure you want to delete <span className="font-medium text-text-primary">{botName}</span>? This action cannot be undone.
             </p>
             <div className="flex gap-2">

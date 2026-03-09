@@ -78,11 +78,11 @@ export function NewMarketsWidget() {
     >
       {/* Table Header */}
       <div className="grid grid-cols-[1fr_70px_50px_60px_70px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">Market</span>
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">Category</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Age</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Volume</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Signal</span>
+        <span className="text-label-10 text-text-quaternary">Market</span>
+        <span className="text-label-10 text-text-quaternary">Category</span>
+        <span className="text-right text-label-10 text-text-quaternary">Age</span>
+        <span className="text-right text-label-10 text-text-quaternary">Volume</span>
+        <span className="text-right text-label-10 text-text-quaternary">Signal</span>
       </div>
 
       {/* Loading */}

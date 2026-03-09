@@ -145,21 +145,21 @@ export function ClosingSoonExpandedWidget() {
     <div className="overflow-hidden rounded-[18px] border border-border-primary bg-bg-base-1">
       {/* Header */}
       <div className="flex h-9 items-center gap-2 px-3" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-xs text-text-quaternary">⊞</span>
+        <span className="text-body-12 text-text-quaternary">⊞</span>
         <span className="text-body-12 font-semibold text-text-primary">Markets Closing Soon</span>
         <ChevronDown className="h-3 w-3 text-text-tertiary" />
         <div className="ml-auto flex items-center gap-3">
-          <button className="flex items-center gap-1 text-[10px] text-text-secondary">
+          <button className="flex items-center gap-1 text-caption-10 text-text-secondary">
             △ Delta Period: 24hr <ChevronDown className="h-2.5 w-2.5" />
           </button>
-          <button className="flex items-center gap-1 text-[10px] text-text-secondary">
+          <button className="flex items-center gap-1 text-caption-10 text-text-secondary">
             ⊞ Columns
           </button>
-          <button className="flex items-center gap-1 text-[10px] text-text-secondary">
+          <button className="flex items-center gap-1 text-caption-10 text-text-secondary">
             ▽ Filter
           </button>
-          <button className="text-text-quaternary text-xs">⋯</button>
-          <button className="text-text-quaternary text-xs">⤢</button>
+          <button className="text-text-quaternary text-body-12">⋯</button>
+          <button className="text-text-quaternary text-body-12">⤢</button>
         </div>
       </div>
 
@@ -169,7 +169,7 @@ export function ClosingSoonExpandedWidget() {
           <thead>
             <tr style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
               {["MARKETS", "CHANCE", "TIME LEFT", "PRICE", "PRICE CHART\n24H", "OPEN INTEREST", "Y SENT.", "N SENT.", "LIQUIDITY", "VOLUME", "DEPTH\n@ $500", "NEWS VEL.", "CATEGORY", "TAGS"].map((h) => (
-                <th key={h} className="px-3 py-1.5 text-left text-[10px] font-medium uppercase text-text-quaternary whitespace-pre-line">
+                <th key={h} className="px-3 py-1.5 text-left text-label-10 text-text-quaternary whitespace-pre-line">
                   {h}
                 </th>
               ))}
@@ -204,16 +204,16 @@ export function ClosingSoonExpandedWidget() {
                           className="h-5 w-5 shrink-0 rounded-[4px] bg-bg-base-2 object-cover"
                         />
                       ) : (
-                        <div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2 text-[10px] text-text-quaternary">
+                        <div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2 text-caption-10 text-text-quaternary">
                           ?
                         </div>
                       )}
                       <div>
-                        <div className="flex items-center gap-1 text-xs text-text-primary">
+                        <div className="flex items-center gap-1 text-body-12 text-text-primary">
                           {truncate(m.title, 50)}
-                          <span className="text-text-quaternary text-[10px]">↗</span>
+                          <span className="text-text-quaternary text-caption-10">↗</span>
                         </div>
-                        <div className="text-[10px] text-text-quaternary">{m.subtitle}</div>
+                        <div className="text-caption-10 text-text-quaternary">{m.subtitle}</div>
                       </div>
                     </div>
                   </td>
@@ -270,7 +270,7 @@ export function ClosingSoonExpandedWidget() {
 
                   {/* Y Sentiment */}
                   <td className="px-3 py-2.5">
-                    <span className={`inline-flex items-center rounded px-2 py-0.5 text-[10px] font-medium ${sentimentColor[m.ySentiment]}`}>
+                    <span className={`inline-flex items-center rounded px-2 py-0.5 text-caption-10 font-medium ${sentimentColor[m.ySentiment]}`}>
                       {m.ySentiment}
                     </span>
                     <div className="mt-0.5 h-1.5 w-12 rounded-full bg-bg-surface">
@@ -283,7 +283,7 @@ export function ClosingSoonExpandedWidget() {
 
                   {/* N Sentiment */}
                   <td className="px-3 py-2.5">
-                    <span className={`inline-flex items-center rounded px-2 py-0.5 text-[10px] font-medium ${sentimentColor[m.nSentiment]}`}>
+                    <span className={`inline-flex items-center rounded px-2 py-0.5 text-caption-10 font-medium ${sentimentColor[m.nSentiment]}`}>
                       {m.nSentiment}
                     </span>
                     <div className="mt-0.5 h-1.5 w-12 rounded-full bg-bg-surface">

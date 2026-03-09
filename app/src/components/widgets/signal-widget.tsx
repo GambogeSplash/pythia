@@ -17,7 +17,7 @@ export function SignalWidget() {
       title="Signal (Politics)"
       liveIndicator
       accentColor="#00FF85"
-      icon={<span className="text-xs">&#x229E;</span>}
+      icon={<span className="text-body-12">&#x229E;</span>}
       actions={
         <div className="flex items-center gap-1">
           <FilterPill label="Period: 24hr" />
@@ -31,26 +31,26 @@ export function SignalWidget() {
         className="grid grid-cols-[1fr_60px_60px_70px_70px] gap-1 px-3 py-1.5"
         style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
       >
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">
           Market
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           VOL.
           <br />
-          <span className="text-[9px] text-text-muted">24H</span>
+          <span className="text-label-9 text-text-muted">24H</span>
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Spread
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           VOL/LIQ
           <br />
-          <span className="text-[9px] text-text-muted">Ratio</span>
+          <span className="text-label-9 text-text-muted">Ratio</span>
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           SLIPPAGE
           <br />
-          <span className="text-[9px] text-text-muted">est.</span>
+          <span className="text-label-9 text-text-muted">est.</span>
         </span>
       </div>
 
@@ -99,7 +99,7 @@ export function SignalWidget() {
                       {market.image ? (
                         <img src={market.image} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                        <span className="text-caption-10">{categoryIcon(market.category)}</span>
                       )}
                     </div>
                     <Link href={`/dashboard/markets/${market.id}`} className="truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">
@@ -167,9 +167,9 @@ function categoryIcon(category: string): string {
 
 function FilterPill({ label, icon }: { label: string; icon?: boolean }) {
   return (
-    <button className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-[10px] text-text-secondary transition-colors duration-150 hover:bg-action-secondary-hover hover:text-text-primary active:bg-action-secondary-active">
-      {icon && <span className="text-[9px]">&#x229E;</span>}
-      <span className="text-[10px]">&#x25B3;</span>
+    <button className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-caption-10 text-text-secondary transition-colors duration-150 hover:bg-action-secondary-hover hover:text-text-primary active:bg-action-secondary-active">
+      {icon && <span className="text-label-9">&#x229E;</span>}
+      <span className="text-caption-10">&#x25B3;</span>
       {label}
       <ChevronDown className="h-2.5 w-2.5 opacity-48" />
     </button>

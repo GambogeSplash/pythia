@@ -213,7 +213,7 @@ export function SubHeader() {
             }}
           >
             <div className="px-3 py-1.5">
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">
+              <span className="text-label-10 text-text-quaternary">
                 Workspaces
               </span>
             </div>

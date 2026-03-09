@@ -104,7 +104,7 @@ export function AnomalyWidget() {
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            className={`rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+            className={`rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
               activeFilter === filter
                 ? "bg-signal-green text-bg-primary"
                 : "text-text-secondary hover:text-text-primary"
@@ -147,20 +147,20 @@ export function AnomalyWidget() {
                     <div className="flex items-center gap-2">
                       <Badge variant={type.variant}>{type.label}</Badge>
                       <span className="text-body-12 font-medium text-text-primary">{item.title}</span>
-                      <span className="ml-auto flex-shrink-0 text-[10px] text-text-quaternary">{item.timestamp}</span>
+                      <span className="ml-auto flex-shrink-0 text-caption-10 text-text-quaternary">{item.timestamp}</span>
                     </div>
-                    <div className="mt-1 flex items-center gap-2 text-[10px]">
+                    <div className="mt-1 flex items-center gap-2 text-caption-10">
                       <div className="flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-bg-base-2">
                         {item.marketImage ? (
                           <img src={item.marketImage} alt="" className="h-full w-full object-cover" />
                         ) : (
-                          <span className="text-[8px]">{item.marketIcon}</span>
+                          <span className="text-label-9">{item.marketIcon}</span>
                         )}
                       </div>
                       <Link href={`/dashboard/markets/${item.id}`} className="text-text-secondary hover:text-text-primary transition-colors">{item.market}</Link>
                       <span className="ml-auto font-data font-medium text-text-primary">{item.size}</span>
                     </div>
-                    <p className="mt-1 text-[11px] leading-relaxed text-text-quaternary">{item.description}</p>
+                    <p className="mt-1 text-body-12 leading-relaxed text-text-quaternary">{item.description}</p>
                   </div>
                 </div>
               </div>

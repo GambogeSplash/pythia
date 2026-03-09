@@ -105,7 +105,7 @@ function ColHeader({
   return (
     <button
       onClick={() => onSort(field)}
-      className={`group/col flex items-center gap-0.5 text-[10px] font-semibold uppercase tracking-wider transition-colors ${
+      className={`group/col flex items-center gap-0.5 text-label-10 tracking-wider transition-colors ${
         align === "right" ? "justify-end" : ""
       } ${active ? "text-signal-green" : "text-text-quaternary hover:text-text-secondary"}`}
     >
@@ -304,7 +304,7 @@ export function ScreenerWidget() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 rounded-[4px] px-2 py-0.5 text-[11px] font-medium transition-colors ${
+              className={`shrink-0 rounded-[4px] px-2 py-0.5 text-body-12 font-medium transition-colors ${
                 activeCategory === cat
                   ? "bg-signal-green text-bg-base-0"
                   : "bg-bg-base-2 text-text-secondary hover:text-text-primary"
@@ -320,7 +320,7 @@ export function ScreenerWidget() {
             <button
               key={field}
               onClick={() => handleSort(field)}
-              className={`flex shrink-0 items-center gap-0.5 rounded-[4px] px-2 py-0.5 text-[11px] font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-0.5 rounded-[4px] px-2 py-0.5 text-body-12 font-medium transition-colors ${
                 sortField === field
                   ? "bg-signal-green text-bg-base-0"
                   : "bg-bg-base-2 text-text-secondary hover:text-text-primary"
@@ -328,7 +328,7 @@ export function ScreenerWidget() {
             >
               {SORT_LABELS[field]}
               {sortField === field && (
-                <span className="text-[9px]">{sortDir === "desc" ? "\u2193" : "\u2191"}</span>
+                <span className="text-label-9">{sortDir === "desc" ? "\u2193" : "\u2191"}</span>
               )}
             </button>
           ))}
@@ -344,7 +344,7 @@ export function ScreenerWidget() {
             <button
               key={key}
               onClick={() => toggleQuickFilter(key)}
-              className={`flex shrink-0 items-center gap-1 rounded-[4px] px-1.5 py-0.5 text-[10px] font-medium transition-colors ${
+              className={`flex shrink-0 items-center gap-1 rounded-[4px] px-1.5 py-0.5 text-caption-10 font-medium transition-colors ${
                 activeQuickFilters.has(key)
                   ? "bg-signal-green/20 text-signal-green"
                   : "bg-transparent text-text-quaternary hover:bg-bg-base-2 hover:text-text-secondary"
@@ -361,10 +361,10 @@ export function ScreenerWidget() {
           className="grid grid-cols-[1fr_72px_56px_56px_68px_64px_48px] items-center gap-2 px-3 py-1"
           style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
         >
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-text-quaternary">
+          <span className="text-label-10 tracking-wider text-text-quaternary">
             Market
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-text-quaternary">
+          <span className="text-label-10 tracking-wider text-text-quaternary">
             Category
           </span>
           <ColHeader label="Price" field="price" sortField={sortField} sortDir={sortDir} onSort={handleSort} align="right" />
@@ -453,10 +453,10 @@ export function ScreenerWidget() {
           className="flex items-center justify-between px-3 py-1"
           style={{ boxShadow: "inset 0 1px 0 0 var(--color-divider-subtle)" }}
         >
-          <span className="text-[10px] text-text-quaternary">
+          <span className="text-caption-10 text-text-quaternary">
             Showing {filtered.length} of {total} markets
           </span>
-          <span className="text-[10px] text-text-quaternary">
+          <span className="text-caption-10 text-text-quaternary">
             Sorted by {SORT_LABELS[sortField]} {sortDir === "desc" ? "\u2193" : "\u2191"}
           </span>
         </div>

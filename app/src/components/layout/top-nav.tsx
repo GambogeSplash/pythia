@@ -118,7 +118,7 @@ export function TopNav() {
                 <path fillRule="evenodd" clipRule="evenodd" d="M103.795 66.2236C109.555 80.1005 97.7521 108.159 74.7959 109.851C56.3921 120.022 41.0351 109.231 34.2117 101.612C33.1587 100.436 33.3447 98.6557 34.6564 97.7777C38.753 95.0359 46.0894 91.6236 53.3769 91.6236C62.2856 91.6236 70.7224 95.5875 73.7176 97.5062C76.2373 97.2026 83.1371 95.9112 89.5409 85.8347C98.6775 70.0097 88.0377 59.7327 68.7268 51.8384C54.5012 46.0228 58.1816 30.5113 61.2851 26.151C62.7579 24.0819 66.5479 18.0517 75.1551 22.4349C82.0407 25.9416 81.9731 32.6224 81.0785 35.5245C81.3347 27.4669 66.103 23.832 67.2877 36.0617C68.2202 45.6845 94.5738 44.0108 103.795 66.2236ZM55.9344 103.943C56.9156 102.244 56.3333 100.071 54.6339 99.0896C52.9344 98.1085 50.7614 98.6907 49.7802 100.39C48.7991 102.09 49.3813 104.263 51.0807 105.244C52.7801 106.225 54.9532 105.643 55.9344 103.943Z" fill="currentColor" />
                 <path fillRule="evenodd" clipRule="evenodd" d="M26.1369 88.2061C11.239 86.2563 -7.15882 62.0056 2.85378 41.2788C3.24708 20.2551 20.2707 12.3509 30.2808 10.2512C31.8257 9.92728 33.2749 10.9786 33.3794 12.5536C33.7055 17.4724 32.9925 25.532 29.3487 31.8431C24.8943 39.5583 17.2431 44.8828 14.0839 46.5174C13.0869 48.8514 10.7554 55.4725 16.28 66.0565C25.4166 81.8814 39.6367 77.8057 56.1287 65.0292C68.2781 55.6172 79.8713 66.5603 82.0955 71.4281C83.1511 73.7383 86.4782 80.0357 78.3787 85.298C71.8992 89.5077 66.1472 86.1088 64.0811 83.883C70.9311 88.1336 81.6948 76.7601 70.5113 71.6713C61.7115 67.6671 49.9842 91.3271 26.1369 88.2061ZM17.4008 27.8982C18.382 29.5975 20.5551 30.1798 22.2544 29.1987C23.9538 28.2175 24.5361 26.0444 23.555 24.345C22.5738 22.6456 20.4008 22.0633 18.7013 23.0445C17.0019 24.0257 16.4196 26.1987 17.4008 27.8982Z" fill="currentColor" />
               </svg>
-              <span className="text-[15px] font-bold tracking-tight text-text-primary">
+              <span className="text-header-14 font-bold tracking-tight text-text-primary">
                 PYTHIA
               </span>
             </Link>
@@ -146,7 +146,7 @@ export function TopNav() {
                   >
                     {item.label}
                     {item.badge && (
-                      <span className="ml-1.5 rounded-[4px] bg-action-brand px-1.5 py-0.5 text-[9px] font-bold text-bg-base-0">
+                      <span className="ml-1.5 rounded-[4px] bg-action-brand px-1.5 py-0.5 text-label-9 font-bold text-bg-base-0">
                         {item.badge}
                       </span>
                     )}
@@ -178,7 +178,7 @@ export function TopNav() {
                         >
                           {item.label}
                           {item.badge && (
-                            <span className="ml-2 rounded-[4px] bg-action-brand px-1.5 py-0.5 text-[9px] font-bold text-bg-base-0">
+                            <span className="ml-2 rounded-[4px] bg-action-brand px-1.5 py-0.5 text-label-9 font-bold text-bg-base-0">
                               {item.badge}
                             </span>
                           )}
@@ -206,7 +206,7 @@ export function TopNav() {
                 <span className="hidden truncate text-body-12 text-text-quaternary sm:inline">
                   Search markets, traders
                 </span>
-                <kbd className="ml-auto hidden shrink-0 rounded-[4px] border border-divider-heavy bg-bg-base-1 px-1.5 py-0.5 font-mono text-[10px] text-text-quaternary sm:inline">
+                <kbd className="ml-auto hidden shrink-0 rounded-[4px] border border-divider-heavy bg-bg-base-1 px-1.5 py-0.5 font-mono text-caption-10 text-text-quaternary sm:inline">
                   /
                 </kbd>
               </button>
@@ -227,7 +227,7 @@ export function TopNav() {
                 {walletAddress ? (
                   <button
                     onClick={() => setWalletModalOpen(true)}
-                    className="flex h-6 items-center gap-1.5 rounded-full bg-action-translucent px-2 text-[10px] font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
+                    className="flex h-6 items-center gap-1.5 rounded-full bg-action-translucent px-2 text-caption-10 font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-action-rise live-flicker-green" />
                     <span>{walletShortAddress}</span>
@@ -252,7 +252,7 @@ export function TopNav() {
                 >
                   <Bell className="h-4 w-4" />
                   {unreadCount() > 0 && (
-                    <span className="absolute -right-0.5 -top-0.5 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-signal-red px-1 text-[8px] font-bold text-white">
+                    <span className="absolute -right-0.5 -top-0.5 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-signal-red px-1 text-label-9 font-bold text-white">
                       {unreadCount()}
                     </span>
                   )}
@@ -265,7 +265,7 @@ export function TopNav() {
                         <span className="text-body-12 font-semibold text-text-primary">Notifications</span>
                         <button
                           onClick={markAllRead}
-                          className="text-[10px] font-medium text-signal-green transition-colors hover:text-signal-green/80"
+                          className="text-caption-10 font-medium text-signal-green transition-colors hover:text-signal-green/80"
                         >
                           Mark all read
                         </button>
@@ -290,7 +290,7 @@ export function TopNav() {
                                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal-green" />
                                 )}
                               </div>
-                              <p className="mt-0.5 text-[11px] leading-relaxed text-text-secondary">{n.message}</p>
+                              <p className="mt-0.5 text-body-12 leading-relaxed text-text-secondary">{n.message}</p>
                               <span className="mt-0.5 text-numbers-10 text-text-quaternary">{n.time}</span>
                             </div>
                           </button>
@@ -330,7 +330,7 @@ export function TopNav() {
                       {profileImage ? (
                         <img src={profileImage} alt="" className="h-5 w-5 rounded-full object-cover" />
                       ) : (
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full font-mono text-[8px] font-medium leading-none text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full font-mono text-label-9 font-medium leading-none text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
                           {displayInitial}
                         </div>
                       )}
@@ -349,7 +349,7 @@ export function TopNav() {
                                 {profileImage ? (
                                   <img src={profileImage} alt="" className="h-10 w-10 rounded-full object-cover" />
                                 ) : (
-                                  <div className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
+                                  <div className="flex h-10 w-10 items-center justify-center rounded-full text-body-14 font-bold text-bg-base-0" style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}>
                                     {displayInitial}
                                   </div>
                                 )}
@@ -359,7 +359,7 @@ export function TopNav() {
                               </button>
                               <div className="min-w-0">
                                 <div className="truncate text-body-12 font-semibold text-text-primary">{displayName}</div>
-                                {user?.email && <div className="truncate text-[10px] text-text-quaternary">{user.email}</div>}
+                                {user?.email && <div className="truncate text-caption-10 text-text-quaternary">{user.email}</div>}
                               </div>
                             </div>
                           </div>
@@ -375,7 +375,7 @@ export function TopNav() {
                           <div className="mx-2 my-1 h-px bg-divider-heavy" />
 
                           {/* Theme toggle */}
-                          <div className="px-3 py-1.5 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                          <div className="px-3 py-1.5 text-label-9 tracking-widest text-text-quaternary">
                             Appearance
                           </div>
                           <div className="flex items-center gap-1 px-3 pb-2">
@@ -387,7 +387,7 @@ export function TopNav() {
                               <button
                                 key={item.value}
                                 onClick={() => setTheme(item.value)}
-                                className={`flex flex-1 items-center justify-center gap-1.5 rounded-[6px] py-1.5 text-[10px] font-medium transition-all duration-150 ${
+                                className={`flex flex-1 items-center justify-center gap-1.5 rounded-[6px] py-1.5 text-caption-10 font-medium transition-all duration-150 ${
                                   currentTheme === item.value
                                     ? "bg-signal-green/10 text-signal-green"
                                     : "text-text-quaternary hover:bg-action-translucent hover:text-text-secondary"

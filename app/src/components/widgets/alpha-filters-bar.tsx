@@ -36,9 +36,9 @@ export function AlphaFiltersBar() {
       {/* Filter groups */}
       <div className="flex items-center gap-0 overflow-x-auto px-3 py-1.5">
         <div className="mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded text-text-quaternary">
-          <span className="text-xs">◎</span>
+          <span className="text-body-12">◎</span>
         </div>
-        <span className="mr-3 flex-shrink-0 text-[10px] font-medium text-text-secondary">
+        <span className="mr-3 flex-shrink-0 text-caption-10 font-medium text-text-secondary">
           Alpha Filters
         </span>
 
@@ -57,7 +57,7 @@ export function AlphaFiltersBar() {
                   <button
                     key={`${group.label}-${option}`}
                     onClick={() => toggleFilter(group.label, option)}
-                    className={`rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors ${
+                    className={`rounded px-1.5 py-0.5 text-caption-10 font-medium transition-colors ${
                       isActive
                         ? "bg-signal-green text-bg-primary"
                         : "text-text-secondary hover:text-text-primary"
@@ -75,10 +75,10 @@ export function AlphaFiltersBar() {
       {/* Filter actions */}
       {hasActiveFilters && (
         <div className="flex items-center gap-3 px-3 py-1.5" style={{ boxShadow: "inset 0 1px 0 0 var(--color-divider-heavy)" }}>
-          <button className="flex items-center gap-1.5 rounded border border-border-secondary bg-bg-surface px-3 py-1 text-[11px] font-medium text-signal-green transition-colors duration-150 hover:bg-action-translucent-hover">
+          <button className="flex items-center gap-1.5 rounded border border-border-secondary bg-bg-surface px-3 py-1 text-body-12 font-medium text-signal-green transition-colors duration-150 hover:bg-action-translucent-hover">
             <span>⊿</span> LOAD FILTER
           </button>
-          <button className="flex items-center gap-1.5 rounded border border-border-secondary bg-bg-surface px-3 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover">
+          <button className="flex items-center gap-1.5 rounded border border-border-secondary bg-bg-surface px-3 py-1 text-body-12 font-medium text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover">
             <span>×</span> CLEAR FILTERS
           </button>
         </div>

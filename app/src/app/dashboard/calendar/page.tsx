@@ -225,7 +225,7 @@ function ImpactBadge({ impact }: { impact: "high" | "medium" | "low" }) {
     low: { label: "LOW", color: "text-text-quaternary", bg: "bg-bg-base-3" },
   }[impact];
   return (
-    <span className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${cfg.color} ${cfg.bg}`}>
+    <span className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-label-9 tracking-wider ${cfg.color} ${cfg.bg}`}>
       {cfg.label}
     </span>
   );
@@ -434,15 +434,15 @@ export default function CalendarPage() {
         </div>
         <div className="mx-2 hidden h-3 w-px bg-bg-base-3 md:block" />
         <div className="hidden items-center gap-3 md:flex">
-          <span className="text-[10px] font-medium uppercase text-text-quaternary">
+          <span className="text-label-10 text-text-quaternary">
             Upcoming{" "}
             <span className="text-numbers-12 text-text-primary">{upcomingCount}</span>
           </span>
-          <span className="text-[10px] font-medium uppercase text-text-quaternary">
+          <span className="text-label-10 text-text-quaternary">
             Expiring This Week{" "}
             <span className="text-numbers-12 text-signal-green">{expiringThisWeek}</span>
           </span>
-          <span className="text-[10px] font-medium uppercase text-text-quaternary">
+          <span className="text-label-10 text-text-quaternary">
             High Impact{" "}
             <span className="text-numbers-12 text-signal-red">{highImpactCount}</span>
           </span>
@@ -457,7 +457,7 @@ export default function CalendarPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setViewMode("month")}
-              className={`flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+              className={`flex items-center gap-1 rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
                 viewMode === "month"
                   ? "bg-bg-base-3 text-text-primary"
                   : "text-text-quaternary hover:text-text-secondary"
@@ -470,7 +470,7 @@ export default function CalendarPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setViewMode("week")}
-              className={`flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+              className={`flex items-center gap-1 rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
                 viewMode === "week"
                   ? "bg-bg-base-3 text-text-primary"
                   : "text-text-quaternary hover:text-text-secondary"
@@ -503,7 +503,7 @@ export default function CalendarPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={goToday}
-                className="rounded-md bg-signal-green/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-signal-green transition-colors hover:bg-signal-green/20"
+                className="rounded-md bg-signal-green/10 px-2.5 py-1 text-label-10 tracking-wider text-signal-green transition-colors hover:bg-signal-green/20"
               >
                 Today
               </motion.button>
@@ -541,7 +541,7 @@ export default function CalendarPage() {
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.96 }}
                     onClick={() => setFilterType(type)}
-                    className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider transition-colors ${
+                    className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-label-10 tracking-wider transition-colors ${
                       active
                         ? isAll
                           ? "bg-text-primary text-bg-base-0"
@@ -577,7 +577,7 @@ export default function CalendarPage() {
                     {DAY_NAMES.map((d) => (
                       <div
                         key={d}
-                        className="py-1.5 text-center text-[10px] font-medium uppercase text-text-quaternary"
+                        className="py-1.5 text-center text-label-10 text-text-quaternary"
                       >
                         {d}
                       </div>
@@ -631,7 +631,7 @@ export default function CalendarPage() {
                               !cell.inMonth
                                 ? "text-text-muted/30"
                                 : isToday
-                                ? "flex h-5 w-5 items-center justify-center rounded-full bg-signal-green text-[11px] font-bold text-bg-base-0"
+                                ? "flex h-5 w-5 items-center justify-center rounded-full bg-signal-green text-body-12 font-bold text-bg-base-0"
                                 : isSelected
                                 ? "text-signal-green font-semibold"
                                 : "text-text-secondary"
@@ -652,14 +652,14 @@ export default function CalendarPage() {
                                 />
                               ))}
                               {dayEvents.length > 4 && (
-                                <span className="text-[8px] text-text-muted">
+                                <span className="text-label-9 text-text-muted">
                                   +{dayEvents.length - 4}
                                 </span>
                               )}
                             </div>
                           )}
                           {hasEvents && (
-                            <div className="mt-0.5 hidden w-full truncate text-[9px] text-text-quaternary md:block">
+                            <div className="mt-0.5 hidden w-full truncate text-label-9 text-text-quaternary md:block">
                               {dayEvents[0].title.length > 18
                                 ? dayEvents[0].title.slice(0, 18) + "..."
                                 : dayEvents[0].title}
@@ -705,7 +705,7 @@ export default function CalendarPage() {
                               : undefined
                           }
                         >
-                          <span className="text-[10px] font-medium uppercase text-text-quaternary">
+                          <span className="text-label-10 text-text-quaternary">
                             {DAY_NAMES_SHORT[i]}
                           </span>
                           <span
@@ -734,7 +734,7 @@ export default function CalendarPage() {
                       if (dayEvts.length === 0) return null;
                       return (
                         <div key={ds}>
-                          <div className="mb-1 text-[10px] font-medium uppercase text-text-quaternary">
+                          <div className="mb-1 text-label-10 text-text-quaternary">
                             {DAY_NAMES[new Date(wd.year, wd.month, wd.day).getDay()]},{" "}
                             {MONTH_NAMES[wd.month].slice(0, 3)} {wd.day}
                           </div>
@@ -763,7 +763,7 @@ export default function CalendarPage() {
                                       <div className="truncate text-body-12 font-medium text-text-primary">
                                         {evt.title}
                                       </div>
-                                      <div className="flex items-center gap-2 text-[10px] text-text-quaternary">
+                                      <div className="flex items-center gap-2 text-caption-10 text-text-quaternary">
                                         <span className="text-numbers-10">{evt.time}</span>
                                         <span>{cfg.label}</span>
                                       </div>
@@ -879,16 +879,16 @@ export default function CalendarPage() {
                                   </div>
                                   <div className="mt-1 flex items-center gap-2">
                                     <span
-                                      className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${cfg.color} ${cfg.bg}`}
+                                      className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-label-9 tracking-wider ${cfg.color} ${cfg.bg}`}
                                     >
                                       {cfg.label}
                                     </span>
                                     <ImpactBadge impact={evt.impact} />
                                   </div>
-                                  <p className="mt-1.5 text-[11px] leading-relaxed text-text-quaternary line-clamp-2">
+                                  <p className="mt-1.5 text-body-12 leading-relaxed text-text-quaternary line-clamp-2">
                                     {evt.description}
                                   </p>
-                                  <div className="mt-2 flex items-center gap-3 text-[10px] text-text-muted">
+                                  <div className="mt-2 flex items-center gap-3 text-caption-10 text-text-muted">
                                     <span className="flex items-center gap-1">
                                       <Clock className="h-3 w-3" />
                                       <span className="text-numbers-10">{evt.time}</span>
@@ -926,7 +926,7 @@ export default function CalendarPage() {
               <h3 className="text-body-12 font-semibold text-text-primary">
                 Upcoming Events
               </h3>
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">
+              <span className="text-label-10 text-text-quaternary">
                 Next 10
               </span>
             </div>
@@ -957,7 +957,7 @@ export default function CalendarPage() {
                         >
                           {/* Date chip */}
                           <div className="flex w-9 shrink-0 flex-col items-center rounded-md bg-bg-base-3 py-1">
-                            <span className="text-[9px] font-medium uppercase text-text-muted">
+                            <span className="text-label-9 text-text-muted">
                               {MONTH_NAMES[m - 1].slice(0, 3)}
                             </span>
                             <span className="text-numbers-12 font-semibold text-text-primary">
@@ -971,7 +971,7 @@ export default function CalendarPage() {
                             </div>
                             <div className="mt-0.5 flex items-center gap-2">
                               <span
-                                className={`inline-flex items-center gap-0.5 text-[9px] font-medium ${cfg.color}`}
+                                className={`inline-flex items-center gap-0.5 text-label-9 font-medium ${cfg.color}`}
                               >
                                 <span
                                   className="inline-block h-1.5 w-1.5 rounded-full"
@@ -979,7 +979,7 @@ export default function CalendarPage() {
                                 />
                                 {cfg.label}
                               </span>
-                              <span className="text-[10px] text-text-muted">
+                              <span className="text-caption-10 text-text-muted">
                                 {evt.relatedMarkets} mkts
                               </span>
                             </div>
@@ -1009,7 +1009,7 @@ export default function CalendarPage() {
             className="rounded-[18px] bg-bg-base-1 px-4 py-3"
             style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
-            <div className="text-[10px] font-medium uppercase text-text-quaternary mb-2">
+            <div className="text-label-10 text-text-quaternary mb-2">
               Event Types
             </div>
             <div className="flex flex-wrap gap-x-3 gap-y-1.5">
@@ -1020,7 +1020,7 @@ export default function CalendarPage() {
                       className="h-2 w-2 rounded-full"
                       style={{ backgroundColor: cfg.dot }}
                     />
-                    <span className="text-[10px] text-text-quaternary">{cfg.label}</span>
+                    <span className="text-caption-10 text-text-quaternary">{cfg.label}</span>
                   </div>
                 )
               )}

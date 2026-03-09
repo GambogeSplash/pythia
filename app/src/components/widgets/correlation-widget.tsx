@@ -120,7 +120,7 @@ export function CorrelationWidget() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+            className={`rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
               activeTab === tab
                 ? "bg-signal-green text-bg-primary"
                 : "text-text-secondary hover:text-text-primary"
@@ -159,10 +159,10 @@ export function CorrelationWidget() {
               >
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[11px] text-text-primary">
+                    <p className="truncate text-body-12 text-text-primary">
                       {pair.marketA.title}
                     </p>
-                    <p className="truncate text-[11px] text-text-secondary">
+                    <p className="truncate text-body-12 text-text-secondary">
                       {pair.marketB.title}
                     </p>
                   </div>
@@ -170,16 +170,16 @@ export function CorrelationWidget() {
                     <span className={`text-numbers-12 font-bold ${coefficientColor(pair.coefficient)}`}>
                       {pair.coefficient > 0 ? "+" : ""}{pair.coefficient.toFixed(2)}
                     </span>
-                    <span className={`text-[10px] ${trendColor(pair.trend)}`}>
+                    <span className={`text-caption-10 ${trendColor(pair.trend)}`}>
                       {trendIcon(pair.trend)} {pair.trend}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="rounded bg-bg-base-3 px-1.5 py-0.5 text-[9px] text-text-quaternary">
+                  <span className="rounded bg-bg-base-3 px-1.5 py-0.5 text-label-9 text-text-quaternary">
                     {pair.category}
                   </span>
-                  <div className="flex items-center gap-1.5 text-[10px] text-text-quaternary">
+                  <div className="flex items-center gap-1.5 text-caption-10 text-text-quaternary">
                     <span>{Math.round(pair.marketA.price * 100)}%</span>
                     <span className="text-text-muted">vs</span>
                     <span>{Math.round(pair.marketB.price * 100)}%</span>
@@ -204,7 +204,7 @@ export function CorrelationWidget() {
               >
                 <div className="min-w-0 flex-1">
                   <p className="text-body-12 font-medium text-text-primary">{cat.category}</p>
-                  <div className="mt-0.5 flex items-center gap-2 text-[10px] text-text-quaternary">
+                  <div className="mt-0.5 flex items-center gap-2 text-caption-10 text-text-quaternary">
                     <span>{cat.count} market{cat.count !== 1 ? "s" : ""}</span>
                     <span>Avg {Math.round(cat.avgPrice * 100)}%</span>
                   </div>
@@ -213,7 +213,7 @@ export function CorrelationWidget() {
                   <span className={`text-numbers-10 font-medium ${cat.avgPrice > 0.5 ? "text-action-rise" : "text-action-fall"}`}>
                     {cat.avgPrice > 0.5 ? "Bullish" : "Bearish"}
                   </span>
-                  <span className="text-[10px] text-text-quaternary">
+                  <span className="text-caption-10 text-text-quaternary">
                     ${cat.totalVol >= 1000000 ? `${(cat.totalVol / 1000000).toFixed(1)}M` : cat.totalVol >= 1000 ? `${(cat.totalVol / 1000).toFixed(0)}K` : cat.totalVol.toLocaleString()}
                   </span>
                 </div>

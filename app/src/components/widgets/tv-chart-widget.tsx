@@ -168,7 +168,7 @@ export function TVChartWidget({ marketId }: { marketId?: string }) {
       id="tv-chart"
       title="Market Chart"
       liveIndicator
-      icon={<span className="text-xs text-signal-green">$</span>}
+      icon={<span className="text-body-12 text-signal-green">$</span>}
       actions={
         <div className="flex items-center gap-0.5">
           {timeframes.map((tf) => (

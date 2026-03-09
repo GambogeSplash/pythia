@@ -21,10 +21,10 @@ export function RecommendationModal({
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded bg-bg-surface-raised text-[10px] text-text-secondary">
+          <span className="flex h-6 w-6 items-center justify-center rounded bg-bg-surface-raised text-caption-10 text-text-secondary">
             A¹
           </span>
-          <span className="text-sm font-semibold text-text-primary">
+          <span className="text-body-14 font-semibold text-text-primary">
             Recommendation
           </span>
           <Badge variant="blue">Beta</Badge>
@@ -49,7 +49,7 @@ export function RecommendationModal({
             <span className="text-body-14 font-semibold text-text-primary">
               {isSnipe ? "Snipe" : "Wait"}
             </span>
-            <span className="text-[10px] text-text-quaternary">⊞</span>
+            <span className="text-caption-10 text-text-quaternary">⊞</span>
           </div>
         </div>
         <div>
@@ -72,14 +72,14 @@ export function RecommendationModal({
           BEST MARKET
         </div>
         <div className="mt-1.5 flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-signal-blue text-[10px] font-bold text-white">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-signal-blue text-caption-10 font-bold text-white">
             ⊞
           </div>
-          <span className="text-sm text-text-primary">
+          <span className="text-body-14 text-text-primary">
             Will Grokipedia launch by 31 Dec?
           </span>
         </div>
-        <button className="mt-1 text-[11px] text-signal-green hover:underline">
+        <button className="mt-1 text-body-12 text-signal-green hover:underline">
           Other market ⌄
         </button>
       </div>
@@ -90,7 +90,7 @@ export function RecommendationModal({
           <div className="text-numbers-10 font-medium uppercase tracking-wider text-text-quaternary">
             HIGHEST &ldquo;YES&rdquo; PRICE
           </div>
-          <div className="mt-1 font-data text-base font-bold text-text-primary">
+          <div className="mt-1 font-data text-header-16 font-bold text-text-primary">
             75¢
           </div>
         </div>
@@ -98,7 +98,7 @@ export function RecommendationModal({
           <div className="text-numbers-10 font-medium uppercase tracking-wider text-text-quaternary">
             LOWEST &ldquo;YES&rdquo; PRICE
           </div>
-          <div className="mt-1 font-data text-base font-bold text-text-primary">
+          <div className="mt-1 font-data text-header-16 font-bold text-text-primary">
             72¢
           </div>
         </div>
@@ -115,7 +115,7 @@ export function RecommendationModal({
             <ThumbsDown className="h-3 w-3 text-text-tertiary hover:text-text-secondary" />
           </div>
         </div>
-        <p className="mt-2 text-[13px] leading-relaxed text-text-primary">
+        <p className="mt-2 text-body-14 leading-relaxed text-text-primary">
           {isSnipe
             ? "This sounds like a direct confirmation for the launch of Grokipedia from the CEO. Aggression ↑ · Volume ↑ · Spread OK"
             : "Buy aggression cooled off. Wait for next alpha"}
@@ -135,7 +135,7 @@ export function RecommendationModal({
 
       {/* Bot CTA */}
       <div className="mx-4 mt-3 rounded-md border border-border-primary bg-bg-surface p-3">
-        <p className="text-[12px] text-text-secondary">
+        <p className="text-body-12 text-text-secondary">
           You can also create automation bot for future opportunities like this.{" "}
           <button className="font-semibold text-signal-green hover:underline">
             CREATE
@@ -146,15 +146,15 @@ export function RecommendationModal({
       {/* Actions */}
       <div className="mt-4 flex gap-3 px-4 py-3" style={{ boxShadow: "inset 0 1px 0 0 var(--color-divider-heavy)" }}>
         {isSnipe ? (
-          <button className="flex-1 rounded-md bg-signal-green py-2.5 text-sm font-semibold text-bg-primary transition-colors duration-150 hover:bg-signal-green/90">
+          <button className="flex-1 rounded-md bg-signal-green py-2.5 text-body-14 font-semibold text-bg-primary transition-colors duration-150 hover:bg-signal-green/90">
             BUY &ldquo;YES&rdquo;
           </button>
         ) : (
-          <button className="flex-1 rounded-md bg-signal-green py-2.5 text-sm font-semibold text-bg-primary transition-colors duration-150 hover:bg-signal-green/90">
+          <button className="flex-1 rounded-md bg-signal-green py-2.5 text-body-14 font-semibold text-bg-primary transition-colors duration-150 hover:bg-signal-green/90">
             SET ALERT
           </button>
         )}
-        <button className="flex-1 rounded-md border border-border-secondary bg-bg-surface py-2.5 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover">
+        <button className="flex-1 rounded-md border border-border-secondary bg-bg-surface py-2.5 text-body-14 font-medium text-text-secondary transition-colors duration-150 hover:bg-action-translucent-hover">
           CANCEL
         </button>
       </div>
@@ -178,7 +178,7 @@ function IndicatorChip({
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${styles[direction]}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-body-12 font-medium ${styles[direction]}`}
     >
       {icons[direction]} {label}
     </span>

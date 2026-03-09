@@ -55,7 +55,7 @@ export function PositionsWidget() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`rounded px-2 py-0.5 text-[10px] font-medium capitalize transition-colors ${
+              className={`rounded px-2 py-0.5 text-caption-10 font-medium capitalize transition-colors ${
                 tab === t
                   ? "bg-signal-green text-bg-primary"
                   : "text-text-secondary hover:text-text-primary"
@@ -91,7 +91,7 @@ export function PositionsWidget() {
               <div className="text-numbers-10 font-medium uppercase text-text-quaternary">Unrealized P/L</div>
               <div className="font-data text-body-14 font-semibold text-action-rise">
                 +${unrealizedPnl}
-                <span className="ml-1 text-xs">(+{unrealizedPnlPct}%)</span>
+                <span className="ml-1 text-body-12">(+{unrealizedPnlPct}%)</span>
               </div>
             </div>
             <div>
@@ -106,7 +106,7 @@ export function PositionsWidget() {
             style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
           >
             {["Market", "Side", "Qty", "Entry", "Current", "P/L", ""].map((h) => (
-              <span key={h} className="text-[10px] font-medium uppercase text-text-quaternary">{h}</span>
+              <span key={h} className="text-label-10 text-text-quaternary">{h}</span>
             ))}
           </div>
 
@@ -133,7 +133,7 @@ export function PositionsWidget() {
                   {/* Side badge */}
                   <span>
                     <span
-                      className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none ${
+                      className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-caption-10 font-semibold leading-none ${
                         pos.side === "YES"
                           ? "bg-action-buy/15 text-action-buy"
                           : "bg-action-sell/15 text-action-sell"

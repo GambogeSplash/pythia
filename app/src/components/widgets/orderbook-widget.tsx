@@ -53,7 +53,7 @@ export function OrderBookWidget() {
       icon={<BarChart3 className="h-3.5 w-3.5 text-text-tertiary" />}
       accentColor="#00FF85"
       actions={
-        <span className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-medium bg-bg-base-2 text-text-secondary">
+        <span className="flex items-center gap-1 rounded px-2 py-0.5 text-caption-10 font-medium bg-bg-base-2 text-text-secondary">
           Spread: 2¢
         </span>
       }
@@ -68,9 +68,9 @@ export function OrderBookWidget() {
               className="grid grid-cols-[1fr_1fr_1fr] gap-1 px-2 py-1"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
             >
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">Price</span>
-              <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Size</span>
-              <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Total</span>
+              <span className="text-label-10 text-text-quaternary">Price</span>
+              <span className="text-right text-label-10 text-text-quaternary">Size</span>
+              <span className="text-right text-label-10 text-text-quaternary">Total</span>
             </div>
 
             {/* Bid rows */}
@@ -144,9 +144,9 @@ export function OrderBookWidget() {
               className="grid grid-cols-[1fr_1fr_1fr] gap-1 px-2 py-1"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
             >
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">Price</span>
-              <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Size</span>
-              <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Total</span>
+              <span className="text-label-10 text-text-quaternary">Price</span>
+              <span className="text-right text-label-10 text-text-quaternary">Size</span>
+              <span className="text-right text-label-10 text-text-quaternary">Total</span>
             </div>
 
             {/* Ask rows */}

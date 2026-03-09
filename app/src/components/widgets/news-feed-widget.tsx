@@ -16,9 +16,9 @@ export function NewsFeedWidget() {
       title="News Feed"
       liveIndicator
       accentColor="#3B82F6"
-      icon={<span className="text-xs text-signal-blue">N</span>}
+      icon={<span className="text-body-12 text-signal-blue">N</span>}
       actions={
-        <button className="text-[10px] font-medium text-signal-green hover:underline">
+        <button className="text-caption-10 font-medium text-signal-green hover:underline">
           Customize
         </button>
       }
@@ -29,7 +29,7 @@ export function NewsFeedWidget() {
           (filter) => (
             <button
               key={filter}
-              className="flex items-center gap-1 rounded-full bg-bg-base-2 px-2.5 py-1 text-[10px] text-text-secondary transition-colors duration-150 hover:bg-bg-base-3 hover:text-text-primary"
+              className="flex items-center gap-1 rounded-full bg-bg-base-2 px-2.5 py-1 text-caption-10 text-text-secondary transition-colors duration-150 hover:bg-bg-base-3 hover:text-text-primary"
               style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
             >
               {filter}
@@ -73,7 +73,7 @@ export function NewsFeedWidget() {
               {/* Author row */}
               <div className="flex items-start gap-2.5">
                 {/* Avatar / image */}
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-base-3 text-[10px] font-bold text-text-secondary overflow-hidden">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-base-3 text-caption-10 font-bold text-text-secondary overflow-hidden">
                   {event.image ? (
                     <img src={event.image} alt="" className="h-full w-full object-cover" />
                   ) : (
@@ -93,28 +93,28 @@ export function NewsFeedWidget() {
                   </div>
 
                   {/* Content */}
-                  <p className="mt-1 text-[13px] leading-relaxed text-text-primary">
+                  <p className="mt-1 text-body-14 leading-relaxed text-text-primary">
                     {event.title}
                   </p>
 
                   {event.description && (
-                    <p className="mt-1 text-[11px] leading-relaxed text-text-quaternary line-clamp-2">
+                    <p className="mt-1 text-body-12 leading-relaxed text-text-quaternary line-clamp-2">
                       {event.description}
                     </p>
                   )}
 
                   {/* Tags */}
                   <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                    <span className="flex cursor-pointer items-center gap-1 rounded bg-bg-base-3 px-2 py-0.5 text-[10px] font-medium text-text-secondary">
+                    <span className="flex cursor-pointer items-center gap-1 rounded bg-bg-base-3 px-2 py-0.5 text-caption-10 font-medium text-text-secondary">
                       {event.markets.length} market{event.markets.length !== 1 ? "s" : ""}
                     </span>
                     {event.volume24h > 0 && (
-                      <span className="rounded bg-action-rise-dim px-2 py-0.5 text-[10px] font-medium text-action-rise">
+                      <span className="rounded bg-action-rise-dim px-2 py-0.5 text-caption-10 font-medium text-action-rise">
                         {formatVolume(event.volume24h)} 24h
                       </span>
                     )}
                     {event.liquidity > 0 && (
-                      <span className="rounded bg-bg-base-3 px-2 py-0.5 text-[10px] font-medium text-text-secondary">
+                      <span className="rounded bg-bg-base-3 px-2 py-0.5 text-caption-10 font-medium text-text-secondary">
                         {formatVolume(event.liquidity)} liq
                       </span>
                     )}

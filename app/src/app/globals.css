@@ -85,8 +85,9 @@
   --color-chart-navy: #004FAF;
   --color-chart-pink: #FF4693;
 
-  /* ── Fonts ── */
+  /* ── Fonts (2 voices: Display / UI+Data) ── */
   --font-sans: var(--font-ibm-plex-sans-condensed);
+  --font-display: var(--font-crimson-pro);
   --font-mono: var(--font-ibm-plex-sans-condensed);
 
   /* ── Spacing (ref: TakeProfit rem-based scale) ── */
@@ -226,52 +227,168 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Typography Utilities (ref: TakeProfit tw-body/caption/numbers) ── */
-.text-body-14 {
-  font-size: 14px;
-  line-height: 16px;
-  font-family: var(--font-sans), system-ui, sans-serif;
+/* ══════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY SYSTEM — Pythia
+
+   2 voices:
+   • Display  (Crimson Pro)              — headlines, market names, editorial
+   • UI+Data  (IBM Plex Sans Condensed)  — body, labels, nav, numbers, prices
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Display: Crimson Pro (serif personality) ── */
+.text-display-32 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
-.text-body-12 {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: var(--font-sans), system-ui, sans-serif;
+.text-display-24 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-.text-caption-12 {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: var(--font-sans), system-ui, sans-serif;
+.text-display-20 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.text-display-16 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 
-.text-numbers-12 {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: var(--font-mono), monospace;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-.text-numbers-10 {
-  font-size: 10px;
-  line-height: 12px;
-  font-family: var(--font-mono), monospace;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
+/* ── Headers: IBM Plex Sans Condensed (UI authority) ── */
 .text-header-20 {
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 20px;
   line-height: 24px;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-/* Tabular numbers for data */
+.text-header-16 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.text-header-14 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.text-header-12 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* ── Body: IBM Plex Sans Condensed ── */
+.text-body-14 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.006em;
+}
+
+.text-body-12 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.004em;
+}
+
+/* ── Captions & Labels: IBM Plex Sans Condensed ── */
+.text-caption-12 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+}
+
+.text-caption-10 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+}
+
+.text-label-10 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.text-label-9 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 9px;
+  line-height: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Data / Numbers: IBM Plex Sans Condensed + tabular-nums ── */
+.text-numbers-14 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.text-numbers-12 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.text-numbers-11 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 14px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.text-numbers-10 {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ── Utility aliases ── */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
 .font-data {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }

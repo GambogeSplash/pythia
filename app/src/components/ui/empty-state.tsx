@@ -11,7 +11,7 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
       {icon && <div className="mb-3 text-text-quaternary">{icon}</div>}
-      <h3 className="text-sm font-semibold text-text-secondary">{title}</h3>
+      <h3 className="text-body-14 font-semibold text-text-secondary">{title}</h3>
       {description && (
         <p className="mt-1 max-w-xs text-body-12 text-text-quaternary">{description}</p>
       )}

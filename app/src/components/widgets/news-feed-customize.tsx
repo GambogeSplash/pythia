@@ -24,9 +24,9 @@ export function NewsFeedCustomize() {
     <div className="flex w-full max-w-[700px] flex-col overflow-hidden rounded-[18px] border border-border-primary bg-bg-base-1">
       {/* Header */}
       <div className="flex h-9 items-center gap-3 px-3" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-xs text-text-quaternary">⊞</span>
+        <span className="text-body-12 text-text-quaternary">⊞</span>
         <span className="text-body-12 font-semibold text-text-primary">News Feed</span>
-        <button className="text-xs font-medium text-signal-green hover:underline">
+        <button className="text-body-12 font-medium text-signal-green hover:underline">
           View Alerts
         </button>
         <div className="ml-auto flex items-center gap-1">
@@ -42,10 +42,10 @@ export function NewsFeedCustomize() {
       <div className="p-4">
         {/* Action buttons */}
         <div className="flex gap-2">
-          <button className="rounded border border-signal-green bg-action-rise-dim px-4 py-1.5 text-[11px] font-semibold uppercase text-action-rise transition-colors duration-150 hover:bg-signal-green/20">
+          <button className="rounded border border-signal-green bg-action-rise-dim px-4 py-1.5 text-body-12 font-semibold uppercase text-action-rise transition-colors duration-150 hover:bg-signal-green/20">
             ADD HANDLE
           </button>
-          <button className="rounded border border-border-secondary bg-bg-surface px-4 py-1.5 text-[11px] font-semibold uppercase text-text-primary transition-colors duration-150 hover:bg-action-translucent-hover">
+          <button className="rounded border border-border-secondary bg-bg-surface px-4 py-1.5 text-body-12 font-semibold uppercase text-text-primary transition-colors duration-150 hover:bg-action-translucent-hover">
             IMPORT
           </button>
         </div>
@@ -77,7 +77,7 @@ export function NewsFeedCustomize() {
           <div className="flex gap-0.5">
             <button
               onClick={() => setActiveTab("list")}
-              className={`rounded px-3 py-1 text-[11px] font-medium ${
+              className={`rounded px-3 py-1 text-body-12 font-medium ${
                 activeTab === "list"
                   ? "bg-signal-green text-bg-primary"
                   : "text-text-secondary hover:text-text-primary"
@@ -87,7 +87,7 @@ export function NewsFeedCustomize() {
             </button>
             <button
               onClick={() => setActiveTab("subscription")}
-              className={`rounded px-3 py-1 text-[11px] font-medium ${
+              className={`rounded px-3 py-1 text-body-12 font-medium ${
                 activeTab === "subscription"
                   ? "bg-signal-green text-bg-primary"
                   : "text-text-secondary hover:text-text-primary"
@@ -98,7 +98,7 @@ export function NewsFeedCustomize() {
           </div>
           <div className="flex h-7 w-48 items-center gap-2 rounded border border-border-primary bg-bg-surface px-2">
             <Search className="h-3 w-3 text-text-tertiary" />
-            <span className="text-[11px] text-text-tertiary">Search handle</span>
+            <span className="text-body-12 text-text-tertiary">Search handle</span>
           </div>
         </div>
 
@@ -106,8 +106,8 @@ export function NewsFeedCustomize() {
         <div className="mt-3">
           <div className="grid grid-cols-[auto_1fr_1fr_auto] gap-4 pb-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
             <span className="w-5" />
-            <span className="text-[10px] font-medium uppercase text-text-quaternary">Handle</span>
-            <span className="text-[10px] font-medium uppercase text-text-quaternary">Type</span>
+            <span className="text-label-10 text-text-quaternary">Handle</span>
+            <span className="text-label-10 text-text-quaternary">Type</span>
             <span className="w-14" />
           </div>
           <div>
@@ -176,7 +176,7 @@ function ToggleSetting({
           }`}
         />
       </button>
-      <span className="text-[12px] text-text-secondary">{label}</span>
+      <span className="text-body-12 text-text-secondary">{label}</span>
     </label>
   );
 }

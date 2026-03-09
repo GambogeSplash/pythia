@@ -151,7 +151,7 @@ export function MarketChartWidget() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`border-b-2 px-3 py-2 text-[11px] font-medium transition-colors duration-150 ${
+                className={`border-b-2 px-3 py-2 text-body-12 font-medium transition-colors duration-150 ${
                   activeTab === tab
                     ? "border-signal-green text-text-primary"
                     : "border-transparent text-text-secondary hover:text-text-primary"
@@ -258,7 +258,7 @@ export function MarketChartWidget() {
           {/* Bottom bar */}
           <div className="flex items-center justify-between px-4 py-2" style={{ boxShadow: "inset 0 1px 0 0 var(--color-divider-heavy)" }}>
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-1 text-[11px] font-medium text-text-primary">
+              <button className="flex items-center gap-1 text-body-12 font-medium text-text-primary">
                 Volume <ChevronIcon />
               </button>
               <div className="flex items-center gap-2 text-numbers-10 text-text-secondary">

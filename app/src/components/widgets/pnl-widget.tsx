@@ -107,7 +107,7 @@ export function PnlWidget() {
         <div className="flex items-center gap-1">
           <button
             onClick={() => setTab("best")}
-            className={`rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+            className={`rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
               tab === "best" ? "bg-signal-green text-bg-primary" : "text-text-secondary hover:text-text-primary"
             }`}
           >
@@ -115,7 +115,7 @@ export function PnlWidget() {
           </button>
           <button
             onClick={() => setTab("worst")}
-            className={`rounded px-2 py-0.5 text-[10px] font-medium transition-colors ${
+            className={`rounded px-2 py-0.5 text-caption-10 font-medium transition-colors ${
               tab === "worst" ? "bg-signal-red text-bg-primary" : "text-text-secondary hover:text-text-primary"
             }`}
           >
@@ -145,17 +145,17 @@ export function PnlWidget() {
                   className="h-6 w-6 flex-shrink-0 rounded-[4px] bg-bg-surface-raised object-cover"
                 />
               ) : (
-                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-surface-raised text-[9px] font-bold text-text-secondary">
+                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-[4px] bg-bg-surface-raised text-label-9 font-bold text-text-secondary">
                   {trader.avatar}
                 </div>
               )}
               <div className="min-w-0 flex-1">
-                <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="block text-xs font-medium text-signal-teal hover:underline">{trader.name}</Link>
+                <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="block text-body-12 font-medium text-signal-teal hover:underline">{trader.name}</Link>
                 <div className="flex items-center gap-1">
-                  <Link href={`/dashboard/markets/${trader.marketSlug}`} className="truncate text-[10px] text-text-quaternary hover:text-text-secondary transition-colors">{trader.market}</Link>
+                  <Link href={`/dashboard/markets/${trader.marketSlug}`} className="truncate text-caption-10 text-text-quaternary hover:text-text-secondary transition-colors">{trader.market}</Link>
                 </div>
               </div>
-              <span className={`font-data text-sm font-semibold ${tab === "best" ? "text-action-rise" : "text-action-fall"}`}>
+              <span className={`font-data text-body-14 font-semibold ${tab === "best" ? "text-action-rise" : "text-action-fall"}`}>
                 {trader.pnl}
               </span>
             </div>

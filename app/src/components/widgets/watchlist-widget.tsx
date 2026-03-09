@@ -152,19 +152,19 @@ export function WatchlistWidget() {
         className="grid grid-cols-[1fr_48px_52px_56px_44px] gap-1 px-3 py-1"
         style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
       >
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">
           Market
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Price
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           24h%
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Volume
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Trend
         </span>
       </div>

@@ -110,6 +110,33 @@ function getWidgetDefaultSize(widgetId: string): { w: number; h: number; minW: n
   return { w: 4, h: 4, minW: 3, minH: 2 };
 }
 
+/* ── Merge layouts with current widget list ── */
+function mergeLayouts(raw: StoredLayouts, widgets: WidgetConfig[]): StoredLayouts {
+  const widgetIds = new Set(widgets.map((w) => w.id));
+  const existingIds = new Set(raw.lg?.map((l) => l.i) ?? []);
+  const newWidgets = widgets.filter((w) => !existingIds.has(w.id));
+  const hasStale = raw.lg?.some((l) => !widgetIds.has(l.i)) ?? false;
+
+  if (newWidgets.length === 0 && !hasStale) return raw;
+
+  let result: StoredLayouts = {
+    lg: (raw.lg ?? []).filter((l) => widgetIds.has(l.i)),
+    md: (raw.md ?? []).filter((l) => widgetIds.has(l.i)),
+    sm: (raw.sm ?? []).filter((l) => widgetIds.has(l.i)),
+  };
+
+  if (newWidgets.length > 0) {
+    const newDefaults = generateDefaultLayouts(newWidgets);
+    result = {
+      lg: [...result.lg, ...newDefaults.lg],
+      md: [...result.md, ...newDefaults.md],
+      sm: [...result.sm, ...newDefaults.sm],
+    };
+  }
+
+  return result;
+}
+
 /* ── Component ── */
 
 export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: WidgetGridProps) {
@@ -121,42 +148,27 @@ export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: W
   const setWidgetPanelOpen = useAppStore((s) => s.setWidgetPanelOpen);
   const setDraggingFromPanel = useAppStore((s) => s.setDraggingFromPanel);
 
-  // Raw layout state — only updated by user interactions (drag/resize/drop)
-  const [rawLayouts, setRawLayouts] = useState<StoredLayouts>(() => {
-    return loadLayouts(storageKey) ?? generateDefaultLayouts(widgets);
-  });
+  // Layouts live in a ref — onLayoutChange updates it WITHOUT triggering re-renders.
+  // This is the key to preventing infinite loops: RGL fires onLayoutChange on every
+  // prop change, so if layouts were in state, it would loop forever.
+  const layoutsRef = useRef<StoredLayouts>(
+    mergeLayouts(loadLayouts(storageKey) ?? generateDefaultLayouts(widgets), widgets)
+  );
 
-  // Effective layouts — derived from rawLayouts + current widgets.
-  // Adds default layouts for new widgets, removes stale entries.
-  // This is a pure derivation, no setState needed, so no infinite loops.
-  const layouts = useMemo<StoredLayouts>(() => {
-    const widgetIds = new Set(widgets.map((w) => w.id));
-    const existingIds = new Set(rawLayouts.lg?.map((l) => l.i) ?? []);
-    const newWidgets = widgets.filter((w) => !existingIds.has(w.id));
-    const hasStale = rawLayouts.lg?.some((l) => !widgetIds.has(l.i)) ?? false;
+  // Version counter — increment to force a re-render (e.g. after drop)
+  const [, setVersion] = useState(0);
+  const forceUpdate = useCallback(() => setVersion((v) => v + 1), []);
 
-    // If everything matches, return raw as-is (stable reference)
-    if (newWidgets.length === 0 && !hasStale) return rawLayouts;
+  // When widgets change (add/remove), update the ref and force one re-render
+  const prevWidgetKeyRef = useRef(widgets.map((w) => w.id).join(","));
+  const currentWidgetKey = widgets.map((w) => w.id).join(",");
+  if (currentWidgetKey !== prevWidgetKeyRef.current) {
+    prevWidgetKeyRef.current = currentWidgetKey;
+    layoutsRef.current = mergeLayouts(layoutsRef.current, widgets);
+  }
 
-    // Filter out stale entries
-    let result: StoredLayouts = {
-      lg: (rawLayouts.lg ?? []).filter((l) => widgetIds.has(l.i)),
-      md: (rawLayouts.md ?? []).filter((l) => widgetIds.has(l.i)),
-      sm: (rawLayouts.sm ?? []).filter((l) => widgetIds.has(l.i)),
-    };
-
-    // Add defaults for new widgets
-    if (newWidgets.length > 0) {
-      const newDefaults = generateDefaultLayouts(newWidgets);
-      result = {
-        lg: [...result.lg, ...newDefaults.lg],
-        md: [...result.md, ...newDefaults.md],
-        sm: [...result.sm, ...newDefaults.sm],
-      };
-    }
-
-    return result;
-  }, [rawLayouts, widgets]);
+  // Read layouts from ref (stable — only changes when we explicitly update it)
+  const layouts = layoutsRef.current;
 
   // Measure container width
   useEffect(() => {
@@ -178,40 +190,15 @@ export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: W
     setMounted(true);
   }, []);
 
-  // Track recently dropped widget IDs to protect their size from onLayoutChange
-  const recentDropRef = useRef<Map<string, LayoutItem>>(new Map());
-
+  // onLayoutChange: update ref + persist. NO state update = NO re-render = NO loop.
   const handleLayoutChange = useCallback(
     (_currentLayout: Layout, allLayouts: ResponsiveLayouts) => {
-      const mutable: StoredLayouts = {};
+      const updated: StoredLayouts = {};
       for (const [key, value] of Object.entries(allLayouts)) {
-        if (value) mutable[key] = [...value] as LayoutItem[];
+        if (value) updated[key] = [...value] as LayoutItem[];
       }
-
-      // Protect recently dropped widgets — RGL may report them with placeholder size
-      if (recentDropRef.current.size > 0) {
-        for (const [widgetId, intended] of recentDropRef.current) {
-          for (const bp of Object.keys(mutable)) {
-            mutable[bp] = (mutable[bp] ?? []).map((l) =>
-              l.i === widgetId
-                ? { ...l, w: intended.w, h: intended.h, minW: intended.minW, minH: intended.minH }
-                : l
-            );
-          }
-        }
-        recentDropRef.current.clear();
-      }
-
-      // Only update state if layouts actually changed — prevents infinite loop
-      // (RGL fires onLayoutChange when layouts prop changes, which would
-      // set state → new prop → onLayoutChange → set state → loop)
-      setRawLayouts((prev) => {
-        const prevStr = JSON.stringify(prev);
-        const nextStr = JSON.stringify(mutable);
-        if (prevStr === nextStr) return prev; // same reference = no re-render
-        saveLayouts(storageKey, mutable);
-        return mutable;
-      });
+      layoutsRef.current = updated;
+      saveLayouts(storageKey, updated);
     },
     [storageKey]
   );
@@ -241,19 +228,16 @@ export function WidgetGrid({ widgets, storageKey = "pythia-grid-layouts-v1" }: W
         minH: size.minH,
       };
 
-      // Protect this widget's intended size from being overwritten by onLayoutChange
-      recentDropRef.current.set(widgetId, newItem);
+      // Pre-insert layout item in ref so it's ready when the new widget renders
+      const prev = layoutsRef.current;
+      const next: StoredLayouts = {};
+      for (const bp of Object.keys(prev)) {
+        next[bp] = [...(prev[bp] ?? []), newItem];
+      }
+      layoutsRef.current = next;
+      saveLayouts(storageKey, next);
 
-      // Pre-insert the layout item so it's available when RGL re-renders
-      setRawLayouts((prev) => {
-        const next: StoredLayouts = {};
-        for (const bp of Object.keys(prev)) {
-          next[bp] = [...(prev[bp] ?? []), newItem];
-        }
-        saveLayouts(storageKey, next);
-        return next;
-      });
-
+      // Add widget to store + close panel
       addWidget(widgetId);
       setWidgetPanelOpen(false);
       setDraggingFromPanel(false);

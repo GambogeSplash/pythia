@@ -98,7 +98,7 @@ export function PortfolioWidget() {
         <div className="flex flex-col items-center justify-center gap-2 px-3 py-10 text-center">
           <Wallet className="h-6 w-6 text-text-quaternary" />
           <span className="text-body-12 text-text-secondary">No open positions</span>
-          <span className="text-[10px] text-text-quaternary">Start trading to see your portfolio here</span>
+          <span className="text-caption-10 text-text-quaternary">Start trading to see your portfolio here</span>
         </div>
       ) : (
         <>
@@ -112,7 +112,7 @@ export function PortfolioWidget() {
               <div className="text-numbers-10 font-medium uppercase text-text-quaternary">Total PnL</div>
               <div className={`font-data text-body-14 font-semibold ${summary.pnlPositive ? "text-action-rise" : "text-action-fall"}`}>
                 {summary.totalPnl}
-                <span className="ml-1 text-xs">({summary.pnlPositive ? "+" : ""}{summary.totalPnlPct}%)</span>
+                <span className="ml-1 text-body-12">({summary.pnlPositive ? "+" : ""}{summary.totalPnlPct}%)</span>
               </div>
             </div>
             <div>
@@ -146,7 +146,7 @@ export function PortfolioWidget() {
           {/* Positions table */}
           <div className="grid grid-cols-[1fr_35px_55px_45px_50px_65px_70px_50px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
             {["MARKET", "SIDE", "SIZE", "ENTRY", "NOW", "PNL", "VENUE", "EXP"].map((h) => (
-              <span key={h} className="text-[10px] font-medium uppercase text-text-quaternary">{h}</span>
+              <span key={h} className="text-label-10 text-text-quaternary">{h}</span>
             ))}
           </div>
           <div>
@@ -160,14 +160,14 @@ export function PortfolioWidget() {
                   <div className="flex min-w-0 items-center gap-1.5">
                     <Link href={`/dashboard/markets/${pos.marketId}`} className="truncate text-body-12 text-text-primary hover:text-signal-green transition-colors">{pos.marketQuestion}</Link>
                   </div>
-                  <span className={`text-xs font-semibold ${pos.side === "YES" ? "text-action-buy" : "text-action-sell"}`}>{pos.side}</span>
+                  <span className={`text-body-12 font-semibold ${pos.side === "YES" ? "text-action-buy" : "text-action-sell"}`}>{pos.side}</span>
                   <span className="text-numbers-12 text-text-primary">{formatVolume(pos.marketValue)}</span>
                   <span className="text-numbers-12 text-text-secondary">{Math.round(pos.avgPrice * 100)}c</span>
                   <span className="text-numbers-12 text-text-primary">{Math.round(pos.currentPrice * 100)}c</span>
                   <span className={`text-numbers-12 font-medium ${pnlPositive ? "text-action-rise" : "text-action-fall"}`}>
                     {pnlPositive ? "+" : ""}{formatVolume(Math.abs(pos.pnl))}
                   </span>
-                  <span className="text-[10px] text-text-secondary capitalize">{pos.venue}</span>
+                  <span className="text-caption-10 text-text-secondary capitalize">{pos.venue}</span>
                   <span className="text-numbers-10 text-text-quaternary">{expiry}</span>
                 </div>
               );

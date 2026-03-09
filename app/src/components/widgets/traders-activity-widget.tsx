@@ -110,14 +110,14 @@ export function TradersActivityWidget() {
   const activities = useMemo(() => deriveActivities(markets), [markets]);
 
   return (
-    <Widget id="traders-activity" title="Top Traders Activity" liveIndicator accentColor="#2DD4BF" icon={<span className="text-xs">⊞</span>}>
+    <Widget id="traders-activity" title="Top Traders Activity" liveIndicator accentColor="#2DD4BF" icon={<span className="text-body-12">⊞</span>}>
       {/* Table Header */}
       <div className="grid grid-cols-[100px_1fr_50px_70px_80px_70px_100px_50px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
         {["TRADER", "MARKET", "BET", "SIZE", "MARKET PnL", "PY (\u03B1) SCORE", "ARCHETYPE", ""].map(
           (h) => (
             <span
               key={h || "actions"}
-              className="text-[10px] font-medium uppercase text-text-quaternary"
+              className="text-label-10 text-text-quaternary"
             >
               {h}
             </span>
@@ -143,7 +143,7 @@ export function TradersActivityWidget() {
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
             >
               {/* Trader name */}
-              <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="truncate text-xs font-medium text-signal-teal hover:underline">
+              <Link href={`/dashboard/traders/${trader.name.toLowerCase()}`} className="truncate text-body-12 font-medium text-signal-teal hover:underline">
                 {trader.name}
               </Link>
 
@@ -156,7 +156,7 @@ export function TradersActivityWidget() {
                     className="h-4 w-4 flex-shrink-0 rounded-[4px] bg-bg-surface-raised object-cover"
                   />
                 ) : (
-                  <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] bg-bg-base-2 text-[8px] text-text-quaternary">
+                  <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] bg-bg-base-2 text-label-9 text-text-quaternary">
                     ?
                   </div>
                 )}
@@ -167,7 +167,7 @@ export function TradersActivityWidget() {
 
               {/* Bet */}
               <span
-                className={`text-xs font-semibold ${
+                className={`text-body-12 font-semibold ${
                   trader.bet === "YES" ? "text-action-buy" : "text-action-sell"
                 }`}
               >

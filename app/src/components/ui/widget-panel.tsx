@@ -100,7 +100,7 @@ export function WidgetPanel() {
 
       {/* Instruction */}
       <div className="px-4 py-2">
-        <span className="text-[10px] text-text-quaternary">
+        <span className="text-caption-10 text-text-quaternary">
           Drag to dashboard or click to toggle
         </span>
       </div>
@@ -266,7 +266,7 @@ function WidgetCard({
       </span>
 
       {/* Description */}
-      <span className="mt-0.5 text-[10px] leading-tight text-text-quaternary">
+      <span className="mt-0.5 text-caption-10 leading-tight text-text-quaternary">
         {meta?.description ?? "Widget"}
       </span>
 

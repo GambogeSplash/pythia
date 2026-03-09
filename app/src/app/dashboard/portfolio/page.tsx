@@ -603,7 +603,7 @@ export default function PortfolioPage() {
             </div>
             <StatSparkline />
           </div>
-          <div className="mt-2 text-numbers-12 text-xl font-bold text-text-primary">{portfolioSummary.totalValue}</div>
+          <div className="mt-2 text-numbers-12 text-header-20 font-bold text-text-primary">{portfolioSummary.totalValue}</div>
           <div className="mt-1 text-body-12 text-text-tertiary">
             Across {portfolioSummary.venues} venues
           </div>
@@ -623,7 +623,7 @@ export default function PortfolioPage() {
           </div>
           <div className="mt-2 flex items-center gap-2">
             <span
-              className={`text-numbers-12 text-xl font-bold ${
+              className={`text-numbers-12 text-header-20 font-bold ${
                 portfolioSummary.pnlPositive ? "text-action-rise" : "text-action-fall"
               }`}
             >
@@ -667,7 +667,7 @@ export default function PortfolioPage() {
               <div className="flex items-center gap-1.5 text-numbers-10 font-medium uppercase text-text-quaternary">
                 <Activity className="h-3 w-3" /> Win Rate
               </div>
-              <div className="mt-2 text-numbers-12 text-xl font-bold text-text-primary">{winRate}%</div>
+              <div className="mt-2 text-numbers-12 text-header-20 font-bold text-text-primary">{winRate}%</div>
               <div className="mt-1 text-body-12 text-text-tertiary">
                 {winCount}W / {loseCount}L across {totalTrades} trades
               </div>
@@ -688,7 +688,7 @@ export default function PortfolioPage() {
             <BarChart3 className="h-3 w-3" /> Open Positions
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-numbers-12 text-xl font-bold text-text-primary">
+            <span className="text-numbers-12 text-header-20 font-bold text-text-primary">
               {portfolioSummary.positions}
             </span>
             {portfolioSummary.positions > 0 && (
@@ -821,7 +821,7 @@ export default function PortfolioPage() {
             </div>
             <div className="flex flex-col items-center justify-center py-8">
               <Shield className="mb-2 h-5 w-5 text-text-muted" />
-              <p className="text-[11px] text-text-quaternary text-center">Open positions to see venue breakdown</p>
+              <p className="text-body-12 text-text-quaternary text-center">Open positions to see venue breakdown</p>
             </div>
           </motion.div>
         </div>
@@ -955,7 +955,7 @@ export default function PortfolioPage() {
                         style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
                       >
                         <div className="flex min-w-0 items-center gap-1.5">
-                          <span className="text-sm">{pos.marketIcon}</span>
+                          <span className="text-body-14">{pos.marketIcon}</span>
                           <Link
                             href={`/dashboard/markets/${pos.id}`}
                             onClick={(e) => e.stopPropagation()}

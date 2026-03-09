@@ -62,12 +62,12 @@ export function TrendingWidget() {
       icon={<TrendingUp className="h-3.5 w-3.5 text-text-tertiary" />}
     >
       <div className="grid grid-cols-[1fr_50px_60px_70px_60px_80px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">Market</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">YES</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">24h</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Volume</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Vol Δ</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">Momentum</span>
+        <span className="text-label-10 text-text-quaternary">Market</span>
+        <span className="text-right text-label-10 text-text-quaternary">YES</span>
+        <span className="text-right text-label-10 text-text-quaternary">24h</span>
+        <span className="text-right text-label-10 text-text-quaternary">Volume</span>
+        <span className="text-right text-label-10 text-text-quaternary">Vol Δ</span>
+        <span className="text-right text-label-10 text-text-quaternary">Momentum</span>
       </div>
 
       {isLoading && <SkeletonRows />}

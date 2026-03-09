@@ -114,7 +114,7 @@ export function AIChatPanel({ isOpen, onClose, marketContext }: AIChatPanelProps
                 <h2 className="text-caption-12 font-semibold text-text-primary">
                   Pythia AI
                 </h2>
-                <span className="flex items-center gap-1 text-[10px] text-text-quaternary">
+                <span className="flex items-center gap-1 text-caption-10 text-text-quaternary">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-green opacity-75" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal-green" />
@@ -126,7 +126,7 @@ export function AIChatPanel({ isOpen, onClose, marketContext }: AIChatPanelProps
               <div className="flex items-center gap-1">
                 <button
                   onClick={clearMessages}
-                  className="flex h-7 items-center gap-1 rounded-[6px] bg-action-secondary px-2.5 text-[10px] text-text-secondary transition-colors duration-150 hover:bg-action-secondary-hover hover:text-text-primary"
+                  className="flex h-7 items-center gap-1 rounded-[6px] bg-action-secondary px-2.5 text-caption-10 text-text-secondary transition-colors duration-150 hover:bg-action-secondary-hover hover:text-text-primary"
                 >
                   Clear
                 </button>
@@ -152,7 +152,7 @@ export function AIChatPanel({ isOpen, onClose, marketContext }: AIChatPanelProps
                   <h3 className="mt-4 text-body-12 font-semibold text-text-primary">
                     Ask Pythia anything
                   </h3>
-                  <p className="mt-1 text-center text-[11px] leading-relaxed text-text-quaternary">
+                  <p className="mt-1 text-center text-body-12 leading-relaxed text-text-quaternary">
                     Market analysis, trading signals, risk assessment,
                     <br />
                     arbitrage detection, and more.
@@ -198,7 +198,7 @@ export function AIChatPanel({ isOpen, onClose, marketContext }: AIChatPanelProps
 
                     <div>
                       {msg.role === "assistant" && (
-                        <span className="mb-1 block text-[10px] font-medium text-signal-green">
+                        <span className="mb-1 block text-caption-10 font-medium text-signal-green">
                           Pythia AI
                         </span>
                       )}
@@ -271,7 +271,7 @@ export function AIChatPanel({ isOpen, onClose, marketContext }: AIChatPanelProps
                   <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
-              <p className="mt-1.5 text-center text-[9px] text-text-quaternary">
+              <p className="mt-1.5 text-center text-label-9 text-text-quaternary">
                 AI-generated analysis. Not financial advice. DYOR.
               </p>
             </div>

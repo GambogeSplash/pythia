@@ -364,7 +364,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                   {market.image ? (
                     <img src={market.image} alt="" className="h-full w-full object-cover" />
                   ) : (
-                    <span className="text-lg">&#x1F3E6;</span>
+                    <span className="text-header-16">&#x1F3E6;</span>
                   )}
                 </div>
 
@@ -391,11 +391,11 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                 <div className="flex items-center gap-3">
                   <div className="text-center">
                     <div className="text-numbers-10 text-text-quaternary">YES</div>
-                    <div className="font-data text-lg font-bold text-signal-green">{yesPercent}&cent;</div>
+                    <div className="font-data text-header-16 font-bold text-signal-green">{yesPercent}&cent;</div>
                   </div>
                   <div className="text-center">
                     <div className="text-numbers-10 text-text-quaternary">NO</div>
-                    <div className="font-data text-lg font-bold text-signal-red">{noPercent}&cent;</div>
+                    <div className="font-data text-header-16 font-bold text-signal-red">{noPercent}&cent;</div>
                   </div>
                   <div className="h-8 w-px bg-divider-heavy" />
                   <div className="text-center">
@@ -619,7 +619,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                 <button
                   onClick={() => refetchAI()}
                   disabled={aiLoading}
-                  className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-[10px] text-text-secondary transition-colors hover:bg-action-secondary-hover hover:text-text-primary disabled:opacity-50"
+                  className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-caption-10 text-text-secondary transition-colors hover:bg-action-secondary-hover hover:text-text-primary disabled:opacity-50"
                 >
                   <RefreshCw className={`h-2.5 w-2.5 ${aiLoading ? "animate-spin" : ""}`} />
                   {analysis ? "Refresh" : "Analyze"}
@@ -698,7 +698,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                   <span className="text-numbers-10 text-text-quaternary">
                     {tradeSide === "yes" ? "YES" : "NO"} Price
                   </span>
-                  <span className={`font-data text-lg font-bold ${tradeSide === "yes" ? "text-signal-green" : "text-signal-red"}`}>
+                  <span className={`font-data text-header-16 font-bold ${tradeSide === "yes" ? "text-signal-green" : "text-signal-red"}`}>
                     {Math.round(tradePrice * 100)}&cent;
                   </span>
                 </div>

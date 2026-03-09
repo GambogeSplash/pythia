@@ -54,10 +54,10 @@ export default function VerifyPage() {
             <ArrowLeft className="h-4 w-4" />
           </Link>
 
-          <p className="mt-4 text-sm text-text-secondary">
+          <p className="mt-4 text-body-14 text-text-secondary">
             Enter the code we sent to
           </p>
-          <p className="text-sm font-medium text-text-primary">
+          <p className="text-body-14 font-medium text-text-primary">
             daw@proton.com
           </p>
 
@@ -73,7 +73,7 @@ export default function VerifyPage() {
                 value={digit}
                 onChange={(e) => handleChange(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(i, e)}
-                className={`h-12 w-12 rounded-md border text-center font-data text-lg font-medium text-text-primary outline-none transition-colors ${
+                className={`h-12 w-12 rounded-md border text-center font-data text-header-16 font-medium text-text-primary outline-none transition-colors ${
                   digit
                     ? "border-signal-green bg-bg-surface"
                     : "border-border-secondary bg-bg-surface"
@@ -82,7 +82,7 @@ export default function VerifyPage() {
             ))}
           </div>
 
-          <button className="mt-10 text-sm text-signal-green hover:underline">
+          <button className="mt-10 text-body-14 text-signal-green hover:underline">
             Resend Code
           </button>
         </div>

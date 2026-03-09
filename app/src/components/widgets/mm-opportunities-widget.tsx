@@ -10,16 +10,16 @@ export function MMOpportunitiesWidget() {
   const { markets, isLoading } = useMarkets({ limit: 6, offset: 10, mode: "trending" });
 
   return (
-    <Widget id="mm-opportunities" title="Top MM Opportunities" icon={<span className="text-xs">⊞</span>}>
+    <Widget id="mm-opportunities" title="Top MM Opportunities" icon={<span className="text-body-12">⊞</span>}>
       {/* Table Header */}
       <div className="grid grid-cols-[1fr_80px_100px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">
           Market
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           Spread
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           GOOD?
         </span>
       </div>
@@ -63,7 +63,7 @@ export function MMOpportunitiesWidget() {
                       {market.image ? (
                         <img src={market.image} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                        <span className="text-caption-10">{categoryIcon(market.category)}</span>
                       )}
                     </div>
                     <div className="min-w-0">

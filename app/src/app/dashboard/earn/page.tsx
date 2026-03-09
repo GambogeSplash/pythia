@@ -285,7 +285,7 @@ export default function EarnPage() {
             { label: "Rep Points", value: fmtNum(repPoints), color: "text-chart-purple" },
           ].map((stat) => (
             <motion.div key={stat.label} className="flex items-center gap-1" variants={fadeUp}>
-              <span className="text-[10px] text-text-quaternary">{stat.label}</span>
+              <span className="text-caption-10 text-text-quaternary">{stat.label}</span>
               <span className={`text-numbers-12 font-medium ${stat.color}`}>{stat.value}</span>
             </motion.div>
           ))}
@@ -343,7 +343,7 @@ export default function EarnPage() {
                 <div className="flex flex-col items-center justify-center py-12 px-4">
                   <Droplets className="mb-2 h-8 w-8 text-text-muted" />
                   <p className="text-body-12 font-medium text-text-secondary">Market Making Pools</p>
-                  <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Provide liquidity to prediction markets and earn yield from spreads. Pools are diversified across categories with automated rebalancing.</p>
+                  <p className="mt-1 max-w-sm text-body-12 text-text-quaternary text-center">Provide liquidity to prediction markets and earn yield from spreads. Pools are diversified across categories with automated rebalancing.</p>
                   <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
                     Notify Me
                   </button>
@@ -379,11 +379,11 @@ export default function EarnPage() {
                         </motion.div>
                         <div>
                           <div className="text-body-12 font-semibold text-text-primary">{pool.name}</div>
-                          <div className="text-[10px] text-text-quaternary">{pool.description}</div>
+                          <div className="text-caption-10 text-text-quaternary">{pool.description}</div>
                         </div>
                       </div>
                       <motion.span
-                        className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${RISK_CONFIG[pool.risk].bg} ${RISK_CONFIG[pool.risk].color}`}
+                        className={`rounded-full px-2 py-0.5 text-caption-10 font-medium ${RISK_CONFIG[pool.risk].bg} ${RISK_CONFIG[pool.risk].color}`}
                         variants={scaleIn}
                       >
                         {pool.risk}
@@ -398,7 +398,7 @@ export default function EarnPage() {
                       animate="show"
                     >
                       <motion.div variants={fadeUp}>
-                        <div className="text-[10px] text-text-quaternary">APY</div>
+                        <div className="text-caption-10 text-text-quaternary">APY</div>
                         <motion.div
                           className="text-numbers-12 font-semibold text-action-rise"
                           initial={{ scale: 0.8, opacity: 0 }}
@@ -410,11 +410,11 @@ export default function EarnPage() {
                         </motion.div>
                       </motion.div>
                       <motion.div variants={fadeUp}>
-                        <div className="text-[10px] text-text-quaternary">TVL</div>
+                        <div className="text-caption-10 text-text-quaternary">TVL</div>
                         <div className="text-numbers-12 font-medium text-text-primary">{fmtUsd(pool.tvl)}</div>
                       </motion.div>
                       <motion.div variants={fadeUp}>
-                        <div className="text-[10px] text-text-quaternary">Your Deposit</div>
+                        <div className="text-caption-10 text-text-quaternary">Your Deposit</div>
                         <div className="text-numbers-12 font-medium text-text-primary">
                           {pool.yourDeposit > 0 ? fmtUsd(pool.yourDeposit) : "--"}
                         </div>
@@ -423,11 +423,11 @@ export default function EarnPage() {
 
                     <div className="mb-3 grid grid-cols-2 gap-3">
                       <div>
-                        <div className="text-[10px] text-text-quaternary">Active Markets</div>
+                        <div className="text-caption-10 text-text-quaternary">Active Markets</div>
                         <div className="text-numbers-12 text-text-primary">{pool.activeMarkets}</div>
                       </div>
                       <div>
-                        <div className="text-[10px] text-text-quaternary">Dynamic Spread</div>
+                        <div className="text-caption-10 text-text-quaternary">Dynamic Spread</div>
                         <div className="text-numbers-12 text-text-primary">{pool.spreadRange}</div>
                       </div>
                     </div>
@@ -439,7 +439,7 @@ export default function EarnPage() {
                     <AnimatePresence>
                       {hoveredPool === pool.id && (
                         <motion.div
-                          className="mb-2 rounded-[8px] bg-bg-base-2 px-3 py-2 text-[10px] text-text-secondary"
+                          className="mb-2 rounded-[8px] bg-bg-base-2 px-3 py-2 text-caption-10 text-text-secondary"
                           initial={{ opacity: 0, height: 0, marginBottom: 0 }}
                           animate={{ opacity: 1, height: "auto", marginBottom: 8 }}
                           exit={{ opacity: 0, height: 0, marginBottom: 0 }}
@@ -508,14 +508,14 @@ export default function EarnPage() {
                   ].map((item) => (
                     <motion.div key={item.step} className="flex gap-3" variants={fadeUp}>
                       <motion.span
-                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-signal-green/15 text-[11px] font-bold text-signal-green"
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-signal-green/15 text-body-12 font-bold text-signal-green"
                         variants={scaleIn}
                       >
                         {item.step}
                       </motion.span>
                       <div>
                         <div className="text-body-12 font-semibold text-text-primary">{item.title}</div>
-                        <p className="mt-1 text-[10px] leading-relaxed text-text-quaternary">{item.desc}</p>
+                        <p className="mt-1 text-caption-10 leading-relaxed text-text-quaternary">{item.desc}</p>
                       </div>
                     </motion.div>
                   ))}
@@ -542,7 +542,7 @@ export default function EarnPage() {
                   <motion.button
                     key={cat}
                     onClick={() => setScannerFilter(cat)}
-                    className={`rounded-[4px] px-2.5 py-1 text-[10px] font-medium transition-colors duration-150 ${
+                    className={`rounded-[4px] px-2.5 py-1 text-caption-10 font-medium transition-colors duration-150 ${
                       scannerFilter === cat
                         ? "bg-action-translucent-hover text-text-primary"
                         : "text-text-quaternary hover:bg-action-translucent-hover hover:text-text-secondary"
@@ -561,7 +561,7 @@ export default function EarnPage() {
                   <div className="flex flex-col items-center justify-center py-12 px-4">
                     <Target className="mb-2 h-8 w-8 text-text-muted" />
                     <p className="text-body-12 font-medium text-text-secondary">Opportunity Scanner</p>
-                    <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Automatically scans markets for wide spreads and low liquidity -- ideal conditions for market making. Get alerts when high-yield opportunities appear.</p>
+                    <p className="mt-1 max-w-sm text-body-12 text-text-quaternary text-center">Automatically scans markets for wide spreads and low liquidity -- ideal conditions for market making. Get alerts when high-yield opportunities appear.</p>
                     <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
                       Learn More
                     </button>
@@ -570,7 +570,7 @@ export default function EarnPage() {
                 <div className="overflow-x-auto">
                 <div className="min-w-[700px]">
                 <div
-                  className="grid grid-cols-[1fr_80px_100px_100px_80px_70px_110px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
+                  className="grid grid-cols-[1fr_80px_100px_100px_80px_70px_110px] gap-2 px-4 py-2 text-label-10 text-text-quaternary"
                   style={heavyDivider}
                 >
                   <span>Market</span>
@@ -613,7 +613,7 @@ export default function EarnPage() {
                           </motion.span>
                           <div className="flex justify-end">
                             <motion.span
-                              className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${riskColor}`}
+                              className={`rounded-full px-2 py-0.5 text-caption-10 font-medium ${riskColor}`}
                               variants={scaleIn}
                             >
                               {mkt.risk}
@@ -621,7 +621,7 @@ export default function EarnPage() {
                           </div>
                           <div className="flex justify-end">
                             <motion.button
-                              className="flex h-6 items-center gap-1 rounded-[4px] bg-action-brand px-2.5 text-[10px] font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover"
+                              className="flex h-6 items-center gap-1 rounded-[4px] bg-action-brand px-2.5 text-caption-10 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.94 }}
                             >
@@ -668,7 +668,7 @@ export default function EarnPage() {
                         {stat.icon}
                       </div>
                       <div>
-                        <div className="text-[10px] text-text-quaternary">{stat.label}</div>
+                        <div className="text-caption-10 text-text-quaternary">{stat.label}</div>
                         <motion.div
                           className={`text-numbers-12 font-semibold ${stat.color}`}
                           initial={{ opacity: 0, scale: 0.85 }}
@@ -697,7 +697,7 @@ export default function EarnPage() {
                 <div className="overflow-x-auto">
                 <div className="min-w-[640px]">
                 <div
-                  className="grid grid-cols-[1fr_100px_100px_90px_70px_80px_60px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
+                  className="grid grid-cols-[1fr_100px_100px_90px_70px_80px_60px] gap-2 px-4 py-2 text-label-10 text-text-quaternary"
                   style={rowDivider}
                 >
                   <span>Pool / Market</span>
@@ -712,7 +712,7 @@ export default function EarnPage() {
                   <div className="flex flex-col items-center justify-center py-12 px-4">
                     <DollarSign className="mb-2 h-8 w-8 text-text-muted" />
                     <p className="text-body-12 font-medium text-text-secondary">No Active Positions</p>
-                    <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Your liquidity positions and earned yield will be tracked here. Deposit into a pool to start earning from market making spreads.</p>
+                    <p className="mt-1 max-w-sm text-body-12 text-text-quaternary text-center">Your liquidity positions and earned yield will be tracked here. Deposit into a pool to start earning from market making spreads.</p>
                   </div>
                 ) : (
                 <motion.div variants={staggerContainer} initial="hidden" animate="show">
@@ -725,7 +725,7 @@ export default function EarnPage() {
                     >
                       <div>
                         <div className="text-body-12 font-medium text-text-primary">{pos.pool}</div>
-                        <div className="text-[10px] text-text-quaternary">{pos.market}</div>
+                        <div className="text-caption-10 text-text-quaternary">{pos.market}</div>
                       </div>
                       <span className="text-right text-numbers-12 text-text-primary">${pos.deployed.toLocaleString()}</span>
                       <span className="text-right text-numbers-12 text-text-primary">${pos.currentValue.toLocaleString()}</span>
@@ -738,7 +738,7 @@ export default function EarnPage() {
                       </motion.span>
                       <div className="flex justify-end">
                         <motion.span
-                          className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                          className={`rounded-full px-2 py-0.5 text-caption-10 font-medium ${
                             pos.status === "active" ? "bg-action-rise-dim text-action-rise" : "bg-signal-amber-dim text-signal-amber"
                           }`}
                           variants={scaleIn}
@@ -764,19 +764,19 @@ export default function EarnPage() {
               >
                 {/* Exposure breakdown */}
                 <div className="rounded-[18px] bg-bg-base-1 p-4" style={panelStyle}>
-                  <div className="mb-3 text-[10px] font-medium uppercase text-text-quaternary">Exposure Breakdown</div>
+                  <div className="mb-3 text-label-10 text-text-quaternary">Exposure Breakdown</div>
                   <div className="flex flex-col items-center justify-center py-8">
                     <Droplets className="mb-2 h-6 w-6 text-text-muted" />
-                    <p className="text-[11px] text-text-quaternary text-center">Deposit into pools to see exposure breakdown</p>
+                    <p className="text-body-12 text-text-quaternary text-center">Deposit into pools to see exposure breakdown</p>
                   </div>
                 </div>
 
                 {/* Risk metrics */}
                 <div className="rounded-[18px] bg-bg-base-1 p-4" style={panelStyle}>
-                  <div className="mb-3 text-[10px] font-medium uppercase text-text-quaternary">Risk Metrics</div>
+                  <div className="mb-3 text-label-10 text-text-quaternary">Risk Metrics</div>
                   <div className="flex flex-col items-center justify-center py-8">
                     <Shield className="mb-2 h-6 w-6 text-text-muted" />
-                    <p className="text-[11px] text-text-quaternary text-center">Risk metrics will appear when positions are active</p>
+                    <p className="text-body-12 text-text-quaternary text-center">Risk metrics will appear when positions are active</p>
                   </div>
                 </div>
               </motion.div>
@@ -804,7 +804,7 @@ export default function EarnPage() {
                 <motion.div className="rounded-[18px] bg-bg-base-1 p-5" style={panelStyle} variants={fadeUp}>
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="mb-1 text-[10px] font-medium uppercase text-text-quaternary">Your Pythia Reputation Score</div>
+                      <div className="mb-1 text-label-10 text-text-quaternary">Your Pythia Reputation Score</div>
                       <div className="flex items-center gap-3">
                         <motion.span
                           className="text-header-20 text-text-primary"
@@ -818,10 +818,10 @@ export default function EarnPage() {
                           <span className="text-body-12 font-semibold text-text-quaternary">--</span>
                         </div>
                       </div>
-                      <div className="mt-1 text-[10px] text-text-quaternary">Earn points by providing liquidity</div>
+                      <div className="mt-1 text-caption-10 text-text-quaternary">Earn points by providing liquidity</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] text-text-quaternary">Points This Month</div>
+                      <div className="text-caption-10 text-text-quaternary">Points This Month</div>
                       <motion.div
                         className="text-numbers-12 font-semibold text-chart-purple"
                         initial={{ opacity: 0, y: 6 }}
@@ -834,7 +834,7 @@ export default function EarnPage() {
                   </div>
                   {/* Progress bar */}
                   <div className="mt-3">
-                    <div className="mb-1 flex justify-between text-[10px] text-text-quaternary">
+                    <div className="mb-1 flex justify-between text-caption-10 text-text-quaternary">
                       <span>Bronze (0)</span>
                       <span>Silver (5K)</span>
                     </div>
@@ -855,7 +855,7 @@ export default function EarnPage() {
                     <Award className="mr-2 h-4 w-4 text-signal-green" />
                     <span className="text-body-12 font-semibold text-text-primary">Reward Tiers</span>
                   </div>
-                  <div className="grid grid-cols-[100px_120px_1fr] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={rowDivider}>
+                  <div className="grid grid-cols-[100px_120px_1fr] gap-2 px-4 py-2 text-label-10 text-text-quaternary" style={rowDivider}>
                     <span>Level</span>
                     <span>Min Points</span>
                     <span>Perks</span>
@@ -864,7 +864,7 @@ export default function EarnPage() {
                     <div className="flex flex-col items-center justify-center py-12 px-4">
                       <Award className="mb-2 h-8 w-8 text-text-muted" />
                       <p className="text-body-12 font-medium text-text-secondary">Reward Tiers</p>
-                      <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Earn points by providing liquidity. Higher tiers unlock reduced fees, priority pool access, and boosted APY multipliers.</p>
+                      <p className="mt-1 max-w-sm text-body-12 text-text-quaternary text-center">Earn points by providing liquidity. Higher tiers unlock reduced fees, priority pool access, and boosted APY multipliers.</p>
                       <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
                         Notify Me
                       </button>
@@ -887,7 +887,7 @@ export default function EarnPage() {
                             <span className="text-body-12 font-semibold" style={{ color: tier.color }}>{tier.level}</span>
                           </div>
                           <span className="text-numbers-12 text-text-primary">{tier.minPoints === 0 ? "0" : fmtNum(tier.minPoints)}</span>
-                          <span className="text-[10px] text-text-secondary">{tier.perks}</span>
+                          <span className="text-caption-10 text-text-secondary">{tier.perks}</span>
                         </motion.div>
                       );
                     })}
@@ -903,13 +903,13 @@ export default function EarnPage() {
                       <span className="text-body-12 font-semibold text-text-primary">Refer a Market Maker</span>
                     </div>
                     <motion.span
-                      className="rounded-full bg-chart-purple/15 px-2.5 py-0.5 text-[10px] font-semibold text-chart-purple"
+                      className="rounded-full bg-chart-purple/15 px-2.5 py-0.5 text-caption-10 font-semibold text-chart-purple"
                       variants={scaleIn}
                     >
                       +2,500 pts bonus
                     </motion.span>
                   </div>
-                  <p className="mt-2 text-[10px] text-text-quaternary">
+                  <p className="mt-2 text-caption-10 text-text-quaternary">
                     Invite other LPs to Pythia and earn 2,500 reputation points per referred depositor. Referred users also receive a 500-point welcome bonus and +0.3% APY for their first 30 days.
                   </p>
                   <div className="mt-3 flex items-center gap-2">
@@ -939,7 +939,7 @@ export default function EarnPage() {
                   <Flame className="mr-2 h-4 w-4 text-signal-amber" />
                   <span className="text-body-12 font-semibold text-text-primary">Top Market Makers</span>
                 </div>
-                <div className="grid grid-cols-[40px_1fr_80px_65px_80px] gap-1 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={rowDivider}>
+                <div className="grid grid-cols-[40px_1fr_80px_65px_80px] gap-1 px-4 py-2 text-label-10 text-text-quaternary" style={rowDivider}>
                   <span>Rank</span>
                   <span>Name</span>
                   <span className="text-right">Points</span>
@@ -950,7 +950,7 @@ export default function EarnPage() {
                   <div className="flex flex-col items-center justify-center py-12 px-4">
                     <Flame className="mb-2 h-8 w-8 text-text-muted" />
                     <p className="text-body-12 font-medium text-text-secondary">Leaderboard</p>
-                    <p className="mt-1 max-w-sm text-[11px] text-text-quaternary text-center">Top market makers ranked by volume, consistency, and risk-adjusted returns. Compete for bonus rewards and recognition.</p>
+                    <p className="mt-1 max-w-sm text-body-12 text-text-quaternary text-center">Top market makers ranked by volume, consistency, and risk-adjusted returns. Compete for bonus rewards and recognition.</p>
                     <button className="mt-3 rounded-[8px] bg-signal-green/10 px-4 py-1.5 text-body-12 font-medium text-signal-green transition-colors hover:bg-signal-green/20">
                       Notify Me
                     </button>
@@ -987,12 +987,12 @@ export default function EarnPage() {
                   transition={{ delay: 0.4 }}
                 >
                   <div className="rounded-[10px] bg-bg-base-2 p-3" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
-                    <div className="mb-1 text-[10px] text-text-quaternary">Your Rank</div>
+                    <div className="mb-1 text-caption-10 text-text-quaternary">Your Rank</div>
                     <div className="flex items-center justify-between">
                       <span className="text-numbers-12 font-bold text-text-primary">--</span>
                       <span className="text-numbers-12 text-chart-purple">{fmtNum(repPoints)} pts</span>
                     </div>
-                    <div className="mt-1 text-[10px] text-text-quaternary">Start providing liquidity to earn a rank</div>
+                    <div className="mt-1 text-caption-10 text-text-quaternary">Start providing liquidity to earn a rank</div>
                   </div>
                 </motion.div>
                 </>
@@ -1031,7 +1031,7 @@ export default function EarnPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <motion.span
-                      className="rounded-full bg-action-rise-dim px-2.5 py-0.5 text-[10px] font-medium text-action-rise"
+                      className="rounded-full bg-action-rise-dim px-2.5 py-0.5 text-caption-10 font-medium text-action-rise"
                       variants={scaleIn}
                       initial="hidden"
                       animate="show"
@@ -1045,7 +1045,7 @@ export default function EarnPage() {
                 <div className="mt-4 flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <Key className="h-3.5 w-3.5 text-text-quaternary" />
-                    <span className="text-[10px] font-medium text-text-quaternary">API Key</span>
+                    <span className="text-caption-10 font-medium text-text-quaternary">API Key</span>
                   </div>
                   <div className="flex-1 rounded-[6px] bg-bg-base-2 px-3 py-1.5 font-mono text-numbers-12 text-text-secondary">
                     pyth_sk_•••••••••••••••••••••••••••4f2a
@@ -1070,18 +1070,18 @@ export default function EarnPage() {
                 >
                   <motion.div className="flex items-center gap-1.5" variants={fadeUp}>
                     <Lock className="h-3 w-3 text-text-quaternary" />
-                    <span className="text-[10px] text-text-quaternary">Auth:</span>
-                    <span className="text-[10px] text-text-secondary">Bearer token in Authorization header</span>
+                    <span className="text-caption-10 text-text-quaternary">Auth:</span>
+                    <span className="text-caption-10 text-text-secondary">Bearer token in Authorization header</span>
                   </motion.div>
                   <motion.div className="flex items-center gap-1.5" variants={fadeUp}>
                     <Wifi className="h-3 w-3 text-text-quaternary" />
-                    <span className="text-[10px] text-text-quaternary">Rate limit:</span>
-                    <span className="text-[10px] text-text-secondary">100 req/min (REST), unlimited (WS)</span>
+                    <span className="text-caption-10 text-text-quaternary">Rate limit:</span>
+                    <span className="text-caption-10 text-text-secondary">100 req/min (REST), unlimited (WS)</span>
                   </motion.div>
                   <motion.div className="flex items-center gap-1.5" variants={fadeUp}>
                     <Globe className="h-3 w-3 text-text-quaternary" />
-                    <span className="text-[10px] text-text-quaternary">Base URL:</span>
-                    <span className="font-mono text-[10px] text-text-secondary">https://api.pythia.io</span>
+                    <span className="text-caption-10 text-text-quaternary">Base URL:</span>
+                    <span className="font-mono text-caption-10 text-text-secondary">https://api.pythia.io</span>
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -1097,7 +1097,7 @@ export default function EarnPage() {
                   <motion.div key={ep.path} className="rounded-[18px] bg-bg-base-1" style={panelStyle} variants={fadeUp}>
                     <div className="flex items-center gap-3 px-4 py-3" style={heavyDivider}>
                       <motion.span
-                        className={`rounded-[4px] px-2 py-0.5 text-[10px] font-bold ${METHOD_COLORS[ep.method]}`}
+                        className={`rounded-[4px] px-2 py-0.5 text-caption-10 font-bold ${METHOD_COLORS[ep.method]}`}
                         variants={scaleIn}
                       >
                         {ep.method}
@@ -1106,8 +1106,8 @@ export default function EarnPage() {
                       <span className="text-body-12 text-text-quaternary">{ep.description}</span>
                     </div>
                     <div className="px-4 py-3">
-                      <div className="mb-1.5 text-[10px] font-medium uppercase text-text-quaternary">Example Response</div>
-                      <pre className="overflow-x-auto rounded-[8px] bg-bg-base-0 p-3 font-mono text-[11px] leading-relaxed text-text-secondary" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
+                      <div className="mb-1.5 text-label-10 text-text-quaternary">Example Response</div>
+                      <pre className="overflow-x-auto rounded-[8px] bg-bg-base-0 p-3 font-mono text-body-12 leading-relaxed text-text-secondary" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
                         {ep.example}
                       </pre>
                     </div>

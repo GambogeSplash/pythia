@@ -231,7 +231,7 @@ export default function LoginPage() {
               <SerpentLogo size={48} className="text-[#00FF85]" />
               <div className="flex items-center gap-2">
                 <div className="h-1 w-1 animate-pulse rounded-full bg-[#00FF85]" />
-                <span className="text-[13px] font-medium text-[#666]">Initializing terminal...</span>
+                <span className="text-body-14 font-medium text-[#666]">Initializing terminal...</span>
               </div>
             </motion.div>
           </motion.div>
@@ -256,7 +256,7 @@ export default function LoginPage() {
               The oracle for<br />
               <span className="text-[#00FF85]">prediction markets.</span>
             </h2>
-            <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-[#555]">
+            <p className="mt-3 max-w-sm text-body-14 leading-relaxed text-[#555]">
               Aggregate signals. Detect anomalies. Execute trades. All from one terminal.
             </p>
             <div className="mt-6 flex items-center gap-6">
@@ -266,8 +266,8 @@ export default function LoginPage() {
                 { value: "<100ms", label: "Latency" },
               ].map((s) => (
                 <div key={s.label}>
-                  <div className="font-mono text-[15px] font-bold text-[#00FF85]">{s.value}</div>
-                  <div className="text-[10px] text-[#444]">{s.label}</div>
+                  <div className="font-mono text-header-14 font-bold text-[#00FF85]">{s.value}</div>
+                  <div className="text-caption-10 text-[#444]">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -287,7 +287,7 @@ export default function LoginPage() {
               className="flex items-center gap-2.5"
             >
               <SerpentLogo size={28} className="text-[#00FF85]" />
-              <span className="text-[17px] font-bold tracking-tight text-white">PYTHIA</span>
+              <span className="text-header-16 font-bold tracking-tight text-white">PYTHIA</span>
             </motion.div>
 
             <AnimatePresence mode="wait">
@@ -304,8 +304,8 @@ export default function LoginPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <h1 className="mt-8 text-[22px] font-bold text-white">Welcome back</h1>
-                    <p className="mt-1 text-[13px] text-[#666]">Sign in to access your trading terminal.</p>
+                    <h1 className="mt-8 text-display-24 font-bold text-white">Welcome back</h1>
+                    <p className="mt-1 text-body-14 text-[#666]">Sign in to access your trading terminal.</p>
                   </motion.div>
 
                   <motion.form
@@ -322,16 +322,16 @@ export default function LoginPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email address"
-                        className="h-11 w-full rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] pl-10 pr-4 text-[13px] text-white placeholder-[#444] outline-none transition-colors focus:border-[#00FF85]/50 focus:bg-[#0A0A0B]"
+                        className="h-11 w-full rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] pl-10 pr-4 text-body-14 text-white placeholder-[#444] outline-none transition-colors focus:border-[#00FF85]/50 focus:bg-[#0A0A0B]"
                       />
                     </div>
                     {error && (
-                      <p className="text-[11px] text-red-400">{error}</p>
+                      <p className="text-body-12 text-red-400">{error}</p>
                     )}
                     <button
                       type="submit"
                       disabled={loading || !email.trim()}
-                      className="group flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-[13px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
+                      className="group flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-body-14 font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
                     >
                       {loading ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -351,14 +351,14 @@ export default function LoginPage() {
                   >
                     <div className="my-6 flex items-center gap-3">
                       <div className="h-px flex-1 bg-[#1A1A1A]" />
-                      <span className="text-[11px] font-medium text-[#444]">OR</span>
+                      <span className="text-body-12 font-medium text-[#444]">OR</span>
                       <div className="h-px flex-1 bg-[#1A1A1A]" />
                     </div>
 
                     <button
                       onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
                       disabled={loading}
-                      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-[13px] font-semibold text-white transition-all hover:border-[#282A2D] hover:bg-[#121314] disabled:opacity-60"
+                      className="flex h-11 w-full items-center justify-center gap-2.5 rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-body-14 font-semibold text-white transition-all hover:border-[#282A2D] hover:bg-[#121314] disabled:opacity-60"
                     >
                       <svg className="h-4 w-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -372,13 +372,13 @@ export default function LoginPage() {
                     <button
                       onClick={handleWalletConnect}
                       disabled={loading}
-                      className="mt-2 flex h-11 w-full items-center justify-center gap-2.5 rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-[13px] font-semibold text-white transition-all hover:border-[#282A2D] hover:bg-[#121314] disabled:opacity-60"
+                      className="mt-2 flex h-11 w-full items-center justify-center gap-2.5 rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-body-14 font-semibold text-white transition-all hover:border-[#282A2D] hover:bg-[#121314] disabled:opacity-60"
                     >
                       <Wallet className="h-4 w-4 text-[#888]" />
                       Connect Wallet
                     </button>
 
-                    <p className="mt-6 text-center text-[11px] text-[#444]">
+                    <p className="mt-6 text-center text-body-12 text-[#444]">
                       Don&apos;t have an account?{" "}
                       <Link href="/login" className="text-[#00FF85] transition-colors hover:text-[#00FF85]/80">
                         Sign up
@@ -397,7 +397,7 @@ export default function LoginPage() {
                   <div className="mt-8">
                     <button
                       onClick={handleBack}
-                      className="mb-4 flex items-center gap-1.5 text-[12px] text-[#666] transition-colors hover:text-[#999]"
+                      className="mb-4 flex items-center gap-1.5 text-body-12 text-[#666] transition-colors hover:text-[#999]"
                     >
                       <ArrowLeft className="h-3.5 w-3.5" />
                       Back
@@ -405,9 +405,9 @@ export default function LoginPage() {
 
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="h-5 w-5 text-[#00FF85]" />
-                      <h1 className="text-[22px] font-bold text-white">Verify your email</h1>
+                      <h1 className="text-display-24 font-bold text-white">Verify your email</h1>
                     </div>
-                    <p className="mt-1.5 text-[13px] text-[#666]">
+                    <p className="mt-1.5 text-body-14 text-[#666]">
                       We sent a 6-digit code to{" "}
                       <span className="text-[#999]">{email}</span>
                     </p>
@@ -426,7 +426,7 @@ export default function LoginPage() {
                           onChange={(e) => handleOtpChange(i, e.target.value)}
                           onKeyDown={(e) => handleOtpKeyDown(i, e)}
                           autoFocus={i === 0}
-                          className="h-[52px] w-[46px] rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-center font-mono text-[20px] font-bold text-white outline-none transition-all focus:border-[#00FF85]/50 focus:bg-[#0A0A0B] focus:shadow-[0_0_0_1px_rgba(0,255,133,0.15)]"
+                          className="h-[52px] w-[46px] rounded-[10px] border border-[#1A1B1D] bg-[#0D0D0E] text-center font-mono text-header-20 font-bold text-white outline-none transition-all focus:border-[#00FF85]/50 focus:bg-[#0A0A0B] focus:shadow-[0_0_0_1px_rgba(0,255,133,0.15)]"
                         />
                       ))}
                     </div>
@@ -435,7 +435,7 @@ export default function LoginPage() {
                       <motion.p
                         initial={{ opacity: 0, y: -4 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mt-3 text-[11px] text-red-400"
+                        className="mt-3 text-body-12 text-red-400"
                       >
                         {error}
                       </motion.p>
@@ -444,7 +444,7 @@ export default function LoginPage() {
                     <button
                       type="submit"
                       disabled={loading || otp.some((d) => !d)}
-                      className="group mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-[13px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
+                      className="group mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-[10px] bg-[#00FF85] text-body-14 font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_24px_rgba(0,255,133,0.2)] disabled:opacity-60"
                     >
                       {loading ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -462,18 +462,18 @@ export default function LoginPage() {
                     <button
                       onClick={handleResend}
                       disabled={resendCooldown > 0 || loading}
-                      className="text-[12px] text-[#666] transition-colors hover:text-[#00FF85] disabled:cursor-not-allowed disabled:text-[#333]"
+                      className="text-body-12 text-[#666] transition-colors hover:text-[#00FF85] disabled:cursor-not-allowed disabled:text-[#333]"
                     >
                       {resendCooldown > 0
                         ? `Resend code in ${resendCooldown}s`
                         : "Resend code"}
                     </button>
                     {expirySeconds > 0 ? (
-                      <span className="font-mono text-[11px] text-[#444]">
+                      <span className="font-mono text-body-12 text-[#444]">
                         Expires in {formatTime(expirySeconds)}
                       </span>
                     ) : (
-                      <span className="text-[11px] text-red-400/80">Code expired</span>
+                      <span className="text-body-12 text-red-400/80">Code expired</span>
                     )}
                   </div>
                 </motion.div>
@@ -490,7 +490,7 @@ export default function LoginPage() {
               {["Polymarket", "Kalshi", "Opinion Labs"].map((name) => (
                 <div
                   key={name}
-                  className="rounded-[6px] border border-[#151617] bg-[#0A0A0B] px-2.5 py-1 text-[9px] font-medium text-[#444]"
+                  className="rounded-[6px] border border-[#151617] bg-[#0A0A0B] px-2.5 py-1 text-label-9 font-medium text-[#444]"
                 >
                   {name}
                 </div>

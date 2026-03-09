@@ -83,9 +83,9 @@ export default function LandingPage() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-2">
             <SerpentLogo size={24} className="text-[#00FF85]" />
-            <span className="text-[15px] font-bold tracking-tight">PYTHIA</span>
+            <span className="text-header-14 font-bold tracking-tight">PYTHIA</span>
           </div>
-          <div className="hidden items-center gap-8 text-[13px] font-medium text-[#888] sm:flex">
+          <div className="hidden items-center gap-8 text-body-14 font-medium text-[#888] sm:flex">
             <a href="#features" className="transition-colors hover:text-white">Features</a>
             <a href="#venues" className="transition-colors hover:text-white">Venues</a>
             <a href="#how" className="transition-colors hover:text-white">How It Works</a>
@@ -95,13 +95,13 @@ export default function LandingPage() {
               href="https://github.com/GambogeSplash"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-[8px] px-4 py-2 text-[13px] font-semibold text-[#888] transition-colors hover:text-white"
+              className="rounded-[8px] px-4 py-2 text-body-14 font-semibold text-[#888] transition-colors hover:text-white"
             >
               GitHub
             </a>
             <Link
               href="/login"
-              className="rounded-[8px] bg-[#00FF85] px-4 py-2 text-[13px] font-semibold text-[#080808] transition-colors hover:bg-[#00FF85]/90"
+              className="rounded-[8px] bg-[#00FF85] px-4 py-2 text-body-14 font-semibold text-[#080808] transition-colors hover:bg-[#00FF85]/90"
             >
               Get Started
             </Link>
@@ -136,7 +136,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00FF85]/20 bg-[#00FF85]/[0.06] px-4 py-1.5 text-[12px] font-medium text-[#00FF85]">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00FF85]/20 bg-[#00FF85]/[0.06] px-4 py-1.5 text-body-12 font-medium text-[#00FF85]">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00FF85] opacity-50" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00FF85]" />
@@ -173,14 +173,14 @@ export default function LandingPage() {
           >
             <Link
               href="/login"
-              className="group flex items-center gap-2 rounded-[10px] bg-[#00FF85] px-6 py-3 text-[14px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_32px_rgba(0,255,133,0.3)]"
+              className="group flex items-center gap-2 rounded-[10px] bg-[#00FF85] px-6 py-3 text-body-14 font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_32px_rgba(0,255,133,0.3)]"
             >
               Get Started
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a
               href="#features"
-              className="rounded-[10px] border border-[#222] px-6 py-3 text-[14px] font-semibold text-[#888] transition-colors hover:border-[#444] hover:text-white"
+              className="rounded-[10px] border border-[#222] px-6 py-3 text-body-14 font-semibold text-[#888] transition-colors hover:border-[#444] hover:text-white"
             >
               Learn More
             </a>
@@ -196,7 +196,7 @@ export default function LandingPage() {
             {STATS.map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-numbers-12 text-header-20 text-[#00FF85]">{stat.value}</div>
-                <div className="mt-1 text-[11px] text-[#555]">{stat.label}</div>
+                <div className="mt-1 text-body-12 text-[#555]">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -207,7 +207,7 @@ export default function LandingPage() {
       <section id="features" className="relative py-32">
         <div className="mx-auto max-w-6xl px-6">
           <FadeInSection className="text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#00FF85]">Features</span>
+            <span className="text-body-12 font-semibold uppercase tracking-[0.2em] text-[#00FF85]">Features</span>
             <h2 className="mt-4 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight tracking-tight">
               Everything you need to<br />
               <span className="text-[#00FF85]">dominate prediction markets.</span>
@@ -221,8 +221,8 @@ export default function LandingPage() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#00FF85]/10 text-[#00FF85] transition-colors group-hover:bg-[#00FF85]/15">
                     {f.icon}
                   </div>
-                  <h3 className="mt-4 text-[15px] font-semibold">{f.title}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-[#666]">{f.desc}</p>
+                  <h3 className="mt-4 text-header-14 font-semibold">{f.title}</h3>
+                  <p className="mt-2 text-body-14 leading-relaxed text-[#666]">{f.desc}</p>
                 </div>
               </FadeInSection>
             ))}
@@ -234,12 +234,12 @@ export default function LandingPage() {
       <section id="venues" className="relative py-32">
         <div className="mx-auto max-w-6xl px-6">
           <FadeInSection className="text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4DA6FF]">Venue Integrations</span>
+            <span className="text-body-12 font-semibold uppercase tracking-[0.2em] text-[#4DA6FF]">Venue Integrations</span>
             <h2 className="mt-4 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight tracking-tight">
               One terminal.<br />
               <span className="text-[#4DA6FF]">Every prediction market.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-[14px] text-[#666]">
+            <p className="mx-auto mt-4 max-w-md text-body-14 text-[#666]">
               Unified data feed across all major prediction market venues. Trade, analyze, and arbitrage from a single interface.
             </p>
           </FadeInSection>
@@ -252,8 +252,8 @@ export default function LandingPage() {
                   className="flex items-center gap-3 rounded-[12px] border border-[#151617] bg-[#0A0A0B] px-5 py-3 transition-all duration-300 hover:border-[#282A2D]"
                 >
                   <div className="h-3 w-3 rounded-full" style={{ backgroundColor: v.color }} />
-                  <span className="text-[13px] font-semibold">{v.name}</span>
-                  <span className="font-mono text-[11px] text-[#555]">{v.volume}</span>
+                  <span className="text-body-14 font-semibold">{v.name}</span>
+                  <span className="font-mono text-body-12 text-[#555]">{v.volume}</span>
                 </div>
               ))}
             </div>
@@ -266,7 +266,7 @@ export default function LandingPage() {
                 {VENUES.slice(0, 3).map((v) => (
                   <div key={v.name} className="flex items-center gap-2 rounded-[8px] border border-[#151617] bg-[#0A0A0B] px-3 py-2">
                     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: v.color }} />
-                    <span className="text-[11px] font-medium">{v.name}</span>
+                    <span className="text-body-12 font-medium">{v.name}</span>
                   </div>
                 ))}
               </div>
@@ -277,8 +277,8 @@ export default function LandingPage() {
               <div className="flex items-center gap-3 rounded-[12px] border border-[#00FF85]/20 bg-[#00FF85]/[0.04] px-5 py-4">
                 <SerpentLogo size={24} className="text-[#00FF85]" />
                 <div>
-                  <div className="text-[13px] font-semibold">Pythia Engine</div>
-                  <div className="text-[10px] text-[#555]">Normalized + analyzed</div>
+                  <div className="text-body-14 font-semibold">Pythia Engine</div>
+                  <div className="text-caption-10 text-[#555]">Normalized + analyzed</div>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-1">
@@ -286,8 +286,8 @@ export default function LandingPage() {
                 <ArrowRight className="h-4 w-4 text-[#333]" />
               </div>
               <div className="rounded-[12px] border border-[#151617] bg-[#0A0A0B] px-5 py-4 text-center">
-                <div className="text-[13px] font-semibold">Your Edge</div>
-                <div className="text-[10px] text-[#00FF85]">Alpha signals</div>
+                <div className="text-body-14 font-semibold">Your Edge</div>
+                <div className="text-caption-10 text-[#00FF85]">Alpha signals</div>
               </div>
             </div>
           </FadeInSection>
@@ -298,7 +298,7 @@ export default function LandingPage() {
       <section id="how" className="relative py-32">
         <div className="mx-auto max-w-6xl px-6">
           <FadeInSection className="text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#FFB800]">How It Works</span>
+            <span className="text-body-12 font-semibold uppercase tracking-[0.2em] text-[#FFB800]">How It Works</span>
             <h2 className="mt-4 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight tracking-tight">
               Three steps to<br />
               <span className="text-[#FFB800]">market intelligence.</span>
@@ -313,14 +313,14 @@ export default function LandingPage() {
             ].map((s, i) => (
               <FadeInSection key={s.step} delay={i * 0.15}>
                 <div className="relative flex flex-col items-center rounded-[16px] border border-[#151617] bg-[#0A0A0B] p-8 text-center">
-                  <div className="absolute -top-4 rounded-full border border-[#151617] bg-[#0A0A0B] px-3 py-1 font-mono text-[11px] font-bold" style={{ color: s.color }}>
+                  <div className="absolute -top-4 rounded-full border border-[#151617] bg-[#0A0A0B] px-3 py-1 font-mono text-body-12 font-bold" style={{ color: s.color }}>
                     {s.step}
                   </div>
                   <div className="mt-2 flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
                     {s.icon}
                   </div>
-                  <h3 className="mt-4 text-[17px] font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-[#666]">{s.desc}</p>
+                  <h3 className="mt-4 text-header-16 font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-body-14 leading-relaxed text-[#666]">{s.desc}</p>
                 </div>
               </FadeInSection>
             ))}
@@ -336,12 +336,12 @@ export default function LandingPage() {
           <h2 className="mt-6 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight tracking-tight">
             See the future first.
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-[14px] text-[#666]">
+          <p className="mx-auto mt-4 max-w-md text-body-14 text-[#666]">
             Join traders using Pythia to find alpha in prediction markets.
           </p>
           <Link
             href="/login"
-            className="group mt-8 inline-flex items-center gap-2 rounded-[10px] bg-[#00FF85] px-8 py-3.5 text-[14px] font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_48px_rgba(0,255,133,0.25)]"
+            className="group mt-8 inline-flex items-center gap-2 rounded-[10px] bg-[#00FF85] px-8 py-3.5 text-body-14 font-semibold text-[#080808] transition-all hover:bg-[#00FF85]/90 hover:shadow-[0_0_48px_rgba(0,255,133,0.25)]"
           >
             Launch Terminal
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -354,9 +354,9 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-2">
             <SerpentLogo size={18} className="text-[#00FF85] opacity-50" />
-            <span className="text-[12px] text-[#444]">Pythia &mdash; Market Intelligence</span>
+            <span className="text-body-12 text-[#444]">Pythia &mdash; Market Intelligence</span>
           </div>
-          <div className="flex items-center gap-6 text-[12px] text-[#444]">
+          <div className="flex items-center gap-6 text-body-12 text-[#444]">
             <a href="https://github.com/GambogeSplash" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">GitHub</a>
             <a href="https://github.com/GambogeSplash" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Docs</a>
             <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Twitter</a>

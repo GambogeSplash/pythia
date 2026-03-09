@@ -96,7 +96,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
 
       {/* Profile Header */}
       <div className="flex items-center gap-5 rounded-[12px] bg-bg-base-1 px-5 py-4" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}>
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-bg-base-2 text-xl font-bold text-text-secondary" style={{ boxShadow: "inset 0 0 0 2px var(--color-signal-green)" }}>
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-bg-base-2 text-header-20 font-bold text-text-secondary" style={{ boxShadow: "inset 0 0 0 2px var(--color-signal-green)" }}>
           ST
         </div>
         <div className="flex-1">
@@ -107,19 +107,19 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
               <Badge variant="red"><AlertTriangle className="mr-1 inline h-3 w-3" />Wash Trade Flag</Badge>
             )}
           </div>
-          <p className="mt-0.5 text-xs italic text-text-secondary">&ldquo;{trader.tagline}&rdquo;</p>
-          <div className="mt-1.5 flex items-center gap-4 text-[10px] text-text-tertiary">
+          <p className="mt-0.5 text-body-12 italic text-text-secondary">&ldquo;{trader.tagline}&rdquo;</p>
+          <div className="mt-1.5 flex items-center gap-4 text-caption-10 text-text-tertiary">
             <span><strong className="text-text-secondary">{trader.followers.toLocaleString()}</strong> followers</span>
             <span><strong className="text-text-secondary">{trader.copiers}</strong> copiers</span>
             <span>Herd Index: <strong className="text-signal-green">{trader.stats.herdIndex}</strong> (contrarian)</span>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-[9px] font-medium uppercase text-text-tertiary">Pythia Score</div>
-          <div className={`text-numbers-12 text-xl font-bold ${ScoreColor(trader.pyScore)}`}>
+          <div className="text-label-9 text-text-tertiary">Pythia Score</div>
+          <div className={`text-numbers-12 text-header-20 font-bold ${ScoreColor(trader.pyScore)}`}>
             {trader.pyScore}
           </div>
-          <div className="text-[10px] text-text-tertiary">/ 100</div>
+          <div className="text-caption-10 text-text-tertiary">/ 100</div>
         </div>
       </div>
 
@@ -135,7 +135,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
           { label: "Total Trades", value: trader.stats.trades.toLocaleString(), color: "text-text-primary" },
         ].map((stat) => (
           <div key={stat.label} className="rounded-[8px] bg-bg-base-1 px-3 py-2.5 text-center" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}>
-            <div className="text-[9px] font-medium uppercase text-text-tertiary">{stat.label}</div>
+            <div className="text-label-9 text-text-tertiary">{stat.label}</div>
             <div className={`text-numbers-12 font-bold ${stat.color}`}>{stat.value}</div>
           </div>
         ))}
@@ -151,7 +151,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
               {trader.subScores.map((sub) => (
                 <div key={sub.label}>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-text-secondary">{sub.label}</span>
+                    <span className="text-body-12 text-text-secondary">{sub.label}</span>
                     <span className={`text-numbers-10 font-medium ${ScoreColor(sub.score)}`}>{sub.score}</span>
                   </div>
                   <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-bg-base-3">
@@ -168,7 +168,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
           {/* Category & Venue Rankings */}
           <Widget title="Rankings">
             <div className="px-3 py-2">
-              <div className="mb-2 text-[9px] font-medium uppercase text-text-quaternary">By Category</div>
+              <div className="mb-2 text-label-9 text-text-quaternary">By Category</div>
               <div className="space-y-1.5">
                 {trader.categoryRanks.map((r) => (
                   <div key={r.category} className="flex items-center justify-between rounded-[6px] bg-bg-base-2 px-2 py-1.5">
@@ -177,7 +177,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
                   </div>
                 ))}
               </div>
-              <div className="mb-2 mt-3 text-[9px] font-medium uppercase text-text-quaternary">By Venue</div>
+              <div className="mb-2 mt-3 text-label-9 text-text-quaternary">By Venue</div>
               <div className="space-y-1.5">
                 {trader.venueRanks.map((r) => (
                   <div key={r.venue} className="flex items-center justify-between rounded-[6px] bg-bg-base-2 px-2 py-1.5">
@@ -195,14 +195,14 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
           {/* Alpha Timing Scatter Chart */}
           <Widget title="Alpha Timing">
             <div className="px-3 py-3">
-              <div className="mb-2 text-[10px] text-text-quaternary">
+              <div className="mb-2 text-caption-10 text-text-quaternary">
                 Entry timing vs. crowd consensus. Negative = entered before the crowd.
               </div>
               <div className="relative h-[140px] rounded-[6px] bg-bg-base-2 p-2">
                 {/* Y-axis label */}
-                <div className="absolute left-1 top-1/2 -translate-y-1/2 -rotate-90 text-[8px] text-text-quaternary">PnL</div>
+                <div className="absolute left-1 top-1/2 -translate-y-1/2 -rotate-90 text-label-9 text-text-quaternary">PnL</div>
                 {/* X-axis label */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[8px] text-text-quaternary">Hours before crowd</div>
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-label-9 text-text-quaternary">Hours before crowd</div>
                 {/* Zero lines */}
                 <div className="absolute left-8 right-2 top-1/2 h-px bg-divider-heavy" />
                 <div className="absolute bottom-4 left-1/2 top-2 w-px bg-divider-heavy" />
@@ -218,7 +218,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
                   })}
                 </svg>
               </div>
-              <div className="mt-2 flex items-center gap-4 text-[10px]">
+              <div className="mt-2 flex items-center gap-4 text-caption-10">
                 <span className="text-text-quaternary">Avg entry: <span className="text-signal-green">2.5h before crowd</span></span>
                 <span className="text-text-quaternary">Alpha accuracy: <span className="text-signal-green">85.7%</span></span>
               </div>
@@ -229,24 +229,24 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
           <Widget title="Recent Trades">
             <div className="grid grid-cols-[1fr_40px_60px_70px_70px] gap-1 border-b border-divider-heavy px-3 py-1.5">
               {["MARKET", "SIDE", "SIZE", "PNL", "TIME"].map((h) => (
-                <span key={h} className="text-[10px] font-medium uppercase text-text-tertiary">{h}</span>
+                <span key={h} className="text-label-10 text-text-tertiary">{h}</span>
               ))}
             </div>
             <div className="divide-y divide-divider-heavy">
               {trader.recentTrades.map((trade) => (
                 <div key={trade.market} className="grid grid-cols-[1fr_40px_60px_70px_70px] items-center gap-1 px-3 py-2 transition-colors hover:bg-action-translucent-hover">
                   <Link href={`/dashboard/markets/${trade.id}`} className="flex min-w-0 items-center gap-1.5">
-                    <span className="text-xs">{trade.icon}</span>
-                    <span className="truncate text-xs text-text-primary hover:text-signal-green">{trade.market}</span>
+                    <span className="text-body-12">{trade.icon}</span>
+                    <span className="truncate text-body-12 text-text-primary hover:text-signal-green">{trade.market}</span>
                   </Link>
-                  <span className={`text-xs font-semibold ${trade.side === "YES" ? "text-signal-green" : "text-signal-red"}`}>
+                  <span className={`text-body-12 font-semibold ${trade.side === "YES" ? "text-signal-green" : "text-signal-red"}`}>
                     {trade.side}
                   </span>
                   <span className="text-numbers-10 text-text-primary">{trade.size}</span>
                   <span className={`text-numbers-10 font-medium ${trade.positive ? "text-signal-green" : "text-signal-red"}`}>
                     {trade.pnl}
                   </span>
-                  <span className="text-[10px] text-text-tertiary">{trade.time}</span>
+                  <span className="text-caption-10 text-text-tertiary">{trade.time}</span>
                 </div>
               ))}
             </div>
@@ -266,7 +266,7 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
             </div>
             <div className="mt-2 flex gap-4">
               {trader.focus.map((seg, i) => (
-                <span key={seg.category} className="flex items-center gap-1.5 text-[10px] text-text-tertiary">
+                <span key={seg.category} className="flex items-center gap-1.5 text-caption-10 text-text-tertiary">
                   <span className={`inline-block h-2 w-2 rounded-full ${focusColors[i]}`} />
                   {seg.category} {seg.pct}%
                 </span>
@@ -282,12 +282,12 @@ export default function TraderProfilePage({ params }: { params: Promise<{ id: st
               <div key={bot.name} className="flex items-center gap-3 px-3 py-2">
                 <div className="min-w-0 flex-1">
                   <div className="text-body-12 font-medium text-text-primary">{bot.name}</div>
-                  <div className="text-[10px] text-text-quaternary">{bot.type}</div>
+                  <div className="text-caption-10 text-text-quaternary">{bot.type}</div>
                 </div>
                 <span className="text-numbers-10 text-signal-green">{bot.pnl}</span>
                 <span className="text-numbers-10 text-text-secondary">{bot.winRate}% WR</span>
-                <span className="text-[10px] text-text-quaternary">{bot.copiers} copiers</span>
-                <button className="rounded-[4px] bg-signal-green/12 px-2 py-1 text-[10px] font-semibold text-signal-green hover:bg-signal-green/20">
+                <span className="text-caption-10 text-text-quaternary">{bot.copiers} copiers</span>
+                <button className="rounded-[4px] bg-signal-green/12 px-2 py-1 text-caption-10 font-semibold text-signal-green hover:bg-signal-green/20">
                   Fork
                 </button>
               </div>

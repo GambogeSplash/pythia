@@ -90,7 +90,7 @@ export function CommandPalette() {
             placeholder="Search markets, traders, actions..."
             className="flex-1 bg-transparent text-body-14 text-text-primary placeholder-text-quaternary outline-none"
           />
-          <kbd className="rounded-[4px] bg-bg-base-3 px-1.5 py-0.5 font-mono text-[10px] text-text-quaternary" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}>
+          <kbd className="rounded-[4px] bg-bg-base-3 px-1.5 py-0.5 font-mono text-caption-10 text-text-quaternary" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}>
             ESC
           </kbd>
         </div>
@@ -108,7 +108,7 @@ export function CommandPalette() {
               if (items.length === 0) return null;
               return (
                 <div key={cat}>
-                  <div className="px-4 py-1.5 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                  <div className="px-4 py-1.5 text-label-9 tracking-widest text-text-quaternary">
                     {cat}
                   </div>
                   {items.map((item) => (

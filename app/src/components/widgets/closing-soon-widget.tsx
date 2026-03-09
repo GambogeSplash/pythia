@@ -62,9 +62,9 @@ export function ClosingSoonWidget() {
     <Widget
       id="closing-soon"
       title="Markets Closing Soon"
-      icon={<span className="text-xs">⊞</span>}
+      icon={<span className="text-body-12">⊞</span>}
       actions={
-        <button className="flex items-center gap-1 rounded border border-border-primary bg-bg-surface px-2 py-0.5 text-[10px] text-text-secondary">
+        <button className="flex items-center gap-1 rounded border border-border-primary bg-bg-surface px-2 py-0.5 text-caption-10 text-text-secondary">
           △ Period: 24hr
         </button>
       }
@@ -73,16 +73,16 @@ export function ClosingSoonWidget() {
 
       {/* Table Header */}
       <div className="grid grid-cols-[1fr_120px_50px_100px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">
           Market
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           Price
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           <Clock className="inline h-3 w-3" />
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           GOOD DEAL?
         </span>
       </div>
@@ -178,11 +178,11 @@ export function ClosingSoonWidget() {
                     {goodDeal.pctChange >= 0 ? "+" : ""}
                     {goodDeal.pctChange}%
                   </div>
-                  <div className="text-[10px] text-action-rise">
+                  <div className="text-caption-10 text-action-rise">
                     ✓ {goodDeal.fillQuality}
                   </div>
                   <div
-                    className={`text-[10px] ${
+                    className={`text-caption-10 ${
                       goodDeal.flow.includes("Sell")
                         ? "text-action-fall"
                         : "text-action-rise"

@@ -156,7 +156,7 @@ function ParamSlider({
   return (
     <div className="mb-3">
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="text-[10px] text-text-quaternary">{label}</span>
+        <span className="text-caption-10 text-text-quaternary">{label}</span>
         <span className="text-numbers-12 font-medium text-text-primary">
           {prefix}
           {value.toLocaleString()}
@@ -401,7 +401,7 @@ export default function BotCreatePage() {
                 />
               )}
               <div
-                className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 text-caption-10 font-medium transition-colors ${
                   currentStep === s.n
                     ? "bg-signal-green/15 text-signal-green"
                     : currentStep > s.n
@@ -440,7 +440,7 @@ export default function BotCreatePage() {
               <div className="mb-1 text-body-12 font-semibold text-text-primary">
                 Choose Bot Type
               </div>
-              <p className="mb-6 text-[10px] text-text-quaternary">
+              <p className="mb-6 text-caption-10 text-text-quaternary">
                 Select the strategy archetype for your bot. You can customize
                 triggers and parameters in the next step.
               </p>
@@ -478,7 +478,7 @@ export default function BotCreatePage() {
                               <Check className="h-3 w-3 text-bg-base-0" />
                             </div>
                           )}
-                          <span className="rounded-full bg-bg-base-3 px-2 py-0.5 text-[9px] text-text-quaternary">
+                          <span className="rounded-full bg-bg-base-3 px-2 py-0.5 text-label-9 text-text-quaternary">
                             {bt.difficulty}
                           </span>
                         </div>
@@ -486,7 +486,7 @@ export default function BotCreatePage() {
                       <div className="text-body-12 font-semibold text-text-primary">
                         {bt.name}
                       </div>
-                      <p className="mt-1 text-[10px] leading-relaxed text-text-quaternary">
+                      <p className="mt-1 text-caption-10 leading-relaxed text-text-quaternary">
                         {bt.desc}
                       </p>
                       <div className="mt-3 flex items-center justify-between">
@@ -527,7 +527,7 @@ export default function BotCreatePage() {
                 <span className="text-body-12 font-semibold text-text-primary">
                   Logic Builder
                 </span>
-                <span className="ml-auto text-[10px] text-text-quaternary">
+                <span className="ml-auto text-caption-10 text-text-quaternary">
                   {triggerActions.length}/3 conditions
                 </span>
               </div>
@@ -545,7 +545,7 @@ export default function BotCreatePage() {
                         }}
                       >
                         <div className="mb-3 flex items-center justify-between">
-                          <span className="text-[10px] font-semibold uppercase text-text-quaternary">
+                          <span className="text-label-10 text-text-quaternary">
                             Condition {idx + 1}
                           </span>
                           {triggerActions.length > 1 && (
@@ -562,10 +562,10 @@ export default function BotCreatePage() {
                           {/* IF block */}
                           <div className="flex-1">
                             <div className="mb-2 flex items-center gap-1.5">
-                              <div className="flex h-5 items-center rounded bg-signal-blue/15 px-1.5 text-[10px] font-bold text-signal-blue">
+                              <div className="flex h-5 items-center rounded bg-signal-blue/15 px-1.5 text-caption-10 font-bold text-signal-blue">
                                 IF
                               </div>
-                              <span className="text-[10px] text-text-quaternary">
+                              <span className="text-caption-10 text-text-quaternary">
                                 Trigger
                               </span>
                             </div>
@@ -605,10 +605,10 @@ export default function BotCreatePage() {
                           {/* THEN block */}
                           <div className="flex-1">
                             <div className="mb-2 flex items-center gap-1.5">
-                              <div className="flex h-5 items-center rounded bg-signal-green/15 px-1.5 text-[10px] font-bold text-signal-green">
+                              <div className="flex h-5 items-center rounded bg-signal-green/15 px-1.5 text-caption-10 font-bold text-signal-green">
                                 THEN
                               </div>
-                              <span className="text-[10px] text-text-quaternary">
+                              <span className="text-caption-10 text-text-quaternary">
                                 Action
                               </span>
                             </div>
@@ -682,7 +682,7 @@ export default function BotCreatePage() {
                       {/* Connector between blocks */}
                       {idx < triggerActions.length - 1 && (
                         <div className="flex justify-center py-1">
-                          <div className="flex h-6 items-center gap-1 rounded-full bg-bg-base-3 px-2 text-[9px] font-semibold text-text-quaternary">
+                          <div className="flex h-6 items-center gap-1 rounded-full bg-bg-base-3 px-2 text-label-9 font-semibold text-text-quaternary">
                             AND
                           </div>
                         </div>
@@ -727,7 +727,7 @@ export default function BotCreatePage() {
               <div className="flex-1 overflow-auto p-4">
                 {/* Bot name */}
                 <div className="mb-4">
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Bot Name
                   </label>
                   <input
@@ -747,7 +747,7 @@ export default function BotCreatePage() {
 
                 {/* Capital allocation */}
                 <div className="mb-4">
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Capital Allocation
                   </label>
                   <div className="relative">
@@ -774,7 +774,7 @@ export default function BotCreatePage() {
 
                 {/* Max drawdown */}
                 <div className="mb-4">
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Max Drawdown
                   </label>
                   <div className="relative">
@@ -801,7 +801,7 @@ export default function BotCreatePage() {
 
                 {/* Markets */}
                 <div className="mb-4">
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Markets
                   </label>
                   <div className="flex flex-wrap gap-1.5">
@@ -809,7 +809,7 @@ export default function BotCreatePage() {
                       <button
                         key={m}
                         onClick={() => toggleMarket(m)}
-                        className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition-colors ${
+                        className={`rounded-full px-2.5 py-1 text-caption-10 font-medium transition-colors ${
                           settings.markets.includes(m)
                             ? "bg-signal-green/15 text-signal-green"
                             : "bg-bg-base-3 text-text-quaternary hover:text-text-secondary"
@@ -823,7 +823,7 @@ export default function BotCreatePage() {
 
                 {/* Venues */}
                 <div className="mb-4">
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Venues
                   </label>
                   <div className="flex flex-wrap gap-1.5">
@@ -831,7 +831,7 @@ export default function BotCreatePage() {
                       <button
                         key={v}
                         onClick={() => toggleVenue(v)}
-                        className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition-colors ${
+                        className={`rounded-full px-2.5 py-1 text-caption-10 font-medium transition-colors ${
                           settings.venues.includes(v)
                             ? "bg-signal-green/15 text-signal-green"
                             : "bg-bg-base-3 text-text-quaternary hover:text-text-secondary"
@@ -845,7 +845,7 @@ export default function BotCreatePage() {
 
                 {/* Mode toggle */}
                 <div className="mb-4">
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Mode
                   </label>
                   <div
@@ -859,7 +859,7 @@ export default function BotCreatePage() {
                       onClick={() =>
                         setSettings((s) => ({ ...s, mode: "paper" }))
                       }
-                      className={`flex-1 rounded-[4px] py-1.5 text-[10px] font-semibold transition-colors ${
+                      className={`flex-1 rounded-[4px] py-1.5 text-caption-10 font-semibold transition-colors ${
                         settings.mode === "paper"
                           ? "bg-signal-amber/15 text-signal-amber"
                           : "text-text-quaternary hover:text-text-secondary"
@@ -871,7 +871,7 @@ export default function BotCreatePage() {
                       onClick={() =>
                         setSettings((s) => ({ ...s, mode: "live" }))
                       }
-                      className={`flex-1 rounded-[4px] py-1.5 text-[10px] font-semibold transition-colors ${
+                      className={`flex-1 rounded-[4px] py-1.5 text-caption-10 font-semibold transition-colors ${
                         settings.mode === "live"
                           ? "bg-action-rise-dim text-action-rise"
                           : "text-text-quaternary hover:text-text-secondary"
@@ -884,7 +884,7 @@ export default function BotCreatePage() {
 
                 {/* Risk level */}
                 <div>
-                  <label className="mb-1.5 block text-[10px] font-medium text-text-quaternary">
+                  <label className="mb-1.5 block text-caption-10 font-medium text-text-quaternary">
                     Risk Level
                   </label>
                   <div
@@ -906,7 +906,7 @@ export default function BotCreatePage() {
                         onClick={() =>
                           setSettings((s) => ({ ...s, riskLevel: r.id }))
                         }
-                        className={`flex-1 rounded-[4px] py-1.5 text-[10px] font-semibold transition-colors ${
+                        className={`flex-1 rounded-[4px] py-1.5 text-caption-10 font-semibold transition-colors ${
                           settings.riskLevel === r.id
                             ? r.color
                             : "text-text-quaternary hover:text-text-secondary"
@@ -971,14 +971,14 @@ export default function BotCreatePage() {
                       <div className="text-body-12 font-semibold text-text-primary">
                         {settings.botName || "Unnamed Bot"}
                       </div>
-                      <div className="text-[10px] text-text-quaternary">
+                      <div className="text-caption-10 text-text-quaternary">
                         {selectedType?.name} &middot;{" "}
                         {selectedType?.difficulty}
                       </div>
                     </div>
                     <div className="ml-auto">
                       <span
-                        className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                        className={`rounded-full px-2 py-0.5 text-caption-10 font-medium ${
                           settings.mode === "paper"
                             ? "bg-signal-amber-dim text-signal-amber"
                             : "bg-action-rise-dim text-action-rise"
@@ -991,7 +991,7 @@ export default function BotCreatePage() {
 
                   <div className="grid grid-cols-4 gap-3">
                     <div>
-                      <div className="text-[10px] text-text-quaternary">
+                      <div className="text-caption-10 text-text-quaternary">
                         Capital
                       </div>
                       <div className="text-numbers-12 font-medium text-text-primary">
@@ -999,7 +999,7 @@ export default function BotCreatePage() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-[10px] text-text-quaternary">
+                      <div className="text-caption-10 text-text-quaternary">
                         Max Drawdown
                       </div>
                       <div className="text-numbers-12 font-medium text-action-fall">
@@ -1007,7 +1007,7 @@ export default function BotCreatePage() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-[10px] text-text-quaternary">
+                      <div className="text-caption-10 text-text-quaternary">
                         Risk Level
                       </div>
                       <div className="text-numbers-12 font-medium text-text-primary capitalize">
@@ -1015,7 +1015,7 @@ export default function BotCreatePage() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-[10px] text-text-quaternary">
+                      <div className="text-caption-10 text-text-quaternary">
                         Conditions
                       </div>
                       <div className="text-numbers-12 font-medium text-text-primary">
@@ -1027,7 +1027,7 @@ export default function BotCreatePage() {
 
                 {/* Trigger/Action summary */}
                 <div className="mb-4">
-                  <div className="mb-2 text-[10px] font-medium uppercase text-text-quaternary">
+                  <div className="mb-2 text-label-10 text-text-quaternary">
                     Logic Rules
                   </div>
                   <div className="space-y-2">
@@ -1040,7 +1040,7 @@ export default function BotCreatePage() {
                             "inset 0 0 0 1px var(--color-divider-thin)",
                         }}
                       >
-                        <div className="flex h-5 items-center rounded bg-signal-blue/15 px-1.5 text-[9px] font-bold text-signal-blue">
+                        <div className="flex h-5 items-center rounded bg-signal-blue/15 px-1.5 text-label-9 font-bold text-signal-blue">
                           IF
                         </div>
                         <span className="text-body-12 text-text-primary">
@@ -1050,7 +1050,7 @@ export default function BotCreatePage() {
                           {ta.threshold}%
                         </span>
                         <ArrowRight className="h-3 w-3 text-text-muted" />
-                        <div className="flex h-5 items-center rounded bg-signal-green/15 px-1.5 text-[9px] font-bold text-signal-green">
+                        <div className="flex h-5 items-center rounded bg-signal-green/15 px-1.5 text-label-9 font-bold text-signal-green">
                           THEN
                         </div>
                         <span className="text-body-12 text-text-primary">
@@ -1059,7 +1059,7 @@ export default function BotCreatePage() {
                         <span className="text-numbers-12 text-text-secondary">
                           ${ta.positionSize.toLocaleString()}
                         </span>
-                        <span className="ml-auto text-[10px] text-text-quaternary">
+                        <span className="ml-auto text-caption-10 text-text-quaternary">
                           SL: {ta.stopLoss}% / TP: {ta.takeProfit}%
                         </span>
                       </div>
@@ -1076,20 +1076,20 @@ export default function BotCreatePage() {
                         "inset 0 0 0 1px var(--color-divider-thin)",
                     }}
                   >
-                    <div className="mb-2 text-[10px] font-medium uppercase text-text-quaternary">
+                    <div className="mb-2 text-label-10 text-text-quaternary">
                       Markets
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {settings.markets.map((m) => (
                         <span
                           key={m}
-                          className="rounded-full bg-signal-green/10 px-2 py-0.5 text-[10px] font-medium text-signal-green"
+                          className="rounded-full bg-signal-green/10 px-2 py-0.5 text-caption-10 font-medium text-signal-green"
                         >
                           {m}
                         </span>
                       ))}
                       {settings.markets.length === 0 && (
-                        <span className="text-[10px] text-text-muted">
+                        <span className="text-caption-10 text-text-muted">
                           None selected
                         </span>
                       )}
@@ -1102,20 +1102,20 @@ export default function BotCreatePage() {
                         "inset 0 0 0 1px var(--color-divider-thin)",
                     }}
                   >
-                    <div className="mb-2 text-[10px] font-medium uppercase text-text-quaternary">
+                    <div className="mb-2 text-label-10 text-text-quaternary">
                       Venues
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {settings.venues.map((v) => (
                         <span
                           key={v}
-                          className="rounded-full bg-signal-blue/10 px-2 py-0.5 text-[10px] font-medium text-signal-blue"
+                          className="rounded-full bg-signal-blue/10 px-2 py-0.5 text-caption-10 font-medium text-signal-blue"
                         >
                           {v}
                         </span>
                       ))}
                       {settings.venues.length === 0 && (
-                        <span className="text-[10px] text-text-muted">
+                        <span className="text-caption-10 text-text-muted">
                           None selected
                         </span>
                       )}
@@ -1140,27 +1140,27 @@ export default function BotCreatePage() {
                     Estimated Risk Metrics
                   </span>
                 </div>
-                <p className="mb-3 text-[9px] text-text-muted">
+                <p className="mb-3 text-label-9 text-text-muted">
                   Estimates based on historical backtests. Not financial advice.
                 </p>
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       Expected PnL Range (30d)
                     </span>
                     <div className="flex items-center gap-1">
                       <span className="text-numbers-12 text-action-fall">
                         -${Math.round(settings.capital * 0.08).toLocaleString()}
                       </span>
-                      <span className="text-[10px] text-text-muted">to</span>
+                      <span className="text-caption-10 text-text-muted">to</span>
                       <span className="text-numbers-12 text-action-rise">
                         +${Math.round(settings.capital * 0.22).toLocaleString()}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       Max Drawdown Estimate
                     </span>
                     <span className="text-numbers-12 font-medium text-action-fall">
@@ -1168,7 +1168,7 @@ export default function BotCreatePage() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       Sharpe Ratio Estimate
                     </span>
                     <span className="text-numbers-12 font-medium text-text-primary">
@@ -1180,7 +1180,7 @@ export default function BotCreatePage() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       Win Rate Estimate
                     </span>
                     <span className="text-numbers-12 font-medium text-text-primary">
@@ -1192,7 +1192,7 @@ export default function BotCreatePage() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       Avg Trade Duration
                     </span>
                     <span className="text-numbers-12 text-text-secondary">
@@ -1213,10 +1213,10 @@ export default function BotCreatePage() {
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-action-fall" />
                     <div>
-                      <div className="text-[10px] font-semibold text-action-fall">
+                      <div className="text-caption-10 font-semibold text-action-fall">
                         Live Trading Warning
                       </div>
-                      <p className="mt-0.5 text-[9px] leading-relaxed text-action-fall/70">
+                      <p className="mt-0.5 text-label-9 leading-relaxed text-action-fall/70">
                         This bot will execute real trades with real funds. Start
                         with paper trading to validate your strategy first.
                       </p>

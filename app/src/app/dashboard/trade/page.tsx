@@ -103,7 +103,7 @@ function MarketListItem({
           {market.image ? (
             <img src={market.image} alt="" className="h-full w-full object-cover" />
           ) : (
-            <span className="text-[10px] text-text-quaternary">M</span>
+            <span className="text-caption-10 text-text-quaternary">M</span>
           )}
         </div>
         <span className="flex-1 text-body-12 font-medium text-text-primary line-clamp-1">
@@ -434,23 +434,23 @@ export default function TradePage() {
         {/* Center: Quick stats */}
         <div className="ml-4 hidden items-center gap-4 md:flex">
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Last Price</span>
+            <span className="text-caption-10 text-text-quaternary">Last Price</span>
             <span className="text-numbers-12 font-medium text-text-primary">{yesPercent}&cent;</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">24h Change</span>
+            <span className="text-caption-10 text-text-quaternary">24h Change</span>
             <span className={`text-numbers-12 font-medium ${change24h !== null && change24h >= 0 ? "text-action-rise" : "text-action-fall"}`}>
               {change24h !== null ? `${change24h >= 0 ? "+" : ""}${change24h.toFixed(1)}%` : "--"}
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">24h Volume</span>
+            <span className="text-caption-10 text-text-quaternary">24h Volume</span>
             <span className="text-numbers-12 font-medium text-text-primary">
               {selectedMarket ? formatVolume(selectedMarket.volume24h) : "--"}
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Liquidity</span>
+            <span className="text-caption-10 text-text-quaternary">Liquidity</span>
             <span className="text-numbers-12 font-medium text-text-primary">
               {selectedMarket ? formatVolume(selectedMarket.liquidity) : "--"}
             </span>
@@ -577,7 +577,7 @@ export default function TradePage() {
                   <span className="text-body-14 font-semibold text-text-primary line-clamp-1">
                     {selectedMarket.question}
                   </span>
-                  <span className="rounded-[4px] bg-bg-base-3 px-1.5 py-0.5 text-[10px] text-text-quaternary">
+                  <span className="rounded-[4px] bg-bg-base-3 px-1.5 py-0.5 text-caption-10 text-text-quaternary">
                     {selectedMarket.category}
                   </span>
                   <span
@@ -629,7 +629,7 @@ export default function TradePage() {
           {/* Bids */}
           <div className="flex flex-1 flex-col">
             <div
-              className="flex h-8 items-center px-3 text-[10px] font-medium uppercase text-text-quaternary"
+              className="flex h-8 items-center px-3 text-label-10 text-text-quaternary"
               style={{
                 boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)",
               }}
@@ -640,7 +640,7 @@ export default function TradePage() {
             {orderbookLoading ? (
               <OrderbookSkeleton />
             ) : processedOrderbook.bids.length === 0 ? (
-              <div className="flex flex-1 items-center justify-center text-[10px] text-text-quaternary">
+              <div className="flex flex-1 items-center justify-center text-caption-10 text-text-quaternary">
                 No bids
               </div>
             ) : (
@@ -668,7 +668,7 @@ export default function TradePage() {
           {/* Asks */}
           <div className="flex flex-1 flex-col">
             <div
-              className="flex h-8 items-center px-3 text-[10px] font-medium uppercase text-text-quaternary"
+              className="flex h-8 items-center px-3 text-label-10 text-text-quaternary"
               style={{
                 boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)",
               }}
@@ -679,7 +679,7 @@ export default function TradePage() {
             {orderbookLoading ? (
               <OrderbookSkeleton />
             ) : processedOrderbook.asks.length === 0 ? (
-              <div className="flex flex-1 items-center justify-center text-[10px] text-text-quaternary">
+              <div className="flex flex-1 items-center justify-center text-caption-10 text-text-quaternary">
                 No asks
               </div>
             ) : (
@@ -707,7 +707,7 @@ export default function TradePage() {
           {/* Recent Trades */}
           <div className="flex flex-1 flex-col">
             <div
-              className="flex h-8 items-center px-3 text-[10px] font-medium uppercase text-text-quaternary"
+              className="flex h-8 items-center px-3 text-label-10 text-text-quaternary"
               style={{
                 boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)",
               }}
@@ -730,8 +730,8 @@ export default function TradePage() {
               </div>
             ) : recentTrades.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-1">
-                <span className="text-[10px] text-text-quaternary">No trades yet</span>
-                <span className="text-[9px] text-text-muted">Place an order to get started</span>
+                <span className="text-caption-10 text-text-quaternary">No trades yet</span>
+                <span className="text-label-9 text-text-muted">Place an order to get started</span>
               </div>
             ) : (
               <div className="flex-1 overflow-auto">
@@ -837,7 +837,7 @@ export default function TradePage() {
           {/* Limit price input (only for limit orders) */}
           {orderType === "limit" && (
             <div className="mb-3">
-              <label className="mb-1 block text-[10px] font-medium uppercase text-text-quaternary">
+              <label className="mb-1 block text-label-10 text-text-quaternary">
                 Limit Price (cents)
               </label>
               <div
@@ -860,7 +860,7 @@ export default function TradePage() {
 
           {/* Amount input */}
           <div className="mb-3">
-            <label className="mb-1 block text-[10px] font-medium uppercase text-text-quaternary">
+            <label className="mb-1 block text-label-10 text-text-quaternary">
               Amount (USD)
             </label>
             <div
@@ -945,7 +945,7 @@ export default function TradePage() {
           {/* P&L Summary */}
           <div className="mt-4 rounded-[8px] bg-bg-base-2 p-3">
             <div
-              className="mb-2 pb-2 text-[10px] font-medium uppercase text-text-quaternary"
+              className="mb-2 pb-2 text-label-10 text-text-quaternary"
               style={{
                 boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)",
               }}

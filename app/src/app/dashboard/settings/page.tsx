@@ -150,7 +150,7 @@ function ProfileSection() {
         {/* Avatar */}
         <div className="flex items-center gap-4">
           <div
-            className="flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold text-bg-base-0"
+            className="flex h-14 w-14 items-center justify-center rounded-full text-header-16 font-bold text-bg-base-0"
             style={{ background: "linear-gradient(135deg, #00FF85, #4DA6FF)" }}
           >
             {(user?.name || user?.email || "U").charAt(0).toUpperCase()}
@@ -159,7 +159,7 @@ function ProfileSection() {
             <div className="text-body-14 font-semibold text-text-primary">
               {user?.name || user?.email?.split("@")[0] || "User"}
             </div>
-            <div className="text-[11px] text-text-quaternary">
+            <div className="text-body-12 text-text-quaternary">
               Member since {new Date().getFullYear()}
             </div>
           </div>
@@ -201,7 +201,7 @@ function ProfileSection() {
       {/* Danger zone */}
       <motion.div variants={fadeUp} className="pt-4" style={{ borderTop: "1px solid var(--color-divider-heavy)" }}>
         <h3 className="text-body-12 font-semibold text-action-fall">Danger Zone</h3>
-        <p className="mt-1 text-[11px] text-text-quaternary">
+        <p className="mt-1 text-body-12 text-text-quaternary">
           Sign out of your account on this device.
         </p>
         <button
@@ -251,7 +251,7 @@ function AppearanceSection() {
             >
               {t.icon}
               <span className="text-body-12 font-semibold">{t.label}</span>
-              <span className="text-[10px] text-text-quaternary">{t.description}</span>
+              <span className="text-caption-10 text-text-quaternary">{t.description}</span>
               {currentTheme === t.value && <Check className="h-3.5 w-3.5 text-signal-green" />}
             </button>
           ))}
@@ -368,7 +368,7 @@ function ApiKeysSection() {
           <div className="rounded-[10px] bg-bg-base-2 p-6 text-center outline outline-1 -outline-offset-1 outline-divider-heavy">
             <Key className="mx-auto h-8 w-8 text-text-quaternary" />
             <p className="mt-2 text-body-12 text-text-secondary">No API keys connected</p>
-            <p className="mt-0.5 text-[11px] text-text-quaternary">Add a venue API key to start trading</p>
+            <p className="mt-0.5 text-body-12 text-text-quaternary">Add a venue API key to start trading</p>
           </div>
         )}
 
@@ -382,11 +382,11 @@ function ApiKeysSection() {
               {venue?.icon}
               <div className="flex-1">
                 <div className="text-body-12 font-semibold text-text-primary">{venue?.label || k.venue}</div>
-                <div className="text-[10px] font-mono text-text-quaternary">
+                <div className="text-caption-10 font-mono text-text-quaternary">
                   {k.apiKey.slice(0, 8)}{"****"}
                 </div>
               </div>
-              <span className="rounded-full bg-signal-green/10 px-2 py-0.5 text-[9px] font-bold text-signal-green">
+              <span className="rounded-full bg-signal-green/10 px-2 py-0.5 text-label-9 font-bold text-signal-green">
                 ACTIVE
               </span>
               <button
@@ -519,7 +519,7 @@ function DataSection() {
         >
           <div>
             <div className="text-body-12 font-semibold text-text-primary">Export Data</div>
-            <div className="text-[11px] text-text-quaternary">Download your trades, positions, and settings as JSON</div>
+            <div className="text-body-12 text-text-quaternary">Download your trades, positions, and settings as JSON</div>
           </div>
           <button
             onClick={handleExport}
@@ -536,7 +536,7 @@ function DataSection() {
         >
           <div>
             <div className="text-body-12 font-semibold text-text-primary">Clear Trade History</div>
-            <div className="text-[11px] text-text-quaternary">Permanently delete all your trade records</div>
+            <div className="text-body-12 text-text-quaternary">Permanently delete all your trade records</div>
           </div>
           <button
             onClick={handleClearHistory}
@@ -552,10 +552,10 @@ function DataSection() {
         </div>
         {clearConfirm && (
           <div className="flex items-center gap-2">
-            <span className="text-[11px] text-action-fall">This action cannot be undone.</span>
+            <span className="text-body-12 text-action-fall">This action cannot be undone.</span>
             <button
               onClick={() => setClearConfirm(false)}
-              className="text-[11px] text-text-secondary underline hover:text-text-primary"
+              className="text-body-12 text-text-secondary underline hover:text-text-primary"
             >
               Cancel
             </button>
@@ -583,7 +583,7 @@ function SettingsField({
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
         <label className="text-body-12 font-medium text-text-secondary">{label}</label>
-        {hint && <span className="text-[10px] text-text-quaternary">{hint}</span>}
+        {hint && <span className="text-caption-10 text-text-quaternary">{hint}</span>}
       </div>
       {children}
     </div>
@@ -609,7 +609,7 @@ function ToggleRow({
     >
       <div className="flex-1">
         <div className="text-body-12 font-medium text-text-primary">{label}</div>
-        <div className="text-[11px] text-text-quaternary">{description}</div>
+        <div className="text-body-12 text-text-quaternary">{description}</div>
       </div>
       <div
         className={`relative h-5 w-9 rounded-full transition-colors duration-200 ${

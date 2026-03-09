@@ -503,7 +503,7 @@ export default function AlertPage() {
                       >
                         <Bell className="mb-3 h-8 w-8 text-text-muted" />
                         <p className="mb-1 text-body-12 font-medium text-text-secondary">No alerts configured</p>
-                        <p className="mb-4 text-[11px] text-text-quaternary">Create your first alert to monitor market signals</p>
+                        <p className="mb-4 text-body-12 text-text-quaternary">Create your first alert to monitor market signals</p>
                         <button
                           onClick={() => setDrawerOpen(true)}
                           className="flex h-7 items-center gap-1 rounded-[6px] bg-signal-green px-3 text-body-12 font-semibold text-bg-base-0 hover:bg-action-brand-hover"

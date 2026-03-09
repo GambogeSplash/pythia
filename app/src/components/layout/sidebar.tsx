@@ -45,7 +45,7 @@ export function Sidebar() {
   const renderSection = (title: string, items: NavItem[]) => (
     <div className="mb-2">
       {!collapsed && (
-        <div className="px-3 pb-1 pt-3 text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+        <div className="px-3 pb-1 pt-3 text-label-9 tracking-widest text-text-quaternary">
           {title}
         </div>
       )}

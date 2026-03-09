@@ -71,7 +71,7 @@ export function AISignalsWidget() {
       actions={
         <button
           onClick={() => mutate()}
-          className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-[10px] text-text-secondary transition-colors duration-150 hover:bg-action-secondary-hover hover:text-text-primary active:bg-action-secondary-active"
+          className="flex h-5 items-center gap-1 rounded-[4px] bg-action-secondary px-2 text-caption-10 text-text-secondary transition-colors duration-150 hover:bg-action-secondary-hover hover:text-text-primary active:bg-action-secondary-active"
           title="Refresh signals"
         >
           <RefreshCw className="h-2.5 w-2.5" />
@@ -83,16 +83,16 @@ export function AISignalsWidget() {
         className="grid grid-cols-[1fr_64px_56px_80px] gap-1 px-3 py-1.5"
         style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
       >
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">
           Market
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Signal
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Conf.
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Entry / Target
         </span>
       </div>
@@ -139,7 +139,7 @@ export function AISignalsWidget() {
                     <span className="block truncate text-body-12 text-text-primary">
                       {truncate(signal.question, 55)}
                     </span>
-                    <span className="mt-0.5 block truncate text-[10px] text-text-quaternary">
+                    <span className="mt-0.5 block truncate text-caption-10 text-text-quaternary">
                       {truncate(signal.reasoning, 60)}
                     </span>
                   </div>

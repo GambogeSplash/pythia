@@ -300,21 +300,21 @@ export default function BotsPage() {
         </div>
         <div className="ml-4 hidden items-center gap-4 md:flex">
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Active</span>
+            <span className="text-caption-10 text-text-quaternary">Active</span>
             <span className="text-numbers-12 font-medium text-signal-green">{runningBots}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Total PnL</span>
+            <span className="text-caption-10 text-text-quaternary">Total PnL</span>
             <span className={`text-numbers-12 font-medium ${totalPnl >= 0 ? "text-action-rise" : "text-action-fall"}`}>
               {totalPnl >= 0 ? "+" : ""}${Math.abs(totalPnl).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Trades</span>
+            <span className="text-caption-10 text-text-quaternary">Trades</span>
             <span className="text-numbers-12 font-medium text-text-primary">{totalTrades}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Win Rate</span>
+            <span className="text-caption-10 text-text-quaternary">Win Rate</span>
             <span className="text-numbers-12 font-medium text-text-primary">{avgWinRate}%</span>
           </div>
         </div>
@@ -375,13 +375,13 @@ export default function BotsPage() {
                   >
                     <Bot className="mb-3 h-8 w-8 text-text-muted" />
                     <p className="mb-1 text-body-12 font-medium text-text-secondary">No bots yet</p>
-                    <p className="mb-4 text-[11px] text-text-quaternary">Create your first trading bot to get started</p>
+                    <p className="mb-4 text-body-12 text-text-quaternary">Create your first trading bot to get started</p>
                     <Link href="/dashboard/bots/create" className="flex h-7 items-center gap-1 rounded-[6px] bg-signal-green px-3 text-body-12 font-semibold text-bg-base-0 hover:bg-action-brand-hover">
                       <Plus className="h-3 w-3" /> Create Bot
                     </Link>
                   </motion.div>
                 ) : <>
-                <div className="hidden md:grid grid-cols-[1fr_90px_80px_65px_65px_60px_55px_70px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
+                <div className="hidden md:grid grid-cols-[1fr_90px_80px_65px_65px_60px_55px_70px] gap-2 px-4 py-2 text-label-10 text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
                   <span>Bot</span><span>Type</span><span className="text-right">PnL</span><span className="text-right">Trades</span>
                   <span className="text-right">Win %</span><span className="text-right">Sharpe</span><span className="text-right">Mode</span><span />
                 </div>
@@ -411,7 +411,7 @@ export default function BotsPage() {
                         <span className="text-numbers-12 text-text-primary md:text-right">{bot.trades} trades</span>
                         <span className="hidden text-right text-numbers-12 text-text-primary md:block">{bot.winRate}%</span>
                         <span className="hidden text-right text-numbers-12 text-text-secondary md:block">{bot.sharpe.toFixed(2)}</span>
-                        <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-medium ${bot.mode === "paper" ? "bg-signal-amber-dim text-signal-amber" : "bg-action-rise-dim text-action-rise"}`}>
+                        <span className={`rounded-full px-1.5 py-0.5 text-label-9 font-medium ${bot.mode === "paper" ? "bg-signal-amber-dim text-signal-amber" : "bg-action-rise-dim text-action-rise"}`}>
                           {bot.mode === "paper" ? "Paper" : "Live"}
                         </span>
                       </div>
@@ -469,13 +469,13 @@ export default function BotsPage() {
                           <div className="flex h-10 w-10 items-center justify-center rounded-[8px]" style={{ backgroundColor: `color-mix(in srgb, ${bt.color} 12%, transparent)`, color: bt.color }}>
                             {bt.icon}
                           </div>
-                          <span className="rounded-full bg-bg-base-3 px-2 py-0.5 text-[9px] text-text-quaternary">{bt.difficulty}</span>
+                          <span className="rounded-full bg-bg-base-3 px-2 py-0.5 text-label-9 text-text-quaternary">{bt.difficulty}</span>
                         </div>
                         <div className="text-body-12 font-semibold text-text-primary">{bt.name}</div>
-                        <p className="mt-1 text-[10px] leading-relaxed text-text-quaternary">{bt.desc}</p>
+                        <p className="mt-1 text-caption-10 leading-relaxed text-text-quaternary">{bt.desc}</p>
                         <div className="mt-3 flex flex-wrap gap-1">
                           {bt.features.map((f) => (
-                            <span key={f} className="rounded bg-bg-base-3 px-1.5 py-0.5 text-[9px] text-text-secondary">{f}</span>
+                            <span key={f} className="rounded bg-bg-base-3 px-1.5 py-0.5 text-label-9 text-text-secondary">{f}</span>
                           ))}
                         </div>
                         <div className="mt-3 flex items-center justify-between">
@@ -501,7 +501,7 @@ export default function BotsPage() {
                 <div className="px-4 py-2 text-body-12 text-text-secondary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
                   Community-published strategies. Fork, customize, and deploy.
                 </div>
-                <div className="hidden md:grid grid-cols-[1fr_100px_55px_55px_80px_80px_70px] gap-2 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
+                <div className="hidden md:grid grid-cols-[1fr_100px_55px_55px_80px_80px_70px] gap-2 px-4 py-2 text-label-10 text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}>
                   <span>Strategy</span><span>Type</span><span className="text-right">Rating</span>
                   <span className="text-right">Forks</span><span className="text-right">30d PnL</span><span>Author</span><span className="text-right">License</span>
                 </div>
@@ -523,19 +523,19 @@ export default function BotsPage() {
                         </div>
                         <span className="text-right text-numbers-10 text-text-secondary">{mb.forks}</span>
                         <span className="text-right text-numbers-12 font-medium text-action-rise">{mb.pnl30d}</span>
-                        <Link href={`/dashboard/traders/${mb.authorId}`} className="text-xs text-signal-green hover:underline">{mb.author}</Link>
+                        <Link href={`/dashboard/traders/${mb.authorId}`} className="text-body-12 text-signal-green hover:underline">{mb.author}</Link>
                         <div className="flex justify-end gap-1">
-                          <span className={`rounded px-1.5 py-0.5 text-[8px] font-bold ${mb.license === "Premium" ? "bg-signal-amber-dim text-signal-amber" : "bg-bg-base-3 text-text-quaternary"}`}>{mb.license}</span>
+                          <span className={`rounded px-1.5 py-0.5 text-label-9 font-bold ${mb.license === "Premium" ? "bg-signal-amber-dim text-signal-amber" : "bg-bg-base-3 text-text-quaternary"}`}>{mb.license}</span>
                           <motion.button
                             whileHover={{ scale: 1.06 }}
                             whileTap={{ scale: 0.95 }}
-                            className="flex h-6 items-center gap-1 rounded-[4px] bg-action-translucent px-2 text-[10px] font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
+                            className="flex h-6 items-center gap-1 rounded-[4px] bg-action-translucent px-2 text-caption-10 font-medium text-text-primary transition-colors hover:bg-action-translucent-hover"
                           >
                             <GitFork className="h-3 w-3" /> Fork
                           </motion.button>
                         </div>
                       </div>
-                      <p className="mt-1 text-[10px] text-text-quaternary">{mb.desc}</p>
+                      <p className="mt-1 text-caption-10 text-text-quaternary">{mb.desc}</p>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -564,11 +564,11 @@ export default function BotsPage() {
             >
               <div className="mb-1 flex items-center justify-between">
                 <span className="text-body-12 font-semibold text-text-primary">{selectedBot.name}</span>
-                <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${statusConfig[selectedBot.status].badge}`}>
+                <span className={`rounded-full px-2 py-0.5 text-label-9 font-medium ${statusConfig[selectedBot.status].badge}`}>
                   {statusConfig[selectedBot.status].label}
                 </span>
               </div>
-              <div className="mb-3 flex items-center gap-2 text-[10px] text-text-quaternary">
+              <div className="mb-3 flex items-center gap-2 text-caption-10 text-text-quaternary">
                 <span>{selectedBot.type}</span><span>|</span>
                 <span>{selectedBot.mode === "paper" ? "Paper" : "Live"}</span><span>|</span>
                 <Clock className="h-3 w-3" /><span>{selectedBot.uptime}</span>
@@ -580,7 +580,7 @@ export default function BotsPage() {
                 transition={{ delay: 0.1, duration: 0.3 }}
               >
                 <div>
-                  <div className="text-[10px] text-text-quaternary">Total PnL</div>
+                  <div className="text-caption-10 text-text-quaternary">Total PnL</div>
                   <motion.div
                     key={`pnl-${selectedBot.id}`}
                     initial={{ scale: 1.08, opacity: 0.7 }}
@@ -595,7 +595,7 @@ export default function BotsPage() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-text-quaternary">Capital</div>
+                  <div className="text-caption-10 text-text-quaternary">Capital</div>
                   <motion.div
                     key={`cap-${selectedBot.id}`}
                     initial={{ scale: 1.08, opacity: 0.7 }}
@@ -610,15 +610,15 @@ export default function BotsPage() {
               </motion.div>
               <div className="mt-3 grid grid-cols-3 gap-2">
                 <div>
-                  <div className="text-[10px] text-text-quaternary">Win Rate</div>
+                  <div className="text-caption-10 text-text-quaternary">Win Rate</div>
                   <motion.div key={`wr-${selectedBot.id}`} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} className="text-numbers-12 text-text-primary">{selectedBot.winRate}%</motion.div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-text-quaternary">Sharpe</div>
+                  <div className="text-caption-10 text-text-quaternary">Sharpe</div>
                   <motion.div key={`sh-${selectedBot.id}`} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} className="text-numbers-12 text-text-primary">{selectedBot.sharpe.toFixed(2)}</motion.div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-text-quaternary">Max DD</div>
+                  <div className="text-caption-10 text-text-quaternary">Max DD</div>
                   <motion.div key={`dd-${selectedBot.id}`} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} className="text-numbers-12 text-action-fall">{selectedBot.maxDrawdown}%</motion.div>
                 </div>
               </div>
@@ -664,7 +664,7 @@ export default function BotsPage() {
               className="rounded-[18px] bg-bg-base-1 p-4"
               style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
             >
-              <div className="mb-2 text-[10px] font-medium uppercase text-text-quaternary">Equity Curve</div>
+              <div className="mb-2 text-label-10 text-text-quaternary">Equity Curve</div>
               <EquityCurve botId={selectedBot.id} />
             </motion.div>
           </AnimatePresence>
@@ -679,12 +679,12 @@ export default function BotsPage() {
               className="flex-1 overflow-hidden rounded-[18px] bg-bg-base-1"
               style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
             >
-              <div className="px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
+              <div className="px-4 py-2 text-label-10 text-text-quaternary" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
                 Recent Trades
               </div>
               <div className="scrollbar-hide overflow-auto">
                 {selectedBot.recentTrades.length === 0 ? (
-                  <div className="px-4 py-6 text-center text-[10px] text-text-quaternary">No trades yet</div>
+                  <div className="px-4 py-6 text-center text-caption-10 text-text-quaternary">No trades yet</div>
                 ) : (
                   <motion.div variants={staggerList} initial="hidden" animate="show">
                     {selectedBot.recentTrades.map((t, i) => (
@@ -696,7 +696,7 @@ export default function BotsPage() {
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5">
-                            <span className={`text-[10px] font-semibold ${t.side === "YES" ? "text-action-buy" : "text-action-sell"}`}>{t.side}</span>
+                            <span className={`text-caption-10 font-semibold ${t.side === "YES" ? "text-action-buy" : "text-action-sell"}`}>{t.side}</span>
                             <Link href={`/dashboard/markets/${i + 1}`} className="truncate text-body-12 text-text-secondary hover:text-signal-green">{t.market}</Link>
                           </div>
                           <div className="flex items-center gap-2 text-numbers-10 text-text-quaternary">
@@ -719,8 +719,8 @@ export default function BotsPage() {
             className="rounded-[18px] bg-bg-base-1 p-4"
             style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
-            <div className="mb-2 text-[10px] font-medium uppercase text-text-quaternary">Paper Trading</div>
-            <p className="mb-3 text-[10px] text-text-quaternary">Test strategies with simulated funds before deploying real capital.</p>
+            <div className="mb-2 text-label-10 text-text-quaternary">Paper Trading</div>
+            <p className="mb-3 text-caption-10 text-text-quaternary">Test strategies with simulated funds before deploying real capital.</p>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -753,7 +753,7 @@ export default function BotsPage() {
               style={{ boxShadow: "0 24px 48px rgba(0,0,0,0.5), inset 0 0 0 1px var(--color-divider-heavy)" }}
             >
               <div className="mb-1 text-body-12 font-semibold text-text-primary">Delete Bot</div>
-              <p className="mb-4 text-[11px] text-text-secondary">
+              <p className="mb-4 text-body-12 text-text-secondary">
                 Are you sure you want to delete <span className="font-medium text-text-primary">{bots.find((b) => b.id === confirmDeleteId)?.name}</span>? This action cannot be undone.
               </p>
               <div className="flex gap-2">

@@ -15,7 +15,7 @@ export function AddWidgetsPanel() {
     <>
       <button
         onClick={() => setOpen(!open)}
-        className="absolute -top-9 right-0 z-10 flex items-center gap-1.5 rounded-[18px] border border-border-primary bg-bg-surface px-2.5 py-1 text-[11px] font-medium text-text-secondary transition-colors duration-150 hover:border-signal-green hover:text-signal-green"
+        className="absolute -top-9 right-0 z-10 flex items-center gap-1.5 rounded-[18px] border border-border-primary bg-bg-surface px-2.5 py-1 text-body-12 font-medium text-text-secondary transition-colors duration-150 hover:border-signal-green hover:text-signal-green"
       >
         <Plus className="h-3 w-3" />
         Add Widgets
@@ -60,7 +60,7 @@ export function AddWidgetsPanel() {
                     >
                       {isActive && <Check className="h-3 w-3 text-bg-primary" />}
                     </div>
-                    <span className="text-xs font-medium">{w.title}</span>
+                    <span className="text-body-12 font-medium">{w.title}</span>
                   </button>
                 );
               })}

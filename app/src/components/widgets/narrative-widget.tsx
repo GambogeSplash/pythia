@@ -27,7 +27,7 @@ function VolatilityBars({ level }: { level: "high" | "medium" | "low" }) {
           />
         ))}
       </div>
-      <span className={`text-[10px] ${config.color}`}>{config.label}</span>
+      <span className={`text-caption-10 ${config.color}`}>{config.label}</span>
     </div>
   );
 }
@@ -151,10 +151,10 @@ export function NarrativeWidget() {
                     {n.title}
                   </p>
                   <div className="mt-0.5 flex items-center gap-2">
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       {n.marketCount} market{n.marketCount !== 1 ? "s" : ""}
                     </span>
-                    <span className="text-[10px] text-text-quaternary">
+                    <span className="text-caption-10 text-text-quaternary">
                       Vol {formatVolume(n.totalVolume)}
                     </span>
                   </div>
@@ -179,10 +179,10 @@ export function NarrativeWidget() {
                       {n.title}
                     </p>
                     <div className="mt-0.5 flex items-center gap-2">
-                      <span className="text-[10px] text-text-quaternary">
+                      <span className="text-caption-10 text-text-quaternary">
                         {n.marketCount} market{n.marketCount !== 1 ? "s" : ""}
                       </span>
-                      <span className="text-[10px] text-signal-amber">
+                      <span className="text-caption-10 text-signal-amber">
                         {daysLeft === 0 ? "Ending today" : `${daysLeft}d left`}
                       </span>
                     </div>

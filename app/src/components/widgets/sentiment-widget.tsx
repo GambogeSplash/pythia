@@ -110,7 +110,7 @@ export function SentimentWidget() {
                 {sentiment.label}
               </span>
             </div>
-            <div className="mt-0.5 flex items-center gap-2 text-[10px] text-text-quaternary">
+            <div className="mt-0.5 flex items-center gap-2 text-caption-10 text-text-quaternary">
               <span>{sentiment.bullish} bullish</span>
               <span className="text-text-muted">/</span>
               <span>{sentiment.bearish} bearish</span>
@@ -125,7 +125,7 @@ export function SentimentWidget() {
                 style={{ width: `${sentiment.ratio * 100}%` }}
               />
             </div>
-            <div className="flex justify-between text-[9px]">
+            <div className="flex justify-between text-label-9">
               <span className="text-action-fall">Bear</span>
               <span className="text-action-rise">Bull</span>
             </div>
@@ -138,19 +138,19 @@ export function SentimentWidget() {
         className="grid grid-cols-[1fr_52px_48px_54px_64px] gap-1 px-3 py-1.5"
         style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}
       >
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">
           Market
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           Score
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           Trend
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           Yes%
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           Signal
         </span>
       </div>
@@ -194,7 +194,7 @@ export function SentimentWidget() {
               <span className="text-center text-numbers-10 text-text-secondary">
                 {row.yesPercent}%
               </span>
-              <span className={`text-right text-[10px] font-medium ${row.isBullish ? "text-action-rise" : "text-action-fall"}`}>
+              <span className={`text-right text-caption-10 font-medium ${row.isBullish ? "text-action-rise" : "text-action-fall"}`}>
                 {row.isBullish ? "BUY" : "SELL"}
               </span>
             </div>

@@ -166,7 +166,7 @@ function Tooltip({ children, label }: { children: React.ReactNode; label: string
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="pointer-events-none absolute -top-8 left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-[6px] bg-bg-base-3 px-2 py-1 text-[10px] font-medium text-text-primary"
+            className="pointer-events-none absolute -top-8 left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-[6px] bg-bg-base-3 px-2 py-1 text-caption-10 font-medium text-text-primary"
             style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.4), inset 0 0 0 1px var(--color-divider-heavy)" }}
           >
             {label}
@@ -325,7 +325,7 @@ export default function CrossVenueSearchPage() {
         <div className="ml-4 hidden items-center gap-4 md:flex">
           <Tooltip label="Total indexed markets across all venues">
             <div className="flex items-center gap-1 cursor-default">
-              <span className="text-[10px] text-text-quaternary">Markets</span>
+              <span className="text-caption-10 text-text-quaternary">Markets</span>
               {statsLoading ? (
                 <span className="h-3 w-8 animate-pulse rounded bg-bg-base-3" />
               ) : (
@@ -335,13 +335,13 @@ export default function CrossVenueSearchPage() {
           </Tooltip>
           <Tooltip label="Connected prediction market platforms">
             <div className="flex items-center gap-1 cursor-default">
-              <span className="text-[10px] text-text-quaternary">Venues</span>
+              <span className="text-caption-10 text-text-quaternary">Venues</span>
               <span className="text-numbers-12 font-medium text-text-primary">1</span>
             </div>
           </Tooltip>
           <Tooltip label="Categories with active markets">
             <div className="flex items-center gap-1 cursor-default">
-              <span className="text-[10px] text-text-quaternary">Categories</span>
+              <span className="text-caption-10 text-text-quaternary">Categories</span>
               {statsLoading ? (
                 <span className="h-3 w-6 animate-pulse rounded bg-bg-base-3" />
               ) : (
@@ -351,7 +351,7 @@ export default function CrossVenueSearchPage() {
           </Tooltip>
           <Tooltip label="Combined 24h volume across all venues">
             <div className="flex items-center gap-1 cursor-default">
-              <span className="text-[10px] text-text-quaternary">Volume 24h</span>
+              <span className="text-caption-10 text-text-quaternary">Volume 24h</span>
               {statsLoading ? (
                 <span className="h-3 w-12 animate-pulse rounded bg-bg-base-3" />
               ) : (
@@ -372,7 +372,7 @@ export default function CrossVenueSearchPage() {
           <div className="flex h-6 items-center rounded-[4px] bg-bg-base-2 outline outline-1 -outline-offset-1 outline-divider-heavy">
             <button
               onClick={() => setViewMode("cards")}
-              className={`flex h-full items-center px-2 text-[10px] font-medium transition-colors ${
+              className={`flex h-full items-center px-2 text-caption-10 font-medium transition-colors ${
                 viewMode === "cards" ? "text-text-primary" : "text-text-quaternary hover:text-text-secondary"
               }`}
             >
@@ -380,7 +380,7 @@ export default function CrossVenueSearchPage() {
             </button>
             <button
               onClick={() => setViewMode("compact")}
-              className={`flex h-full items-center px-2 text-[10px] font-medium transition-colors ${
+              className={`flex h-full items-center px-2 text-caption-10 font-medium transition-colors ${
                 viewMode === "compact" ? "text-text-primary" : "text-text-quaternary hover:text-text-secondary"
               }`}
             >
@@ -435,7 +435,7 @@ export default function CrossVenueSearchPage() {
                   <motion.kbd
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="flex h-5 items-center rounded-[4px] bg-bg-base-3 px-1.5 text-[9px] font-medium text-text-muted"
+                    className="flex h-5 items-center rounded-[4px] bg-bg-base-3 px-1.5 text-label-9 font-medium text-text-muted"
                     style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
                   >
                     /
@@ -444,7 +444,7 @@ export default function CrossVenueSearchPage() {
                 <div className="h-4 w-px bg-divider-heavy" />
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center gap-1 rounded-[6px] px-2 py-1 text-[10px] font-medium uppercase transition-colors ${
+                  className={`flex items-center gap-1 rounded-[6px] px-2 py-1 text-label-10 transition-colors ${
                     showFilters
                       ? "bg-signal-blue/10 text-signal-blue"
                       : "text-text-quaternary hover:text-text-secondary"
@@ -471,7 +471,7 @@ export default function CrossVenueSearchPage() {
                     <div className="mt-3 space-y-2.5">
                       {/* Category filters */}
                       <div className="flex items-center gap-2">
-                        <span className="w-14 shrink-0 text-[10px] font-medium uppercase text-text-quaternary">
+                        <span className="w-14 shrink-0 text-label-10 text-text-quaternary">
                           Category
                         </span>
                         <div className="flex flex-wrap gap-1.5">
@@ -481,7 +481,7 @@ export default function CrossVenueSearchPage() {
                               whileHover={{ scale: 1.04 }}
                               whileTap={{ scale: 0.96 }}
                               onClick={() => setSelectedCategory(cat)}
-                              className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition-all duration-200 ${
+                              className={`rounded-full px-2.5 py-1 text-body-12 font-medium transition-all duration-200 ${
                                 selectedCategory === cat
                                   ? "bg-bg-base-3 text-text-primary outline outline-1 -outline-offset-1 outline-divider-heavy"
                                   : "text-text-secondary hover:bg-bg-base-2 hover:text-text-primary"
@@ -494,7 +494,7 @@ export default function CrossVenueSearchPage() {
                       </div>
                       {/* Sort */}
                       <div className="flex items-center gap-2">
-                        <span className="w-14 shrink-0 text-[10px] font-medium uppercase text-text-quaternary">
+                        <span className="w-14 shrink-0 text-label-10 text-text-quaternary">
                           Sort
                         </span>
                         <div className="flex gap-1.5">
@@ -502,7 +502,7 @@ export default function CrossVenueSearchPage() {
                             <button
                               key={key}
                               onClick={() => setSortBy(key as "relevance" | "volume" | "closing")}
-                              className={`relative flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium transition-all duration-200 ${
+                              className={`relative flex items-center gap-1 rounded-full px-2.5 py-1 text-body-12 font-medium transition-all duration-200 ${
                                 sortBy === key
                                   ? "text-text-primary"
                                   : "text-text-secondary hover:bg-bg-base-2 hover:text-text-primary"
@@ -535,12 +535,12 @@ export default function CrossVenueSearchPage() {
                   animate={{ opacity: 1, height: "auto" }}
                   className="mt-2 flex items-center gap-2 overflow-hidden"
                 >
-                  <span className="text-[10px] text-text-quaternary">
+                  <span className="text-caption-10 text-text-quaternary">
                     {filtered.length} result{filtered.length !== 1 ? "s" : ""} in {selectedCategory}
                   </span>
                   <button
                     onClick={() => setSelectedCategory("All")}
-                    className="text-[10px] text-signal-blue transition-colors hover:text-signal-blue/80"
+                    className="text-caption-10 text-signal-blue transition-colors hover:text-signal-blue/80"
                   >
                     Clear all
                   </button>
@@ -550,7 +550,7 @@ export default function CrossVenueSearchPage() {
 
             {/* Results header */}
             <div className="flex items-center gap-2 px-1">
-              <span className="text-[10px] font-medium uppercase text-text-quaternary">
+              <span className="text-label-10 text-text-quaternary">
                 {isSearchActive ? `Search results for "${query}"` : "Trending Markets"}
               </span>
               {isLoadingMarkets && (
@@ -560,7 +560,7 @@ export default function CrossVenueSearchPage() {
                   className="h-3 w-3 animate-spin rounded-full border border-signal-green/30 border-t-signal-green"
                 />
               )}
-              <span className="text-[10px] text-text-quaternary">
+              <span className="text-caption-10 text-text-quaternary">
                 {!isLoadingMarkets && `${filtered.length} market${filtered.length !== 1 ? "s" : ""}`}
               </span>
             </div>
@@ -591,7 +591,7 @@ export default function CrossVenueSearchPage() {
                       <p className="text-body-12 text-text-secondary">
                         {isSearchActive ? "No markets found" : "No trending markets available"}
                       </p>
-                      <p className="text-[11px] text-text-quaternary">
+                      <p className="text-body-12 text-text-quaternary">
                         {isSearchActive ? "Try different keywords or filters" : "Check back soon for updates"}
                       </p>
                     </div>
@@ -657,11 +657,11 @@ export default function CrossVenueSearchPage() {
                             {market.question}
                           </Link>
 
-                          <span className="flex-shrink-0 rounded-[4px] bg-bg-base-2 px-1.5 py-0.5 text-[10px] text-text-quaternary">
+                          <span className="flex-shrink-0 rounded-[4px] bg-bg-base-2 px-1.5 py-0.5 text-caption-10 text-text-quaternary">
                             {market.category}
                           </span>
 
-                          <span className="flex-shrink-0 flex items-center gap-1 rounded-[4px] bg-signal-blue/10 px-1.5 py-0.5 text-[10px] text-signal-blue">
+                          <span className="flex-shrink-0 flex items-center gap-1 rounded-[4px] bg-signal-blue/10 px-1.5 py-0.5 text-caption-10 text-signal-blue">
                             {(() => {
                               const Icon = VenueIcon[market.venue];
                               return Icon ? <Icon size={10} className="flex-shrink-0" /> : null;
@@ -694,13 +694,13 @@ export default function CrossVenueSearchPage() {
                           {/* YES price */}
                           <div className="flex flex-col items-end">
                             <span className="text-numbers-12 font-semibold text-text-primary">{probability}&cent;</span>
-                            <span className="text-[9px] text-text-quaternary">YES</span>
+                            <span className="text-label-9 text-text-quaternary">YES</span>
                           </div>
 
                           {/* Volume badge */}
                           <div className="flex flex-col items-end">
                             <span className="text-numbers-10 font-medium text-text-secondary">{formatVolume(market.volume24h)}</span>
-                            <span className="text-[9px] text-text-quaternary">24h vol</span>
+                            <span className="text-label-9 text-text-quaternary">24h vol</span>
                           </div>
 
                           {/* Quick trade button (hover reveal) */}
@@ -715,7 +715,7 @@ export default function CrossVenueSearchPage() {
                           >
                             <Link
                               href={`/dashboard/markets/${market.id}`}
-                              className="flex h-6 items-center gap-1 whitespace-nowrap rounded-[6px] bg-signal-green/10 px-2 text-[10px] font-semibold text-signal-green transition-colors hover:bg-signal-green/15"
+                              className="flex h-6 items-center gap-1 whitespace-nowrap rounded-[6px] bg-signal-green/10 px-2 text-caption-10 font-semibold text-signal-green transition-colors hover:bg-signal-green/15"
                             >
                               <ArrowRight className="h-3 w-3" />
                               Trade
@@ -758,28 +758,28 @@ export default function CrossVenueSearchPage() {
                               <div className="mb-3 flex items-center gap-4">
                                 <div className="flex items-center gap-1.5">
                                   <BarChart3 className="h-3 w-3 text-text-quaternary" />
-                                  <span className="text-[10px] text-text-quaternary">Total Vol</span>
+                                  <span className="text-caption-10 text-text-quaternary">Total Vol</span>
                                   <span className="text-numbers-10 font-medium text-text-primary">
                                     {formatVolume(market.volume)}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                   <Activity className="h-3 w-3 text-text-quaternary" />
-                                  <span className="text-[10px] text-text-quaternary">24h Vol</span>
+                                  <span className="text-caption-10 text-text-quaternary">24h Vol</span>
                                   <span className="text-numbers-10 font-medium text-text-primary">
                                     {formatVolume(market.volume24h)}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                   <Clock className="h-3 w-3 text-text-quaternary" />
-                                  <span className="text-[10px] text-text-quaternary">Ends</span>
+                                  <span className="text-caption-10 text-text-quaternary">Ends</span>
                                   <span className="text-numbers-10 font-medium text-text-primary">
                                     {formatTimeLeft(market.endDate)}
                                   </span>
                                 </div>
                                 <Link
                                   href={`/dashboard/markets/${market.id}`}
-                                  className="ml-auto flex items-center gap-1 text-[10px] font-medium text-signal-green transition-colors hover:text-signal-green/80"
+                                  className="ml-auto flex items-center gap-1 text-caption-10 font-medium text-signal-green transition-colors hover:text-signal-green/80"
                                 >
                                   Full details <ArrowRight className="h-3 w-3" />
                                 </Link>
@@ -787,7 +787,7 @@ export default function CrossVenueSearchPage() {
 
                               {/* Price detail table */}
                               <div className="rounded-[10px] bg-bg-base-2" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
-                                <div className="grid grid-cols-[1fr_80px_80px_100px_100px] items-center gap-2 px-3 py-1.5 text-[9px] font-medium uppercase text-text-quaternary">
+                                <div className="grid grid-cols-[1fr_80px_80px_100px_100px] items-center gap-2 px-3 py-1.5 text-label-9 text-text-quaternary">
                                   <span>Venue</span>
                                   <span className="text-right">YES</span>
                                   <span className="text-right">NO</span>
@@ -846,23 +846,23 @@ export default function CrossVenueSearchPage() {
                 style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
               >
                 <motion.div whileHover={{ scale: 1.03, y: -1 }} transition={{ duration: 0.15 }} className="rounded-[10px] bg-bg-base-2 p-2.5 cursor-default" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
-                  <div className="text-[9px] font-medium uppercase text-text-quaternary">Markets</div>
+                  <div className="text-label-9 text-text-quaternary">Markets</div>
                   <div className="text-numbers-12 font-semibold text-text-primary">
                     <AnimatedNumber value={stats?.totalMarkets ?? 0} />
                   </div>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.03, y: -1 }} transition={{ duration: 0.15 }} className="rounded-[10px] bg-bg-base-2 p-2.5 cursor-default" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
-                  <div className="text-[9px] font-medium uppercase text-text-quaternary">Watchlist</div>
+                  <div className="text-label-9 text-text-quaternary">Watchlist</div>
                   <motion.div key={watchlist.size} initial={{ scale: 1.3 }} animate={{ scale: 1 }} className="text-numbers-12 font-semibold text-text-primary">{watchlist.size}</motion.div>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.03, y: -1 }} transition={{ duration: 0.15 }} className="rounded-[10px] bg-bg-base-2 p-2.5 cursor-default" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
-                  <div className="text-[9px] font-medium uppercase text-text-quaternary">24h Volume</div>
+                  <div className="text-label-9 text-text-quaternary">24h Volume</div>
                   <div className="text-numbers-12 font-semibold text-signal-green">
                     {formatVolume(stats?.totalVolume24h ?? 0)}
                   </div>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.03, y: -1 }} transition={{ duration: 0.15 }} className="rounded-[10px] bg-bg-base-2 p-2.5 cursor-default" style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-thin)" }}>
-                  <div className="text-[9px] font-medium uppercase text-text-quaternary">Liquidity</div>
+                  <div className="text-label-9 text-text-quaternary">Liquidity</div>
                   <div className="text-numbers-12 font-semibold text-signal-blue">
                     {formatVolume(stats?.totalLiquidity ?? 0)}
                   </div>
@@ -909,7 +909,7 @@ export default function CrossVenueSearchPage() {
                   >
                     <AlertTriangle className="mb-2 h-5 w-5 text-text-quaternary" />
                     <p className="text-body-12 text-text-secondary">No trending markets</p>
-                    <p className="text-[10px] text-text-quaternary">Check back soon for updates</p>
+                    <p className="text-caption-10 text-text-quaternary">Check back soon for updates</p>
                   </motion.div>
                 )}
 
@@ -932,7 +932,7 @@ export default function CrossVenueSearchPage() {
                         >
                           {market.question}
                         </Link>
-                        <span className="flex-shrink-0 rounded-[4px] bg-bg-base-2 px-1.5 py-0.5 text-[9px] text-text-quaternary">
+                        <span className="flex-shrink-0 rounded-[4px] bg-bg-base-2 px-1.5 py-0.5 text-label-9 text-text-quaternary">
                           {market.category}
                         </span>
                       </div>
@@ -948,18 +948,18 @@ export default function CrossVenueSearchPage() {
                           )}
                           {probability}%
                         </span>
-                        <span className="text-[9px] text-text-quaternary">
+                        <span className="text-label-9 text-text-quaternary">
                           {formatVolume(market.volume24h)} 24h
                         </span>
                       </div>
 
                       {/* Volume + time bar */}
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="flex items-center gap-1.5 text-[10px] text-text-quaternary">
+                        <span className="flex items-center gap-1.5 text-caption-10 text-text-quaternary">
                           <BarChart3 className="h-2.5 w-2.5" />
                           {formatVolume(market.volume)} total
                         </span>
-                        <span className="flex items-center gap-1 text-[10px] text-text-quaternary">
+                        <span className="flex items-center gap-1 text-caption-10 text-text-quaternary">
                           <Clock className="h-2.5 w-2.5" />
                           {formatTimeLeft(market.endDate)}
                         </span>
@@ -989,7 +989,7 @@ export default function CrossVenueSearchPage() {
                       >
                         <Link
                           href={`/dashboard/markets/${market.id}`}
-                          className="flex h-6 w-full items-center justify-center gap-1 rounded-[6px] bg-signal-green/10 text-[10px] font-semibold text-signal-green transition-colors hover:bg-signal-green/15"
+                          className="flex h-6 w-full items-center justify-center gap-1 rounded-[6px] bg-signal-green/10 text-caption-10 font-semibold text-signal-green transition-colors hover:bg-signal-green/15"
                         >
                           <ExternalLink className="h-3 w-3" />
                           View Market
@@ -1002,7 +1002,7 @@ export default function CrossVenueSearchPage() {
 
               {/* Bottom: top categories */}
               <div className="px-4 py-3" style={{ boxShadow: "inset 0 1px 0 0 var(--color-divider-heavy)" }}>
-                <div className="mb-2 text-[10px] font-medium uppercase text-text-quaternary">Top Categories</div>
+                <div className="mb-2 text-label-10 text-text-quaternary">Top Categories</div>
                 <motion.div
                   className="flex flex-wrap gap-x-3 gap-y-1"
                   variants={pageStagger}
@@ -1015,15 +1015,15 @@ export default function CrossVenueSearchPage() {
                       variants={scaleIn}
                       whileHover={{ scale: 1.08, x: 2 }}
                       onClick={() => setSelectedCategory(cat.name)}
-                      className="flex items-center gap-1.5 text-[10px] text-text-quaternary transition-colors hover:text-text-secondary cursor-pointer"
+                      className="flex items-center gap-1.5 text-caption-10 text-text-quaternary transition-colors hover:text-text-secondary cursor-pointer"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-signal-blue" />
                       {cat.name}
-                      <span className="text-[8px] text-text-muted">({cat.count})</span>
+                      <span className="text-label-9 text-text-muted">({cat.count})</span>
                     </motion.span>
                   ))}
                 </motion.div>
-                <div className="mt-2 flex items-center gap-1 text-[10px] text-text-quaternary">
+                <div className="mt-2 flex items-center gap-1 text-caption-10 text-text-quaternary">
                   <span className="text-signal-green">*</span> Powered by Polymarket
                 </div>
               </div>

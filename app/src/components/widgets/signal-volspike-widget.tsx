@@ -14,13 +14,13 @@ export function SignalVolSpikeWidget() {
     <Widget
       id="signal-volspike"
       title="Signal (Politics)"
-      icon={<span className="text-xs">⊞</span>}
+      icon={<span className="text-body-12">⊞</span>}
       actions={
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1 rounded border border-border-primary bg-bg-surface px-2 py-0.5 text-[10px] text-text-secondary">
+          <button className="flex items-center gap-1 rounded border border-border-primary bg-bg-surface px-2 py-0.5 text-caption-10 text-text-secondary">
             △ Period: 24hr <ChevronDown className="h-2.5 w-2.5" />
           </button>
-          <button className="flex items-center gap-1 rounded border border-border-primary bg-bg-surface px-2 py-0.5 text-[10px] text-text-secondary">
+          <button className="flex items-center gap-1 rounded border border-border-primary bg-bg-surface px-2 py-0.5 text-caption-10 text-text-secondary">
             ⊞ Vol. Spike (5m) <ChevronDown className="h-2.5 w-2.5" />
           </button>
         </div>
@@ -30,18 +30,18 @@ export function SignalVolSpikeWidget() {
 
       {/* Table Header */}
       <div className="grid grid-cols-[1fr_60px_70px_120px] gap-1 px-3 py-1.5" style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-heavy)" }}>
-        <span className="text-[10px] font-medium uppercase text-text-quaternary">Market</span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-label-10 text-text-quaternary">Market</span>
+        <span className="text-right text-label-10 text-text-quaternary">
           VOL.
           <br />
           <span className="text-numbers-10 text-text-muted">24H</span>
         </span>
-        <span className="text-center text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-center text-label-10 text-text-quaternary">
           DEPTH
           <br />
           <span className="text-numbers-10 text-text-muted">LIQ</span>
         </span>
-        <span className="text-right text-[10px] font-medium uppercase text-text-quaternary">
+        <span className="text-right text-label-10 text-text-quaternary">
           NOTIONAL
           <br />
           <span className="text-numbers-10 text-text-muted">TOTAL VOL</span>
@@ -88,7 +88,7 @@ export function SignalVolSpikeWidget() {
                       {market.image ? (
                         <img src={market.image} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        <span className="text-[10px]">{categoryIcon(market.category)}</span>
+                        <span className="text-caption-10">{categoryIcon(market.category)}</span>
                       )}
                     </div>
                     <span className="truncate text-body-12 text-text-primary">{market.question}</span>
@@ -112,8 +112,8 @@ export function SignalVolSpikeWidget() {
                 {/* Notional */}
                 <div className="text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <span className="text-[10px] text-action-rise">↗</span>
-                    <span className="font-data text-sm font-semibold text-text-primary">
+                    <span className="text-caption-10 text-action-rise">↗</span>
+                    <span className="font-data text-body-14 font-semibold text-text-primary">
                       {formatVolume(market.volume)}
                     </span>
                   </div>

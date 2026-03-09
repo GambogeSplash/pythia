@@ -212,7 +212,7 @@ export function HeatmapWidget() {
                   {/* Market name */}
                   <span
                     className={`font-bold text-white ${
-                      isTop3 ? (isFullscreen ? "text-body-14" : "text-body-12") : isFullscreen ? "text-body-12" : "text-[10px] leading-tight"
+                      isTop3 ? (isFullscreen ? "text-body-14" : "text-body-12") : isFullscreen ? "text-body-12" : "text-caption-10 leading-tight"
                     }`}
                     style={{
                       textShadow: "0 1px 3px rgba(0,0,0,0.6)",
@@ -267,7 +267,7 @@ export function HeatmapWidget() {
                           {formatVolume(market.volume24h)}
                         </span>
                       </div>
-                      <span className="mt-0.5 text-[9px] uppercase text-text-quaternary">
+                      <span className="mt-0.5 text-label-9 text-text-quaternary">
                         {market.category}
                       </span>
                     </motion.div>

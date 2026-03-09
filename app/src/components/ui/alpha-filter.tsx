@@ -14,14 +14,14 @@ export function AlphaFilter({ extraFilters }: AlphaFilterProps) {
 
   return (
     <div className="flex items-center gap-1.5 px-3 py-1.5">
-      <span className="text-[10px] text-text-quaternary">
+      <span className="text-caption-10 text-text-quaternary">
         <span className="mr-1">◎</span>Alpha Filter:
       </span>
       {allFilters.map((filter) => (
         <button
           key={filter}
           onClick={() => setActive(filter)}
-          className={`rounded px-2 py-0.5 text-[10px] font-medium transition-colors duration-150 ${
+          className={`rounded px-2 py-0.5 text-caption-10 font-medium transition-colors duration-150 ${
             active === filter
               ? "bg-signal-green text-bg-primary"
               : "text-text-secondary hover:text-text-primary"

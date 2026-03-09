@@ -382,7 +382,7 @@ function StatusLabel({ status }: { status: VenueStatus }) {
   return (
     <div className="flex items-center gap-1.5">
       <StatusDot status={status} />
-      <span className={`text-[10px] font-medium ${colors[status]}`}>{labels[status]}</span>
+      <span className={`text-caption-10 font-medium ${colors[status]}`}>{labels[status]}</span>
     </div>
   );
 }
@@ -394,7 +394,7 @@ function PhaseBadge({ phase }: { phase: string }) {
     "Phase 3": "bg-text-muted/15 text-text-muted",
   };
   return (
-    <span className={`rounded-[4px] px-1.5 py-0.5 text-[9px] font-bold ${styles[phase]}`}>
+    <span className={`rounded-[4px] px-1.5 py-0.5 text-label-9 font-bold ${styles[phase]}`}>
       {phase.toUpperCase()}
     </span>
   );
@@ -403,7 +403,7 @@ function PhaseBadge({ phase }: { phase: string }) {
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-[10px] text-text-quaternary">{label}</span>
+      <span className="text-caption-10 text-text-quaternary">{label}</span>
       <span className="text-numbers-10 text-text-secondary">{value}</span>
     </div>
   );
@@ -437,7 +437,7 @@ function VenueCard({ venue }: { venue: Venue }) {
           }
           return (
             <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] text-sm font-bold"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] text-body-14 font-bold"
               style={{ backgroundColor: venue.accentBg, color: venue.accent }}
             >
               {venue.letter}
@@ -449,7 +449,7 @@ function VenueCard({ venue }: { venue: Venue }) {
             <span className="text-body-12 font-semibold text-text-primary">{venue.name}</span>
             <PhaseBadge phase={venue.phase} />
           </div>
-          <p className="mt-0.5 text-[11px] leading-relaxed text-text-secondary line-clamp-2">
+          <p className="mt-0.5 text-body-12 leading-relaxed text-text-secondary line-clamp-2">
             {venue.description}
           </p>
         </div>
@@ -476,7 +476,7 @@ function VenueCard({ venue }: { venue: Venue }) {
         <StatusLabel status={venue.status} />
 
         {venue.status === "connected" && venue.connectionLabel && (
-          <span className="rounded-full px-2 py-0.5 text-[9px] font-semibold text-signal-green" style={{ backgroundColor: "rgba(0,255,133,0.08)" }}>
+          <span className="rounded-full px-2 py-0.5 text-label-9 font-semibold text-signal-green" style={{ backgroundColor: "rgba(0,255,133,0.08)" }}>
             {venue.connectionLabel}
           </span>
         )}
@@ -486,7 +486,7 @@ function VenueCard({ venue }: { venue: Venue }) {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => alert(`Disconnect from ${venue.name} — API key management coming soon.`)}
-            className="flex h-6 items-center gap-1 rounded-[4px] px-2 text-[10px] font-medium text-text-secondary outline outline-1 -outline-offset-1 outline-divider-heavy transition-colors hover:bg-action-translucent-hover hover:text-text-primary"
+            className="flex h-6 items-center gap-1 rounded-[4px] px-2 text-caption-10 font-medium text-text-secondary outline outline-1 -outline-offset-1 outline-divider-heavy transition-colors hover:bg-action-translucent-hover hover:text-text-primary"
           >
             <Unlink className="h-3 w-3" />
             Disconnect
@@ -497,7 +497,7 @@ function VenueCard({ venue }: { venue: Venue }) {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => alert(`${venue.name} API connection coming soon. You'll be able to add your API keys to trade directly.`)}
-            className="flex h-6 items-center gap-1 rounded-[4px] px-2 text-[10px] font-semibold text-bg-base-0 transition-colors"
+            className="flex h-6 items-center gap-1 rounded-[4px] px-2 text-caption-10 font-semibold text-bg-base-0 transition-colors"
             style={{ backgroundColor: venue.accent }}
           >
             <Link2 className="h-3 w-3" />
@@ -507,7 +507,7 @@ function VenueCard({ venue }: { venue: Venue }) {
         {venue.status === "coming-soon" && (
           <button
             disabled
-            className="flex h-6 cursor-not-allowed items-center gap-1 rounded-[4px] bg-bg-base-3 px-2 text-[10px] font-medium text-text-muted"
+            className="flex h-6 cursor-not-allowed items-center gap-1 rounded-[4px] bg-bg-base-3 px-2 text-caption-10 font-medium text-text-muted"
           >
             <Lock className="h-3 w-3" />
             Coming Soon
@@ -597,25 +597,25 @@ export default function VenuesPage() {
           animate="show"
         >
           <motion.div variants={statVariant} className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Connected Venues</span>
+            <span className="text-caption-10 text-text-quaternary">Connected Venues</span>
             <span className="text-numbers-12 font-medium text-signal-green">
               {connectedCount}/{VENUES.length}
             </span>
           </motion.div>
           <motion.div variants={statVariant} className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Total Markets</span>
+            <span className="text-caption-10 text-text-quaternary">Total Markets</span>
             <span className="text-numbers-12 font-medium text-text-primary">{totalMarkets}</span>
           </motion.div>
           <motion.div variants={statVariant} className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">24h Volume</span>
+            <span className="text-caption-10 text-text-quaternary">24h Volume</span>
             <span className="text-numbers-12 font-medium text-signal-green">{totalVolume24h}</span>
           </motion.div>
           <motion.div variants={statVariant} className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Liquidity</span>
+            <span className="text-caption-10 text-text-quaternary">Liquidity</span>
             <span className="text-numbers-12 font-medium text-text-primary">{totalLiquidity}</span>
           </motion.div>
           <motion.div variants={statVariant} className="flex items-center gap-1">
-            <span className="text-[10px] text-text-quaternary">Data Freshness</span>
+            <span className="text-caption-10 text-text-quaternary">Data Freshness</span>
             <span className="flex items-center gap-1 text-numbers-12 font-medium text-signal-green">
               <Activity className="h-3 w-3" />
               Real-time
@@ -643,7 +643,7 @@ export default function VenuesPage() {
                 <span className="text-body-12 font-semibold text-text-primary">
                   Prediction Market Venues
                 </span>
-                <span className="rounded-full bg-bg-base-3 px-1.5 py-0.5 text-[9px] font-bold text-text-quaternary">
+                <span className="rounded-full bg-bg-base-3 px-1.5 py-0.5 text-label-9 font-bold text-text-quaternary">
                   {VENUES.length}
                 </span>
               </div>
@@ -652,7 +652,7 @@ export default function VenuesPage() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`relative rounded-[4px] px-2 py-0.5 text-[10px] font-medium transition-colors duration-150 ${
+                    className={`relative rounded-[4px] px-2 py-0.5 text-caption-10 font-medium transition-colors duration-150 ${
                       activeTab === tab
                         ? "text-text-primary"
                         : "text-text-quaternary hover:text-text-primary"
@@ -719,7 +719,7 @@ export default function VenuesPage() {
                 {/* Raw Data Sources */}
                 <PipelineStage index={0}>
                   <div className="flex flex-col gap-1.5">
-                    <div className="mb-1 text-center text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                    <div className="mb-1 text-center text-label-9 tracking-widest text-text-quaternary">
                       Raw Data
                     </div>
                     {[
@@ -738,8 +738,8 @@ export default function VenuesPage() {
                           return Logo ? <Logo size={16} /> : <div className="h-2 w-2 rounded-full" style={{ backgroundColor: src.color }} />;
                         })()}
                         <div>
-                          <div className="text-[11px] font-medium text-text-primary">{src.name}</div>
-                          <div className="text-[9px] font-mono text-text-quaternary">{src.format}</div>
+                          <div className="text-body-12 font-medium text-text-primary">{src.name}</div>
+                          <div className="text-label-9 font-mono text-text-quaternary">{src.format}</div>
                         </div>
                       </div>
                     ))}
@@ -752,7 +752,7 @@ export default function VenuesPage() {
                 {/* Venue Connectors */}
                 <PipelineStage index={2}>
                   <div className="flex flex-col gap-1.5">
-                    <div className="mb-1 text-center text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                    <div className="mb-1 text-center text-label-9 tracking-widest text-text-quaternary">
                       Venue Connectors
                     </div>
                     {[
@@ -773,7 +773,7 @@ export default function VenuesPage() {
                           const Logo = VENUE_LOGOS[id];
                           return Logo ? <Logo size={16} /> : <Zap className="h-3 w-3" style={{ color: c.color }} />;
                         })()}
-                        <span className="text-[11px] font-medium text-text-primary">{c.name}</span>
+                        <span className="text-body-12 font-medium text-text-primary">{c.name}</span>
                       </div>
                     ))}
                   </div>
@@ -785,14 +785,14 @@ export default function VenuesPage() {
                 {/* Normalized Schema */}
                 <PipelineStage index={4}>
                   <div className="flex flex-col gap-1.5">
-                    <div className="mb-1 text-center text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                    <div className="mb-1 text-center text-label-9 tracking-widest text-text-quaternary">
                       Normalized Schema
                     </div>
                     <div
                       className="rounded-[8px] bg-bg-base-2 px-4 py-3"
                       style={{ boxShadow: "inset 0 0 0 1px var(--color-divider-heavy)" }}
                     >
-                      <div className="space-y-1 font-mono text-[10px] text-text-secondary">
+                      <div className="space-y-1 font-mono text-caption-10 text-text-secondary">
                         <div><span className="text-signal-purple">market</span>: MarketSchema</div>
                         <div><span className="text-signal-green">price</span>: ProbabilitySchema</div>
                         <div><span className="text-signal-blue">order</span>: UnifiedOrderSchema</div>
@@ -808,7 +808,7 @@ export default function VenuesPage() {
                 {/* Pythia Analytics */}
                 <PipelineStage index={6}>
                   <div className="flex flex-col gap-1.5">
-                    <div className="mb-1 text-center text-[9px] font-medium uppercase tracking-widest text-text-quaternary">
+                    <div className="mb-1 text-center text-label-9 tracking-widest text-text-quaternary">
                       Pythia Analytics
                     </div>
                     <div
@@ -821,8 +821,8 @@ export default function VenuesPage() {
                       <div className="flex items-center gap-2">
                         <BarChart3 className="h-4 w-4 text-signal-green" />
                         <div>
-                          <div className="text-[11px] font-semibold text-text-primary">Core Engine</div>
-                          <div className="text-[9px] text-text-quaternary">Arb detection, signals, risk</div>
+                          <div className="text-body-12 font-semibold text-text-primary">Core Engine</div>
+                          <div className="text-label-9 text-text-quaternary">Arb detection, signals, risk</div>
                         </div>
                       </div>
                     </div>
@@ -832,7 +832,7 @@ export default function VenuesPage() {
 
               {/* Tagline */}
               <motion.div
-                className="mt-2 text-center text-[11px] italic text-text-secondary"
+                className="mt-2 text-center text-body-12 italic text-text-secondary"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -876,9 +876,9 @@ export default function VenuesPage() {
                   >
                     <div className="flex items-center gap-1.5">
                       {note.icon}
-                      <span className="text-[11px] font-semibold text-text-primary">{note.title}</span>
+                      <span className="text-body-12 font-semibold text-text-primary">{note.title}</span>
                     </div>
-                    <p className="mt-1 text-[10px] leading-relaxed text-text-secondary">{note.detail}</p>
+                    <p className="mt-1 text-caption-10 leading-relaxed text-text-secondary">{note.detail}</p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -904,7 +904,7 @@ export default function VenuesPage() {
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex h-6 items-center gap-1 rounded-[4px] bg-signal-green px-2 text-[10px] font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover"
+                className="flex h-6 items-center gap-1 rounded-[4px] bg-signal-green px-2 text-caption-10 font-semibold text-bg-base-0 transition-colors hover:bg-action-brand-hover"
               >
                 <Plus className="h-3 w-3" />
                 Add API Key
@@ -915,7 +915,7 @@ export default function VenuesPage() {
             <div className="overflow-x-auto">
             <div className="min-w-[580px]">
             <div
-              className="grid grid-cols-[1fr_200px_80px_100px_100px] gap-4 px-4 py-2 text-[10px] font-medium uppercase text-text-quaternary"
+              className="grid grid-cols-[1fr_200px_80px_100px_100px] gap-4 px-4 py-2 text-label-10 text-text-quaternary"
               style={{ boxShadow: "inset 0 -1px 0 0 var(--color-divider-thin)" }}
             >
               <span>Venue</span>
@@ -948,7 +948,7 @@ export default function VenuesPage() {
                       }
                       return (
                         <div
-                          className="flex h-6 w-6 items-center justify-center rounded-[6px] text-[10px] font-bold"
+                          className="flex h-6 w-6 items-center justify-center rounded-[6px] text-caption-10 font-bold"
                           style={{ backgroundColor: `${row.accent}1A`, color: row.accent }}
                         >
                           {row.venue[0]}
@@ -960,7 +960,7 @@ export default function VenuesPage() {
                   <span className="font-mono text-numbers-12 text-text-secondary">{row.key}</span>
                   <div className="flex items-center gap-1">
                     <CheckCircle2 className="h-3 w-3 text-signal-green" />
-                    <span className="text-[10px] font-medium text-signal-green">Active</span>
+                    <span className="text-caption-10 font-medium text-signal-green">Active</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="h-3 w-3 text-text-quaternary" />
